@@ -48,18 +48,18 @@
 | Chief Architect | VERIFIED | NOT_VERIFIED | NOT_PROVEN | PARTIALLY_SUPPORTED | NOT_PROVEN | NOT_PROVEN | Constitution and GOV-001 define the role and reserve approvals/status transitions, but no repository artifact verifies the current holder or continuity (`E-001`, `E-002`, `E-020`) |
 | Architecture Review Board | VERIFIED | NOT_APPLICABLE | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | GOV-001 names the ARB, but no roster, charter artifact, or ARR record was verified in the assessed tree (`E-001`) |
 | Protocol Custodian | INCONCLUSIVE | NOT_VERIFIED | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | The role is referenced in handover/conflict material and SPEC-002 ownership, but GOV-001 does not establish it in the authority hierarchy (`E-021`, `E-022`, `E-027`) |
-| M1 owner | NOT_PROVEN | NOT_VERIFIED | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | Milestone 1 tasks are listed but no owner-authentication or closure artifact was verified (`E-020`) |
+| M1 owner | NOT_PROVEN | NOT_VERIFIED | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | Milestone 1 tasks are listed in `aura-specification`, and an Aura-Guard M1-named branch exists, but no owner-authentication or closure artifact was verified and branch existence is not competence evidence (`E-020`, `E-031`) |
 
 ### 3.2 Overall closure / authorization status
 
 | Question | Result | Why |
 |---|---|---|
-| M1 owner authority established? | **NOT_PROVEN** | Milestone 1 is a checklist in the roadmap, not an authority record; no owner-verification artifact was found (`E-020`) |
+| M1 owner authority established? | **NOT_PROVEN** | Milestone 1 is a checklist in the roadmap, not an authority record; Aura-Guard exposes an M1-named branch but no authority or closure proof; Aura-vNEXT explicitly says M1 is not yet defined (`E-020`, `E-031`, `E-032`) |
 | Authority continuity proven? | **NOT_PROVEN** | Role descriptions exist, but no holder continuity record was verified (`E-001`, `E-002`) |
 | Formal ratification mechanism exists? | **PARTIALLY_SUPPORTED** | Governance process exists in draft text, but no executed ratification artifact for the disputed decisions was verified (`E-001`, `E-020`) |
 | P-008 ratification competence proven? | **NOT_PROVEN** | Related-repo Phase 3 materials label P-008 as owner-decision-required, non-binding analysis only (`E-029`, `E-030`) |
 | Normative contract closure proven? | **NOT_PROVEN** | APS corpus remains draft/open in key areas; conflicting closure records remain (`E-003`–`E-018`, `E-021`–`E-026`) |
-| TCK implementation authorized? | **NOT_PROVEN / NOT AUTHORIZED** | No repository-local TCK artifact, approval, scope document, or authorization record was verified; the repository instead records conformance-runner and CI gaps (`E-017`, `E-020`, `E-028`) |
+| TCK implementation authorized? | **NOT_PROVEN / NOT AUTHORIZED** | No repository-local TCK artifact, approval, scope document, or authorization record was verified; Aura-vNEXT has M0 conformance gates and vectors, but its own report says no M1 TCK is defined, which does not transfer authority to `aura-specification` (`E-017`, `E-020`, `E-028`, `E-033`, `E-034`) |
 
 ## 4. Governing principles
 
@@ -97,8 +97,8 @@
 | GD-002 | Protocol Custodian role and competence | GD | Governance corpus | CONFLICTING_SOURCES | NOT_VERIFIED | NOT_VERIFIED | NOT_PROVEN | OPEN | OPEN | NOT_PROVEN | `E-021`, `E-022`, `E-027` | Is Protocol Custodian a formally governed role in this repository corpus? | Role is referenced but not coherently established in GOV-001/Constitution |
 | GD-003 | Architecture Review Board existence and operative competence | GD | GOV-001 | ROLE_DEFINED | NOT_APPLICABLE | NOT_APPLICABLE | NOT_PROVEN | OPEN | OPEN | NOT_PROVEN | `E-001` | Does the ARB have roster, continuity, and recorded review acts? | No ARR record or ARB-instance evidence was verified |
 | GD-004 | Ratification mechanism for disputed ND/AD closures | GD | GOV-001 lifecycle | ROLE_DEFINED | NOT_VERIFIED | NOT_VERIFIED | PARTIALLY_SUPPORTED | OPEN | OPEN | NOT_PROVEN | `E-001`, `E-012`, `E-014` | What artifact proves ratification for DQ-002/DQ-006 and related closures? | Process text exists, but executed ratification evidence was not verified |
-| GD-005 | M1 ownership and closure competence | GD | Repository milestone process | NOT_PROVEN | NOT_VERIFIED | NOT_VERIFIED | NOT_PROVEN | OPEN | OPEN | NOT_PROVEN | `E-020` | Who owns M1 and what artifact closes it? | Roadmap contains checklist items only; no owner/closure artifact verified |
-| GD-006 | TCK scope and implementation authorization | GD | Governance / conformance corpus | NOT_DEFINED | NOT_VERIFIED | NOT_VERIFIED | NOT_PROVEN | NOT_PROVEN | NOT_CLOSABLE_FROM_REPO_EVIDENCE | NOT_PROVEN | `E-017`, `E-020`, `E-028` | Is TCK a defined artifact, runner, certification layer, or future program? | No TCK artifact or authorization record was verified in the assessed corpus |
+| GD-005 | M1 ownership and closure competence | GD | Repository milestone process | NOT_PROVEN | NOT_VERIFIED | NOT_VERIFIED | NOT_PROVEN | OPEN | OPEN | NOT_PROVEN | `E-020`, `E-031`, `E-032` | Who owns M1 and what artifact closes it? | `aura-specification` roadmap contains checklist items only; Aura-Guard has an M1-named branch; Aura-vNEXT says M1 is not yet defined; no owner/closure artifact verified |
+| GD-006 | TCK scope and implementation authorization | GD | Governance / conformance corpus | NOT_DEFINED | NOT_VERIFIED | NOT_VERIFIED | NOT_PROVEN | NOT_PROVEN | NOT_CLOSABLE_FROM_REPO_EVIDENCE | NOT_PROVEN | `E-017`, `E-020`, `E-028`, `E-033`, `E-034` | Is TCK a defined artifact, runner, certification layer, or future program? | No TCK artifact or authorization record was verified in the assessed corpus; Aura-vNEXT M0 gates are repository-specific and explicitly stop short of defining an M1 TCK |
 
 ## 8. Conflict inventory
 
@@ -114,7 +114,7 @@
 | C-008 | Hash domain | `CONFLICTING_SOURCES` | `closures/DQ-002_FINAL_CLOSURE.md` declares CLOSED/PASS/frozen, while the DQ-002 ADR and evidence matrix still record the decision as proposed/open/pending approval (`E-013`, `E-014`, `E-015`) | The contradiction is real and unresolved from repository evidence alone |
 | C-009 | Oracle contract | `PARTIALLY_SUPPORTED` | Independent oracle records exist for DQ-002 and DQ-006, but they establish corroboration/evidence method, not an approved normative oracle contract (`E-015`, `E-012`, `E-024`) | Oracle use is evidenced; oracle authority is not |
 | C-010 | Evidence Pack contract | `UNDERSPECIFIED` | APS-300 §6 still contains a TODO for container format; APS-500 defers canonical fixture data until APS-200/300 finalization (`E-005`, `E-007`) | The contract surface is incomplete and cannot be treated as normatively closed |
-| C-011 | TCK scope | `NOT_PROVEN` | No TCK artifact was verified; current corpus instead records missing conformance runner and missing CI gate (`E-017`, `E-020`, `E-028`) | TCK scope/authorization cannot be inferred from runner, tests, or implementation evidence |
+| C-011 | TCK scope | `NOT_PROVEN` | No TCK artifact was verified in `aura-specification`; current corpus records missing conformance runner and missing CI gate, while Aura-vNEXT exposes M0 gates but explicitly says no M1 TCK is defined (`E-017`, `E-020`, `E-028`, `E-033`, `E-034`) | TCK scope/authorization cannot be inferred from runner, tests, implementation evidence, or another repository's M0-only gate set |
 | C-012 | Authority, ratification, M1 closure, and TCK authorization | `NOT_PROVEN` | Governance roles are only partly defined; holders/continuity are unverified; Milestone 1 remains an open checklist; no TCK authorization record was found (`E-001`, `E-002`, `E-020`) | Repository evidence does not prove competence to close M1 or authorize TCK work |
 
 ## 9. Decision closure criteria
@@ -136,7 +136,7 @@ A decision in this register is eligible for `CLOSED` only when **all** of the fo
 
 ### Concise audit summary
 
-- **Files inspected:** governance, constitution, APS-001/200/300/400/500/900/950, event-type registry, DQ-002/DQ-004/DQ-006 records, completion matrices, roadmap, traceability, invariant registry, handover conflict/evidence-gap material, and limited traceable related-repository Phase 3 documents (`E-001`–`E-030`).
+- **Files inspected:** governance, constitution, APS-001/200/300/400/500/900/950, event-type registry, DQ-002/DQ-004/DQ-006 records, completion matrices, roadmap, traceability, invariant registry, handover conflict/evidence-gap material, and limited traceable related-repository Phase 3 documents (`E-001`–`E-034`).
 - **Baseline / branch:** assessment performed on `copilot/prepare-v1-3-decision-register` @ `71133de047c71e0bc1156d58c20396fe593ace70`.
 - **Evidence added relative to the requested v1.2 baseline:** repository-state evidence index, explicit competence fields, explicit `NOT_PROVEN` handling for holder identity / continuity / ratification / M1 / TCK, and updated conflict classifications tied to current APS/DQ records.
 - **Evidence gaps remaining:** current holder identity, authority continuity, ARB instantiation, DQ-002 competence path, DQ-006 ratification, discriminating cross-language JCS evidence, approved event vocabulary, exact numeric contract, exact Evidence Pack contract, M1 owner authority, and any TCK authorization artifact.
@@ -191,4 +191,7 @@ A decision in this register is eligible for `CLOSED` only when **all** of the fo
 | E-028 | RI reference summaries | both RI references record missing conformance runner | `/home/runner/work/aura-specification/aura-specification/reference/RI-PY_AURA_POC_A_CORE.md`, `/home/runner/work/aura-specification/aura-specification/reference/RI-RS_AURA_GUARD.md` |
 | E-029 | Aura-Guard Phase 3 protocol decision matrix | non-binding analysis; P-007/P-008 remain owner decision required | `github://vaidt/Aura-Guard/docs/PHASE_3_PROTOCOL_DECISION_MATRIX.md@7d2f5746ae61a66edcd11d75bff0787bed854363` |
 | E-030 | Aura-Guard Phase 3 architecture pack | non-binding analysis; `protocol_version` remains `unspecified` | `github://vaidt/Aura-Guard/docs/PHASE_3_ARCHITECTURE_PACK.md@7d2f5746ae61a66edcd11d75bff0787bed854363` |
-
+| E-031 | Aura-Guard branch inventory | related-repository branch evidence only; includes `copilot/aura-m1-primary-authority-recovery` on `main` SHA `7d2f5746ae61a66edcd11d75bff0787bed854363` | `github://vaidt/Aura-Guard@7d2f5746ae61a66edcd11d75bff0787bed854363` |
+| E-032 | Aura-vNEXT M1/open-questions summary | related-repository evidence says `M1 Status: NOT YET DEFINED` and OQ-1/OQ-5/OQ-8/OQ-9 remain open | `github://vaidt/Aura-vNEXT@bdec831c165b3a5465bc25f325ed801558cbf81a` |
+| E-033 | Aura-vNEXT TCK / conformance gate summary | related-repository evidence lists M0-only gates (`make structure/register/fixtures/test/independence/product/check`) | `github://vaidt/Aura-vNEXT@bdec831c165b3a5465bc25f325ed801558cbf81a` |
+| E-034 | Aura-vNEXT governance / ADR summary | related-repository evidence lists ADR-0001..0006 as accepted within Aura-vNEXT M0 scope; not treated here as authority for `aura-specification` | `github://vaidt/Aura-vNEXT@bdec831c165b3a5465bc25f325ed801558cbf81a` |
