@@ -161,34 +161,34 @@ A decision in this register is eligible for `CLOSED` only when **all** of the fo
 
 | Ref | Artifact | Type / status observed | Traceability locator |
 |---|---|---|---|
-| E-001 | GOV-001 / `GOVERNANCE.md` | `1.0-DRAFT` governance process | `/home/runner/work/aura-specification/aura-specification/GOVERNANCE.md` |
-| E-002 | AURA Constitution | `1.0` / `FROZEN` | `/home/runner/work/aura-specification/aura-specification/constitution/AURA_CONSTITUTION.md` |
-| E-003 | APS-001 | `0.2-DRAFT` / root normative specification draft | `/home/runner/work/aura-specification/aura-specification/specification/APS-001_PROTOCOL_SPECIFICATION.md` |
-| E-004 | APS-200 | `1.0-DRAFT` / canonical data model | `/home/runner/work/aura-specification/aura-specification/aps/APS-200_CANONICAL_DATA_MODEL.md` |
-| E-005 | APS-300 | `1.0-DRAFT` / evidence model | `/home/runner/work/aura-specification/aura-specification/aps/APS-300_EVIDENCE_MODEL.md` |
-| E-006 | APS-400 | `1.0-DRAFT` / conformance matrix | `/home/runner/work/aura-specification/aura-specification/aps/APS-400_CONFORMANCE_TEST_MATRIX.md` |
-| E-007 | APS-500 | `1.0-DRAFT` / fixtures | `/home/runner/work/aura-specification/aura-specification/aps/APS-500_REFERENCE_FIXTURES.md` |
-| E-008 | APS-900 | `1.0-DRAFT` / compliance mapping | `/home/runner/work/aura-specification/aura-specification/aps/APS-900_COMPLIANCE_MAPPING.md` |
-| E-009 | APS-950 | `1.0-DRAFT` / RI requirements | `/home/runner/work/aura-specification/aura-specification/aps/APS-950_REFERENCE_IMPLEMENTATION_REQUIREMENTS.md` |
-| E-010 | Event-Type Registry | `DRAFT — DQ-004 closure artifact` | `/home/runner/work/aura-specification/aura-specification/aps/EVENT_TYPE_REGISTRY.md` |
-| E-011 | DQ-004 event-type semantics | `PROPOSED CLOSURE` with verdict `BLOCKED FOR FINAL CLOSURE` | `/home/runner/work/aura-specification/aura-specification/ck003/DQ-004_EVENT_TYPE_SEMANTICS.md` |
-| E-012 | DQ-006 closure package | current authoritative local DQ-006 record: `OPEN` | `/home/runner/work/aura-specification/aura-specification/closures/DQ-006_CLOSURE_PACKAGE.md` |
-| E-013 | DQ-002 final closure | local closure record says `CLOSED — PASS` | `/home/runner/work/aura-specification/aura-specification/closures/DQ-002_FINAL_CLOSURE.md` |
-| E-014 | DQ-002 ADR | `PROPOSED — awaiting Chief Architect approval` | `/home/runner/work/aura-specification/aura-specification/ck003/dq-002-hash-domain/ADR-CK003-DQ002-HASH-DOMAIN.md` |
-| E-015 | DQ-002 evidence matrix | says `DQ-002: OPEN` | `/home/runner/work/aura-specification/aura-specification/ck003/dq-002-hash-domain/HASH_DOMAIN_EVIDENCE.md` |
-| E-016 | Current-state matrix | completion-state evidence | `/home/runner/work/aura-specification/aura-specification/docs/completion/01_CURRENT_STATE_MATRIX.md` |
-| E-017 | Master completion plan | execution-draft baseline and conformance-runner/CI requirements | `/home/runner/work/aura-specification/aura-specification/docs/completion/00_MASTER_COMPLETION_PLAN.md` |
-| E-018 | Traceability matrix | draft matrix with broad `NOT VERIFIED` / `PARTIAL` state | `/home/runner/work/aura-specification/aura-specification/compliance/TRACEABILITY_MATRIX.md` |
-| E-019 | Invariant registry | draft registry with closure notes | `/home/runner/work/aura-specification/aura-specification/invariants/INVARIANT_REGISTRY.md` |
-| E-020 | Roadmap | Milestone 1 open checklist | `/home/runner/work/aura-specification/aura-specification/ROADMAP.md` |
-| E-021 | CK-003 handover conflict register | non-normative conflict evidence | `/home/runner/work/aura-specification/aura-specification/ck003/handover-assessment/04_CONFLICT_REGISTER.md` |
-| E-022 | CK-003 decisions assessment | non-normative decisions status audit | `/home/runner/work/aura-specification/aura-specification/ck003/handover-assessment/03_DECISIONS.md` |
-| E-023 | CK-003 evidence gaps | non-normative gap register | `/home/runner/work/aura-specification/aura-specification/ck003/handover-assessment/05_EVIDENCE_GAPS.md` |
-| E-024 | CK-003 independent verification | recomputation and JCS-degeneracy evidence | `/home/runner/work/aura-specification/aura-specification/ck003/handover-assessment/10_INDEPENDENT_VERIFICATION.md` |
-| E-025 | Architecture execution audit | release-readiness / blocker assessment | `/home/runner/work/aura-specification/aura-specification/ck003/audit/2026-08-20_ARCHITECTURE_EXECUTION_AUDIT.md` |
-| E-026 | Changelog | records DQ-006 reconciliation from closed to open | `/home/runner/work/aura-specification/aura-specification/CHANGELOG.md` |
-| E-027 | SPEC-002 Constitution Artifact Contract | draft future-decision surface for encoding/numeric/optionality | `/home/runner/work/aura-specification/aura-specification/specification/SPEC-002_CONSTITUTION_ARTIFACT_CONTRACT.md` |
-| E-028 | RI reference summaries | both RI references record missing conformance runner | `/home/runner/work/aura-specification/aura-specification/reference/RI-PY_AURA_POC_A_CORE.md`, `/home/runner/work/aura-specification/aura-specification/reference/RI-RS_AURA_GUARD.md` |
+| E-001 | GOV-001 / `GOVERNANCE.md` | `1.0-DRAFT` governance process | `GOVERNANCE.md` |
+| E-002 | AURA Constitution | `1.0` / `FROZEN` | `constitution/AURA_CONSTITUTION.md` |
+| E-003 | APS-001 | `0.2-DRAFT` / root normative specification draft | `specification/APS-001_PROTOCOL_SPECIFICATION.md` |
+| E-004 | APS-200 | `1.0-DRAFT` / canonical data model | `aps/APS-200_CANONICAL_DATA_MODEL.md` |
+| E-005 | APS-300 | `1.0-DRAFT` / evidence model | `aps/APS-300_EVIDENCE_MODEL.md` |
+| E-006 | APS-400 | `1.0-DRAFT` / conformance matrix | `aps/APS-400_CONFORMANCE_TEST_MATRIX.md` |
+| E-007 | APS-500 | `1.0-DRAFT` / fixtures | `aps/APS-500_REFERENCE_FIXTURES.md` |
+| E-008 | APS-900 | `1.0-DRAFT` / compliance mapping | `aps/APS-900_COMPLIANCE_MAPPING.md` |
+| E-009 | APS-950 | `1.0-DRAFT` / RI requirements | `aps/APS-950_REFERENCE_IMPLEMENTATION_REQUIREMENTS.md` |
+| E-010 | Event-Type Registry | `DRAFT — DQ-004 closure artifact` | `aps/EVENT_TYPE_REGISTRY.md` |
+| E-011 | DQ-004 event-type semantics | `PROPOSED CLOSURE` with verdict `BLOCKED FOR FINAL CLOSURE` | `ck003/DQ-004_EVENT_TYPE_SEMANTICS.md` |
+| E-012 | DQ-006 closure package | current authoritative local DQ-006 record: `OPEN` | `closures/DQ-006_CLOSURE_PACKAGE.md` |
+| E-013 | DQ-002 final closure | local closure record says `CLOSED — PASS` | `closures/DQ-002_FINAL_CLOSURE.md` |
+| E-014 | DQ-002 ADR | `PROPOSED — awaiting Chief Architect approval` | `ck003/dq-002-hash-domain/ADR-CK003-DQ002-HASH-DOMAIN.md` |
+| E-015 | DQ-002 evidence matrix | says `DQ-002: OPEN` | `ck003/dq-002-hash-domain/HASH_DOMAIN_EVIDENCE.md` |
+| E-016 | Current-state matrix | completion-state evidence | `docs/completion/01_CURRENT_STATE_MATRIX.md` |
+| E-017 | Master completion plan | execution-draft baseline and conformance-runner/CI requirements | `docs/completion/00_MASTER_COMPLETION_PLAN.md` |
+| E-018 | Traceability matrix | draft matrix with broad `NOT VERIFIED` / `PARTIAL` state | `compliance/TRACEABILITY_MATRIX.md` |
+| E-019 | Invariant registry | draft registry with closure notes | `invariants/INVARIANT_REGISTRY.md` |
+| E-020 | Roadmap | Milestone 1 open checklist | `ROADMAP.md` |
+| E-021 | CK-003 handover conflict register | non-normative conflict evidence | `ck003/handover-assessment/04_CONFLICT_REGISTER.md` |
+| E-022 | CK-003 decisions assessment | non-normative decisions status audit | `ck003/handover-assessment/03_DECISIONS.md` |
+| E-023 | CK-003 evidence gaps | non-normative gap register | `ck003/handover-assessment/05_EVIDENCE_GAPS.md` |
+| E-024 | CK-003 independent verification | recomputation and JCS-degeneracy evidence | `ck003/handover-assessment/10_INDEPENDENT_VERIFICATION.md` |
+| E-025 | Architecture execution audit | release-readiness / blocker assessment | `ck003/audit/2026-08-20_ARCHITECTURE_EXECUTION_AUDIT.md` |
+| E-026 | Changelog | records DQ-006 reconciliation from closed to open | `CHANGELOG.md` |
+| E-027 | SPEC-002 Constitution Artifact Contract | draft future-decision surface for encoding/numeric/optionality | `specification/SPEC-002_CONSTITUTION_ARTIFACT_CONTRACT.md` |
+| E-028 | RI reference summaries | both RI references record missing conformance runner | `reference/RI-PY_AURA_POC_A_CORE.md`, `reference/RI-RS_AURA_GUARD.md` |
 | E-029 | Aura-Guard Phase 3 protocol decision matrix | non-binding analysis; P-007/P-008 remain owner decision required | `github://vaidt/Aura-Guard/docs/PHASE_3_PROTOCOL_DECISION_MATRIX.md@7d2f5746ae61a66edcd11d75bff0787bed854363` |
 | E-030 | Aura-Guard Phase 3 architecture pack | non-binding analysis; `protocol_version` remains `unspecified` | `github://vaidt/Aura-Guard/docs/PHASE_3_ARCHITECTURE_PACK.md@7d2f5746ae61a66edcd11d75bff0787bed854363` |
 | E-031 | Aura-Guard branch inventory | related-repository branch evidence only; includes `copilot/aura-m1-primary-authority-recovery` on `main` SHA `7d2f5746ae61a66edcd11d75bff0787bed854363` | `github://vaidt/Aura-Guard@7d2f5746ae61a66edcd11d75bff0787bed854363` |
