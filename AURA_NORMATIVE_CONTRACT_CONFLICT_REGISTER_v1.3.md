@@ -45,10 +45,10 @@
 
 | Subject | role_defined | holder_identity_verified | authority_continuity_proven | decision_competence_proven | ratification_evidence_present | normative_effective | Evidence |
 |---|---|---|---|---|---|---|---|
-| Chief Architect | VERIFIED | NOT_VERIFIED | NOT_PROVEN | PARTIALLY_SUPPORTED | NOT_PROVEN | NOT_PROVEN | Constitution and GOV-001 define the role and reserve approvals/status transitions, but no repository artifact verifies the current holder or continuity (`E-001`, `E-002`, `E-020`) |
-| Architecture Review Board | VERIFIED | NOT_APPLICABLE | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | GOV-001 names the ARB, but no roster, charter artifact, or ARR record was verified in the assessed tree (`E-001`) |
-| Protocol Custodian | INCONCLUSIVE | NOT_VERIFIED | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | The role is referenced in handover/conflict material and SPEC-002 ownership, but GOV-001 does not establish it in the authority hierarchy (`E-021`, `E-022`, `E-027`) |
-| M1 owner | NOT_PROVEN | NOT_VERIFIED | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | Milestone 1 tasks are listed in `aura-specification`, and an Aura-Guard M1-named branch exists, but no owner-authentication or closure artifact was verified and branch existence is not competence evidence (`E-020`, `E-031`) |
+| Chief Architect | ROLE_DEFINED | NOT_VERIFIED | NOT_PROVEN | PARTIALLY_SUPPORTED | NOT_PROVEN | NOT_PROVEN | Constitution and GOV-001 define the role and reserve approvals/status transitions, but no repository artifact verifies the current holder or continuity (`E-001`, `E-002`, `E-020`) |
+| Architecture Review Board | ROLE_DEFINED | NOT_APPLICABLE | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | GOV-001 names the ARB, but no roster, charter artifact, or ARR record was verified in the assessed tree (`E-001`) |
+| Protocol Custodian | ROLE_REFERENCED_ONLY | NOT_VERIFIED | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | The role is referenced in handover/conflict material and SPEC-002 ownership, but GOV-001 does not establish it in the authority hierarchy (`E-021`, `E-022`, `E-027`) |
+| M1 owner | NOT_DEFINED | NOT_VERIFIED | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | NOT_PROVEN | Milestone 1 tasks are listed in `aura-specification`, and an Aura-Guard M1-named branch exists, but no owner-authentication or closure artifact was verified and branch existence is not competence evidence (`E-020`, `E-031`) |
 
 ### 3.2 Overall closure / authorization status
 
