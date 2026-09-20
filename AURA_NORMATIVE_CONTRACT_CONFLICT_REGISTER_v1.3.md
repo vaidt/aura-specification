@@ -172,7 +172,7 @@ A decision in this register is eligible for `CLOSED` only when **all** of the fo
 | E-009 | APS-950 | `1.0-DRAFT` / RI requirements | `aps/APS-950_REFERENCE_IMPLEMENTATION_REQUIREMENTS.md` |
 | E-010 | Event-Type Registry | `DRAFT — DQ-004 closure artifact` | `aps/EVENT_TYPE_REGISTRY.md` |
 | E-011 | DQ-004 event-type semantics | `PROPOSED CLOSURE` with verdict `BLOCKED FOR FINAL CLOSURE` | `ck003/DQ-004_EVENT_TYPE_SEMANTICS.md` |
-| E-012 | DQ-006 closure package | current authoritative local DQ-006 record: `OPEN` | `closures/DQ-006_CLOSURE_PACKAGE.md` |
+| E-012 | DQ-006 closure package | current local DQ-006 closure record; the file self-describes as the single authoritative DQ-006 record, but this register treats that claim as evidence to assess rather than authority automatically conferred | `closures/DQ-006_CLOSURE_PACKAGE.md` |
 | E-013 | DQ-002 final closure | local closure record says `CLOSED — PASS` | `closures/DQ-002_FINAL_CLOSURE.md` |
 | E-014 | DQ-002 ADR | `PROPOSED — awaiting Chief Architect approval` | `ck003/dq-002-hash-domain/ADR-CK003-DQ002-HASH-DOMAIN.md` |
 | E-015 | DQ-002 evidence matrix | says `DQ-002: OPEN` | `ck003/dq-002-hash-domain/HASH_DOMAIN_EVIDENCE.md` |
