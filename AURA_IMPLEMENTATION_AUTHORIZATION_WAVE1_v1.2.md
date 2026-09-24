@@ -2,9 +2,9 @@
 Artifact_ID: AURA-AUTH-W1-v1.2
 Domain: Implementation Migration & Schema Harmonization Authorization
 
-Status: READY_FOR_EXECUTION
-Execution_Status: NOT_YET_AUTHORIZED
-Repository_Mutation: PROHIBITED
+Status: EXECUTED
+Execution_Status: AUTHORIZED
+Repository_Mutation: PERMITTED_IN_SCOPE
 
 Authority:
   role: Chief Architect
