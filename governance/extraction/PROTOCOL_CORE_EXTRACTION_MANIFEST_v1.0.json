@@ -1,7 +1,7 @@
 {
   "manifest_version": "1.0",
   "commit_scope": "Commit 01 — Baseline Manifest",
-  "status": "BASELINE_CAPTURED_SHA256_PENDING",
+  "status": "BASELINE_VERIFIED_SHA256_COMPLETE",
   "repository": "vaidt/aura-specification",
   "source_branch": "main",
   "source_commit_sha": "a16b9001377135467a5e315862db19ce9adb47ed",
@@ -22,31 +22,162 @@
     "unresolved": "Requires a later competent decision or reconciliation; no promotion is implied."
   },
   "candidate_core_inventory": [
-    {"path":"constitution/AURA_CONSTITUTION.md","classification":"candidate_core","git_blob_sha":"ae121ce247066fb2cc920fb7114e6547fd4f7398","sha256":"NOT_COMPUTED"},
-    {"path":"aps/APS-000_FOUNDATION_AND_TERMINOLOGY.md","classification":"candidate_core","git_blob_sha":"849a987af250687e211798c7d31aa1053f4c59bd","sha256":"NOT_COMPUTED"},
-    {"path":"specification/APS-001_PROTOCOL_SPECIFICATION.md","classification":"candidate_core","git_blob_sha":"bfbc7aff33a772c194b68fbe0e9a728b03c7f5ab","sha256":"NOT_COMPUTED"},
-    {"path":"aps/APS-100_PROTOCOL_INVARIANTS.md","classification":"candidate_core","git_blob_sha":"e1d4fa52288afefcd4456d5d98d95cef74c3c3d2","sha256":"NOT_COMPUTED"},
-    {"path":"aps/APS-200_CANONICAL_DATA_MODEL.md","classification":"candidate_core","git_blob_sha":"0488eec04e102e87b5724ca385a534d0c5f4e1cd","sha256":"NOT_COMPUTED"},
-    {"path":"aps/APS-300_EVIDENCE_MODEL.md","classification":"candidate_core","git_blob_sha":"347112b0aa6140b91e3dff7a505912069991a186","sha256":"NOT_COMPUTED"},
-    {"path":"aps/APS-400_CONFORMANCE_TEST_MATRIX.md","classification":"candidate_core","git_blob_sha":"769dab5fae5331f35408422ad787fb875ea9aec7","sha256":"NOT_COMPUTED"},
-    {"path":"aps/APS-500_REFERENCE_FIXTURES.md","classification":"candidate_core","git_blob_sha":"efeaceafcbae49c6b5e17f9bf0fec869bbe6dbbb","sha256":"NOT_COMPUTED"},
-    {"path":"aps/APS-900_COMPLIANCE_MAPPING.md","classification":"candidate_core","git_blob_sha":"86978670a45c9c6757ce2dbea1a66b18b1f9302c","sha256":"NOT_COMPUTED"},
-    {"path":"aps/APS-950_REFERENCE_IMPLEMENTATION_REQUIREMENTS.md","classification":"candidate_core","git_blob_sha":"c5d7f04002925f9d0b9b8c62b4c6b82f01e02ae9","sha256":"NOT_COMPUTED"},
-    {"path":"aps/EVENT_TYPE_REGISTRY.md","classification":"candidate_core","git_blob_sha":"a329f8635b3fc858868f43c33f753636af1737f3","sha256":"NOT_COMPUTED"},
-    {"path":"invariants/INVARIANT_REGISTRY.md","classification":"candidate_core","git_blob_sha":"2bd65af771ba3b623e2034da180fce25c095a119","sha256":"NOT_COMPUTED"},
-    {"path":"fixtures/README.md","classification":"candidate_core","git_blob_sha":"c5c3b1b0ffe9e77d040602484104b045695bd280","sha256":"NOT_COMPUTED"},
-    {"path":"conformance/README.md","classification":"candidate_core","git_blob_sha":"e5656a561daa33b7346d24104b006eee8a1a66d3","sha256":"NOT_COMPUTED"},
-    {"path":"reference/RI-PY_AURA_POC_A_CORE.md","classification":"candidate_core","git_blob_sha":"51732444b6488bfb4dd3115cefb4fa9ff26d2d92","sha256":"NOT_COMPUTED"},
-    {"path":"reference/RI-RS_AURA_GUARD.md","classification":"candidate_core","git_blob_sha":"997b68d20af1efcd9c0ea89c0d8c4f22d78a4c58","sha256":"NOT_COMPUTED"}
+    {
+      "path": "constitution/AURA_CONSTITUTION.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "ae121ce247066fb2cc920fb7114e6547fd4f7398",
+      "sha256": "e9477fc3b1930e8c24277511d60a61560bce6204afba4152430976bc7b6950c9",
+      "byte_length": 5658
+    },
+    {
+      "path": "aps/APS-000_FOUNDATION_AND_TERMINOLOGY.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "849a987af250687e211798c7d31aa1053f4c59bd",
+      "sha256": "faf7b14b7623d5f675732e95b475f76915aa1f4eeb77f68fd9b161a39d96a43a",
+      "byte_length": 4966
+    },
+    {
+      "path": "specification/APS-001_PROTOCOL_SPECIFICATION.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "bfbc7aff33a772c194b68fbe0e9a728b03c7f5ab",
+      "sha256": "070bb086e574bea86ebda9f490e49f25735ec54fe3732bd3ef2a047cd91e9cb1",
+      "byte_length": 10140
+    },
+    {
+      "path": "aps/APS-100_PROTOCOL_INVARIANTS.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "e1d4fa52288afefcd4456d5d98d95cef74c3c3d2",
+      "sha256": "9b3db434b0eaf5dba02b341e329a65ea73f4d08f67f756734cd03b29737d8ce7",
+      "byte_length": 4848
+    },
+    {
+      "path": "aps/APS-200_CANONICAL_DATA_MODEL.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "0488eec04e102e87b5724ca385a534d0c5f4e1cd",
+      "sha256": "4eb4125c7ad61e5b5e18ebd319b6a3ac8ed97fb8ab1a46b22cc693140d61e5fd",
+      "byte_length": 11445
+    },
+    {
+      "path": "aps/APS-300_EVIDENCE_MODEL.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "347112b0aa6140b91e3dff7a505912069991a186",
+      "sha256": "4fb55ab44bb7e054fc0afdfe51863a01bab84d29bb58d68dc8bc1c03b208140f",
+      "byte_length": 7386
+    },
+    {
+      "path": "aps/APS-400_CONFORMANCE_TEST_MATRIX.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "769dab5fae5331f35408422ad787fb875ea9aec7",
+      "sha256": "1af848a0dca3f5d746e5ab284deebfc324bc3fa5632ebbdfc4d8684de3af78c9",
+      "byte_length": 5547
+    },
+    {
+      "path": "aps/APS-500_REFERENCE_FIXTURES.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "efeaceafcbae49c6b5e17f9bf0fec869bbe6dbbb",
+      "sha256": "4bbbd0fdd9ffc1852b04ee18c07fb17733e484700d647b6155164d8ab4a6e82d",
+      "byte_length": 3955
+    },
+    {
+      "path": "aps/APS-900_COMPLIANCE_MAPPING.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "86978670a45c9c6757ce2dbea1a66b18b1f9302c",
+      "sha256": "d5c794b01efffce8deed33d853f7f0084b36b7b66d24c3dc406172e16cfb2218",
+      "byte_length": 3755
+    },
+    {
+      "path": "aps/APS-950_REFERENCE_IMPLEMENTATION_REQUIREMENTS.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "c5d7f04002925f9d0b9b8c62b4c6b82f01e02ae9",
+      "sha256": "70ddea76689e7efe755c1bea14acc2e0face5ca34a84921707053ee4d8e631af",
+      "byte_length": 4046
+    },
+    {
+      "path": "aps/EVENT_TYPE_REGISTRY.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "a329f8635b3fc858868f43c33f753636af1737f3",
+      "sha256": "ce8a74f3ea2b37ea3ed9af380a8864a35526fadd3d0d5153cabe5a011ab4f5e4",
+      "byte_length": 4282
+    },
+    {
+      "path": "invariants/INVARIANT_REGISTRY.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "2bd65af771ba3b623e2034da180fce25c095a119",
+      "sha256": "ed6eb7e285ee7ca024b397554fbda878f0f9356395ed6ae0534ae7cdba446228",
+      "byte_length": 8893
+    },
+    {
+      "path": "fixtures/README.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "c5c3b1b0ffe9e77d040602484104b045695bd280",
+      "sha256": "44edaea6ee29a96a48345ba0beff584245ae8727f8307302129bd55fcf274a50",
+      "byte_length": 1619
+    },
+    {
+      "path": "conformance/README.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "e5656a561daa33b7346d24104b006eee8a1a66d3",
+      "sha256": "7061ee72144c49dcd7f5dbe4db98b0dd3579ec8150223f07a4e1b76dc95cf12b",
+      "byte_length": 1315
+    },
+    {
+      "path": "reference/RI-PY_AURA_POC_A_CORE.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "51732444b6488bfb4dd3115cefb4fa9ff26d2d92",
+      "sha256": "258e8ded63c471f2b7e8672432c8c694ffb7e086741e4bf76216d19dd2a3e843",
+      "byte_length": 2555
+    },
+    {
+      "path": "reference/RI-RS_AURA_GUARD.md",
+      "classification": "candidate_core",
+      "git_blob_sha": "997b68d20af1efcd9c0ea89c0d8c4f22d78a4c58",
+      "sha256": "af0a3e610b6452642c86dda6e6484b6056685c1dc53d17c53665594cbc712436",
+      "byte_length": 2967
+    }
   ],
   "known_conflicts": [
-    {"id":"C-001","subject":"M1 closure state","status":"UNRESOLVED","normative_effect":"NONE"},
-    {"id":"C-002","subject":"P-008 ratification and effectiveness state","status":"UNRESOLVED","normative_effect":"NONE"},
-    {"id":"C-003","subject":"DQ-006 historical versus current closure records","status":"UNRESOLVED","normative_effect":"NONE"},
-    {"id":"C-004","subject":"Event-type vocabulary versus fixture compatibility","status":"UNRESOLVED","normative_effect":"NONE"},
-    {"id":"C-005","subject":"Traceability matrix freshness versus invariant registry","status":"UNRESOLVED","normative_effect":"NONE"},
-    {"id":"C-006","subject":"Implementation authorization status","status":"UNRESOLVED","normative_effect":"NONE"},
-    {"id":"C-007","subject":"Protocol version assignment","status":"UNRESOLVED","normative_effect":"NONE"}
+    {
+      "id": "C-001",
+      "subject": "M1 closure state",
+      "status": "UNRESOLVED",
+      "normative_effect": "NONE"
+    },
+    {
+      "id": "C-002",
+      "subject": "P-008 ratification and effectiveness state",
+      "status": "UNRESOLVED",
+      "normative_effect": "NONE"
+    },
+    {
+      "id": "C-003",
+      "subject": "DQ-006 historical versus current closure records",
+      "status": "UNRESOLVED",
+      "normative_effect": "NONE"
+    },
+    {
+      "id": "C-004",
+      "subject": "Event-type vocabulary versus fixture compatibility",
+      "status": "UNRESOLVED",
+      "normative_effect": "NONE"
+    },
+    {
+      "id": "C-005",
+      "subject": "Traceability matrix freshness versus invariant registry",
+      "status": "UNRESOLVED",
+      "normative_effect": "NONE"
+    },
+    {
+      "id": "C-006",
+      "subject": "Implementation authorization status",
+      "status": "UNRESOLVED",
+      "normative_effect": "NONE"
+    },
+    {
+      "id": "C-007",
+      "subject": "Protocol version assignment",
+      "status": "UNRESOLVED",
+      "normative_effect": "NONE"
+    }
   ],
   "unresolved_decisions": [
     "Authority continuity is not treated as proven by this branch.",
@@ -55,5 +186,19 @@
     "SHA-256 values require deterministic retrieval of the exact file bytes; Git blob SHAs are recorded as provenance identifiers and are not substituted for SHA-256.",
     "No structural move, rename, deletion, semantic edit, or governance resolution is included in Commit 01."
   ],
-  "next_required_action": "Independent review and deterministic SHA-256 completion before Commit 01 can be marked fully closed."
+  "next_required_action": "Independent review of the completed baseline before Commit 02 or any structural extraction.",
+  "sha256_verification": {
+    "retrieval_method": "GitHub contents API via connector with encoding=base64; digest computed over decoded repository bytes",
+    "inventory_declared_count": 16,
+    "inventory_verified_count": 16,
+    "unique_paths": 16,
+    "all_paths_present": true,
+    "all_git_blob_sha_match": true,
+    "all_git_blob_sizes_match": true,
+    "all_sha256_computed": true,
+    "notes": [
+      "Git blob SHA-1 values were independently recomputed using the Git blob header plus exact repository bytes and matched the recorded blob SHA for every inventory entry.",
+      "SHA-256 is recorded as a file-content digest and is not used as a substitute for Git object identity."
+    ]
+  }
 }
