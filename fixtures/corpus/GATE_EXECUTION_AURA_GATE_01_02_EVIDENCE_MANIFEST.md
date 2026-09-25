@@ -5,7 +5,7 @@
 **Execution branch:** `execution/b-val-014-conf003-dq006-2026-09-26`  
 **Scope:** GATE-01 governance reconciliation; GATE-02 B-VAL-014 / BNC-1 readiness
 
-> This artifact records execution evidence only. It does not ratify a decision, close M1, authorize TCK work, alter constitutional constants, or establish protocol conformance.
+> This artifact records execution evidence only. It does not create protocol authority, authorize B-VAL-014 by itself, alter constitutional constants, or establish protocol conformance. M1 closure-state reconciliation is recorded separately in `AURA_GOVERNANCE_CONFLICT_RESOLUTION_M1_v1.0.md`.
 
 ## GATE-01 — Governance namespace reconciliation
 
@@ -26,11 +26,13 @@
 
 ### Reconciliation result
 
-**GATE-01 = BLOCKED / CONFLICTING_SOURCES**
+**GATE-01A = RESOLVED — M1 CLOSURE STATE**
 
-The repository contains two materially incompatible governance states. The presence of the ratified M1 closure record is evidence of a later governance claim, but the conflict register remains a non-effective artifact explicitly preserving contrary findings. No additional competent supersession/reconciliation act was inferred by this execution record.
+A formal resolution record has been added on this execution branch: `AURA_GOVERNANCE_CONFLICT_RESOLUTION_M1_v1.0.md`. It applies the existing governance rules without changing them. The M1 closure record is marked `RATIFIED / EXECUTED`; the conflict register is explicitly `NOT APPROVED / NOT EFFECTIVE` and disclaims authority to close M1. Therefore the narrow M1 closure-state question resolves to the repository-recorded state `M1 = CLOSED`.
 
-**Required closure evidence:** an authoritative, explicit reconciliation/supersession record identifying which governance state controls the execution branch and how the conflicting register is dispositioned.
+**GATE-01B = BLOCKED — AG-001 PROTOCOL AUTHORITY**
+
+The broader authority-model question remains unresolved. The governance-resolution matrix treats AG-001 as requiring a new explicit decision and prohibits selection by recency, completeness, implementation state, or test state. The M1 closure-state reconciliation does not resolve that broader question.
 
 ## GATE-02 — B-VAL-014 / BNC-1
 
@@ -75,6 +77,12 @@ Before execution can be closed:
 6. keep B-VAL-011, B-VAL-012, B-VAL-013 and B-VAL-019 as separate gates.
 
 ## Custodian disposition
+
+`M1_CLOSURE_STATE = CLOSED`
+
+`AG-001_PROTOCOL_AUTHORITY = BLOCKED`
+
+`GATE-02 = BLOCKED HARD GATE`
 
 `CUSTODIAN_GATE = BLOCKED`
 
