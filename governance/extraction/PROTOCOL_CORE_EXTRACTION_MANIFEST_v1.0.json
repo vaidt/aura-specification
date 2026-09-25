@@ -1,0 +1,59 @@
+{
+  "manifest_version": "1.0",
+  "commit_scope": "Commit 01 — Baseline Manifest",
+  "status": "BASELINE_CAPTURED_SHA256_PENDING",
+  "repository": "vaidt/aura-specification",
+  "source_branch": "main",
+  "source_commit_sha": "a16b9001377135467a5e315862db19ce9adb47ed",
+  "extraction_branch": "work/protocol-core-extraction-v1",
+  "generated_on": "2026-09-25",
+  "mutation_scope": {
+    "source_files_moved": false,
+    "source_files_modified": false,
+    "main_modified": false,
+    "normative_effect_granted": false,
+    "implementation_authorization_changed": false
+  },
+  "classification_legend": {
+    "candidate_core": "Potential protocol-core source or directly required executable/conformance material; not yet canonicalized.",
+    "supporting_evidence": "Evidence, validation, or traceability material supporting technical assessment.",
+    "governance_or_decision": "Authority, ratification, closure, decision, or governance material.",
+    "historical_or_legacy": "Historical, superseded, or legacy material retained for provenance.",
+    "unresolved": "Requires a later competent decision or reconciliation; no promotion is implied."
+  },
+  "candidate_core_inventory": [
+    {"path":"constitution/AURA_CONSTITUTION.md","classification":"candidate_core","git_blob_sha":"ae121ce247066fb2cc920fb7114e6547fd4f7398","sha256":"NOT_COMPUTED"},
+    {"path":"aps/APS-000_FOUNDATION_AND_TERMINOLOGY.md","classification":"candidate_core","git_blob_sha":"849a987af250687e211798c7d31aa1053f4c59bd","sha256":"NOT_COMPUTED"},
+    {"path":"specification/APS-001_PROTOCOL_SPECIFICATION.md","classification":"candidate_core","git_blob_sha":"bfbc7aff33a772c194b68fbe0e9a728b03c7f5ab","sha256":"NOT_COMPUTED"},
+    {"path":"aps/APS-100_PROTOCOL_INVARIANTS.md","classification":"candidate_core","git_blob_sha":"e1d4fa52288afefcd4456d5d98d95cef74c3c3d2","sha256":"NOT_COMPUTED"},
+    {"path":"aps/APS-200_CANONICAL_DATA_MODEL.md","classification":"candidate_core","git_blob_sha":"0488eec04e102e87b5724ca385a534d0c5f4e1cd","sha256":"NOT_COMPUTED"},
+    {"path":"aps/APS-300_EVIDENCE_MODEL.md","classification":"candidate_core","git_blob_sha":"347112b0aa6140b91e3dff7a505912069991a186","sha256":"NOT_COMPUTED"},
+    {"path":"aps/APS-400_CONFORMANCE_TEST_MATRIX.md","classification":"candidate_core","git_blob_sha":"769dab5fae5331f35408422ad787fb875ea9aec7","sha256":"NOT_COMPUTED"},
+    {"path":"aps/APS-500_REFERENCE_FIXTURES.md","classification":"candidate_core","git_blob_sha":"efeaceafcbae49c6b5e17f9bf0fec869bbe6dbbb","sha256":"NOT_COMPUTED"},
+    {"path":"aps/APS-900_COMPLIANCE_MAPPING.md","classification":"candidate_core","git_blob_sha":"86978670a45c9c6757ce2dbea1a66b18b1f9302c","sha256":"NOT_COMPUTED"},
+    {"path":"aps/APS-950_REFERENCE_IMPLEMENTATION_REQUIREMENTS.md","classification":"candidate_core","git_blob_sha":"c5d7f04002925f9d0b9b8c62b4c6b82f01e02ae9","sha256":"NOT_COMPUTED"},
+    {"path":"aps/EVENT_TYPE_REGISTRY.md","classification":"candidate_core","git_blob_sha":"a329f8635b3fc858868f43c33f753636af1737f3","sha256":"NOT_COMPUTED"},
+    {"path":"invariants/INVARIANT_REGISTRY.md","classification":"candidate_core","git_blob_sha":"2bd65af771ba3b623e2034da180fce25c095a119","sha256":"NOT_COMPUTED"},
+    {"path":"fixtures/README.md","classification":"candidate_core","git_blob_sha":"c5c3b1b0ffe9e77d040602484104b045695bd280","sha256":"NOT_COMPUTED"},
+    {"path":"conformance/README.md","classification":"candidate_core","git_blob_sha":"e5656a561daa33b7346d24104b006eee8a1a66d3","sha256":"NOT_COMPUTED"},
+    {"path":"reference/RI-PY_AURA_POC_A_CORE.md","classification":"candidate_core","git_blob_sha":"51732444b6488bfb4dd3115cefb4fa9ff26d2d92","sha256":"NOT_COMPUTED"},
+    {"path":"reference/RI-RS_AURA_GUARD.md","classification":"candidate_core","git_blob_sha":"997b68d20af1efcd9c0ea89c0d8c4f22d78a4c58","sha256":"NOT_COMPUTED"}
+  ],
+  "known_conflicts": [
+    {"id":"C-001","subject":"M1 closure state","status":"UNRESOLVED","normative_effect":"NONE"},
+    {"id":"C-002","subject":"P-008 ratification and effectiveness state","status":"UNRESOLVED","normative_effect":"NONE"},
+    {"id":"C-003","subject":"DQ-006 historical versus current closure records","status":"UNRESOLVED","normative_effect":"NONE"},
+    {"id":"C-004","subject":"Event-type vocabulary versus fixture compatibility","status":"UNRESOLVED","normative_effect":"NONE"},
+    {"id":"C-005","subject":"Traceability matrix freshness versus invariant registry","status":"UNRESOLVED","normative_effect":"NONE"},
+    {"id":"C-006","subject":"Implementation authorization status","status":"UNRESOLVED","normative_effect":"NONE"},
+    {"id":"C-007","subject":"Protocol version assignment","status":"UNRESOLVED","normative_effect":"NONE"}
+  ],
+  "unresolved_decisions": [
+    "Authority continuity is not treated as proven by this branch.",
+    "No proposed, pending, blocked, or unproven record is promoted.",
+    "Canonical source-of-truth status remains pending later review.",
+    "SHA-256 values require deterministic retrieval of the exact file bytes; Git blob SHAs are recorded as provenance identifiers and are not substituted for SHA-256.",
+    "No structural move, rename, deletion, semantic edit, or governance resolution is included in Commit 01."
+  ],
+  "next_required_action": "Independent review and deterministic SHA-256 completion before Commit 01 can be marked fully closed."
+}
