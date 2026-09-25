@@ -31,7 +31,7 @@ This document is an engineering and audit aid. It is not a ratification instrume
 - Governance conflicts are recorded as unresolved rather than silently reconciled.
 - `PROPOSED`, `PENDING`, `BLOCKED`, and `NOT PROVEN` states are not promoted.
 - Git blob SHAs are retained as provenance identifiers; they are not represented as SHA-256 file digests.
-- Exact SHA-256 values remain pending deterministic retrieval of the corresponding file bytes.
+- Exact SHA-256 values have been completed from deterministic repository-byte retrieval; the resulting digests are recorded in the machine-readable manifest.
 
 ## 4. Initial candidate Protocol Core surface
 
