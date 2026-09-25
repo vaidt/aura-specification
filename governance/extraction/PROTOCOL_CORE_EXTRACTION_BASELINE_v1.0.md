@@ -15,7 +15,7 @@
 | Main branch modified | **No** |
 | Normative ratification implied | **No** |
 | Implementation authorization changed | **No** |
-| Current manifest state | `BASELINE_CAPTURED_SHA256_PENDING` |
+| Current manifest state | `BASELINE_VERIFIED_SHA256_COMPLETE` |
 
 ## 2. Purpose
 
@@ -87,10 +87,34 @@ The following are explicitly not decided by this commit:
 | Known conflicts recorded | **PASS — initial register** |
 | Machine-readable manifest added | **PASS** |
 | Human-readable baseline added | **PASS** |
-| Complete deterministic SHA-256 inventory | **PENDING** |
+| Complete deterministic SHA-256 inventory | **PASS — 16/16** |
 | Independent review | **PENDING** |
-| Commit 01 fully closed | **BLOCKED pending SHA-256 completion and review** |
+| Commit 01 fully closed | **BLOCKED pending independent review** |
 
-## 8. Next controlled step
+## 8. Deterministic SHA-256 verification
 
-Before proceeding to Commit 02, complete deterministic SHA-256 calculation for the declared inventory, validate that no candidate source files were silently omitted, and obtain independent review of the baseline classification. No structural extraction should occur until that review is complete.
+The declared candidate-core inventory contains **16 unique paths**. All 16 paths were retrieved from the extraction branch using the repository-byte/base64 representation.
+
+For each entry:
+
+- repository byte length was verified against the Git tree blob size;
+- Git blob SHA-1 was independently recomputed from `blob <length>\\0 + exact bytes` and matched the recorded Git blob SHA;
+- SHA-256 was computed over the exact decoded repository bytes;
+- no declared inventory path was missing or duplicated.
+
+### Verification result
+
+| Check | Result |
+|---|---|
+| Declared inventory entries | **16** |
+| Unique inventory paths | **16/16 PASS** |
+| Paths retrievable | **16/16 PASS** |
+| Git blob size matches | **16/16 PASS** |
+| Git blob SHA recomputation | **16/16 PASS** |
+| SHA-256 computed | **16/16 PASS** |
+| Structural extraction performed | **NO** |
+| Normative state changed | **NO** |
+
+## 9. Next controlled step
+
+Obtain independent review of the completed baseline and classification. Until that review is complete, do not begin Commit 02, structural extraction, rename/move operations, semantic edits, or governance resolution.
