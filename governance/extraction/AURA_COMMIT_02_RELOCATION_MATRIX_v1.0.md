@@ -1,11 +1,11 @@
 # AURA — Commit 02 / Structural Extraction
 ## Path Relocation Matrix v1.0 — DRY-RUN / NON-EXECUTING
 
-**Repository:** `vaidt/aura-specification`  
-**Current branch:** `work/protocol-core-extraction-v1`  
-**Current HEAD:** `fec5991cbca601a89f7c3eeee1927ad6a3236568`  
-**Reference base:** `main @ a16b9001377135467a5e315862db19ce9adb47ed`  
-**Proposed target root:** `protocol-core/`  
+**Repository:** `vaidt/aura-specification`
+**Current branch:** `work/protocol-core-extraction-v1`
+**Current HEAD:** `fec5991cbca601a89f7c3eeee1927ad6a3236568`
+**Reference base:** `main @ a16b9001377135467a5e315862db19ce9adb47ed`
+**Proposed target root:** `protocol-core/`
 **Execution mode:** review only; NO `git mv` performed
 
 > This matrix defines proposed relocation topology only. It is not a normative decision and does not authorize physical movement by itself.
