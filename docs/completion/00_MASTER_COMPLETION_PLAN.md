@@ -82,7 +82,7 @@ The following backlog defines the work that is actionable **now**, before full s
 
 ### WP-1 — APS-001 gap list
 
-**Status:** OPEN  
+**Status:** OPEN
 **Goal:** make APS-001 the stable reference point for every downstream correction.
 
 Tasks:
@@ -97,7 +97,7 @@ Expected output:
 
 ### WP-2 — APS reconciliation pass
 
-**Status:** OPEN  
+**Status:** OPEN
 **Goal:** identify the first downstream documents that must change once APS-001 gaps are agreed.
 
 Priority order:
@@ -121,7 +121,7 @@ Expected output:
 
 ### WP-3 — CK-003 blocker register
 
-**Status:** OPEN  
+**Status:** OPEN
 **Goal:** separate normative decisions from working evidence and unresolved closure gates.
 
 Tasks:
@@ -136,7 +136,7 @@ Expected output:
 
 ### WP-4 — Traceability gap pass
 
-**Status:** OPEN  
+**Status:** OPEN
 **Goal:** make every invariant traceability state explicit before claiming closure progress.
 
 Tasks:
@@ -150,7 +150,7 @@ Expected output:
 
 ### WP-5 — Fixture promotion plan
 
-**Status:** OPEN  
+**Status:** OPEN
 **Goal:** distinguish placeholders and working corpus artifacts from candidate normative fixtures.
 
 Tasks:
@@ -164,7 +164,7 @@ Expected output:
 
 ### WP-6 — Minimum automation plan
 
-**Status:** OPEN  
+**Status:** OPEN
 **Goal:** sequence safe automation work without freezing unstable contracts too early.
 
 Implement now:
