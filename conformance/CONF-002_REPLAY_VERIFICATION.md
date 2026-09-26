@@ -27,9 +27,9 @@ Verify that an execution can be replayed from its Evidence Pack to produce an id
 
 ## 3. Preconditions
 
-- The draft working fixture `/home/runner/work/aura-specification/aura-specification/fixtures/core/FIX-001_BASIC_EVALUATION.json` is available
+- The draft working fixture `fixtures/core/FIX-001_BASIC_EVALUATION.json` is available
 - Python 3 is available with `jsonschema`
-- The repository-local verifier `/home/runner/work/aura-specification/aura-specification/scripts/check-fix001-evidence.py` is available
+- The repository-local verifier `scripts/check-fix001-evidence.py` is available
 - `FIX-001` declares `_draft_replay_materialization` for the replay evidence-chain derivative
 
 ---
