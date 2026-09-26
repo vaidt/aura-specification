@@ -52,6 +52,7 @@ aura-specification/
 When current status conflicts with a historical snapshot, use the canonical Markdown corpus and the current completion/roadmap documents.
 
 Current status pointers:
+- **Governance / status index**: [`GOVERNANCE_STATUS_INDEX.md`](GOVERNANCE_STATUS_INDEX.md)
 - **Authority binding of record**: [`AUTHORITY_BINDING_RECORD_v1.1.md`](AUTHORITY_BINDING_RECORD_v1.1.md)
 - **DQ-006 closure status of record**: [`closures/DQ-006_CLOSURE_PACKAGE.md`](closures/DQ-006_CLOSURE_PACKAGE.md)
 
