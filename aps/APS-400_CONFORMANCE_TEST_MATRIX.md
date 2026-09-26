@@ -60,7 +60,7 @@ The current repository state distinguishes structural assignment from executable
 
 | Test ID | Execution posture | Current limiting factor |
 |---|---|---|
-| CONF-001 | OPEN | `FIX-001` is now concrete draft fixture content, but controlled execution evidence is still missing |
+| CONF-001 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |
 | CONF-002 | BLOCKED | replay fixture corpus not yet authored |
 | CONF-003 | OPEN | cross-language evidence exists, but the corpus still lacks a JCS-discriminating vector |
 | CONF-004 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |

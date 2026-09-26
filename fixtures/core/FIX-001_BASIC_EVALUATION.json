@@ -12,7 +12,10 @@
     "INV-014"
   ],
   "related_conformance_tests": [
-    "CONF-001"
+    "CONF-001",
+    "CONF-004",
+    "CONF-005",
+    "CONF-010"
   ],
   "input_data": {
     "object_id": "FIX-001-REQ-001",

@@ -301,7 +301,7 @@ Status model used here:
 
 | INV | APS source | CONF | FIX | Evidence | RI relevance | Status | Weakest missing link / reason |
 |---|---|---|---|---|---|---|---|
-| INV-001 | APS-001 §2 | CONF-001 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | OPEN | `FIX-001` is now concrete draft fixture content, but deterministic execution still lacks controlled implementation evidence. |
+| INV-001 | APS-001 §2 | CONF-001 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local deterministic request/result/evidence verification now runs against `FIX-001`, but implementation-side controlled evidence is still missing. |
 | INV-002 | APS-001 §2 | CONF-002 | FIX-REPLAY (TODO) | EVID-CORE, EVID-CHAIN | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Replay fixture corpus is still missing. |
 | INV-003 | APS-200 §4, §8 | CONF-003 | CANONICAL-001 | EVID-CORE | RI-PY / RI-RS `PARTIAL` | OPEN | Canonical serialization contract is settled, but DQ-006 remains open because discriminating cross-language closure evidence is incomplete. |
 | INV-004 | APS-300 §3, §7 | CONF-004 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local draft execution path exists via `scripts/check-fix001-evidence.py`, but implementation-side controlled evidence is still missing. |

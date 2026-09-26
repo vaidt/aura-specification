@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
-"""Controlled draft verifier for FIX-001 evidence-pack checks.
+"""Controlled draft verifier for the current FIX-001 local draft gate.
 
 This script executes the current repository-local draft verification path for:
+- CONF-001 Deterministic Evaluation
 - CONF-004 Evidence Integrity
 - CONF-005 Traceability
 - CONF-010 Cryptographic Verification
 
-It validates the FIX-001 working fixture, recomputes the bound digest values, and
-executes one negative mutation control to prove that Evidence tampering is detected.
+It validates the FIX-001 working fixture, deterministically materializes the current
+draft result/evidence path twice from the same request and policy, recomputes the
+bound digest values, and executes one negative mutation control to prove that
+Evidence tampering is detected.
 """
 
 from __future__ import annotations
@@ -76,6 +79,131 @@ def validate_schema(schema_name: str, instance: object) -> None:
 def assert_equal(actual: object, expected: object, label: str) -> None:
     if actual != expected:
         raise AssertionError(f"{label}: expected {expected!r}, got {actual!r}")
+
+
+def make_integrity_hash(obj: dict) -> str:
+    return canonical_sha256({k: v for k, v in obj.items() if k != "integrity_hash"})
+
+
+def evaluate_request(request_fields: dict) -> tuple[str, str]:
+    measurement_value = request_fields["measurement_value"]
+    if measurement_value <= 500:
+        return "ALLOW", "ALLOW when measurement_value <= 500; DENY otherwise"
+    return "DENY", "ALLOW when measurement_value <= 500; DENY otherwise"
+
+
+def materialize_result(fixture: dict) -> dict:
+    request = fixture["input_data"]
+    expected_result = fixture["expected_output"]
+    policy_reference = copy.deepcopy(expected_result["policy_reference"])
+
+    decision, matched_policy_rule = evaluate_request(request["request_fields"])
+    result_fields = {
+        "profile_id": request["request_fields"]["profile_id"],
+        "subject_id": request["request_fields"]["subject_id"],
+        "measurement_value": request["request_fields"]["measurement_value"],
+        "matched_policy_rule": matched_policy_rule,
+    }
+    output_hash = canonical_sha256({"decision": decision, "result_fields": result_fields})
+    result = {
+        "object_id": expected_result["object_id"],
+        "object_type": "EvaluationResult",
+        "protocol_version": expected_result["protocol_version"],
+        "schema_version": expected_result["schema_version"],
+        "created_at": expected_result["created_at"],
+        "execution_id": expected_result["execution_id"],
+        "decision": decision,
+        "output_hash": output_hash,
+        "policy_reference": policy_reference,
+        "result_fields": result_fields,
+    }
+    result["integrity_hash"] = make_integrity_hash(result)
+    return result
+
+
+def materialize_attestation(fixture: dict) -> dict:
+    expected_attestation = fixture["expected_evidence"]["attestation"]
+    attestation = {
+        "object_id": expected_attestation["object_id"],
+        "object_type": "Attestation",
+        "protocol_version": expected_attestation["protocol_version"],
+        "schema_version": expected_attestation["schema_version"],
+        "created_at": expected_attestation["created_at"],
+        "attestation_type": expected_attestation["attestation_type"],
+        "attested_execution_id": fixture["expected_output"]["execution_id"],
+        "evidence_reference": fixture["expected_evidence"]["pack_id"],
+    }
+    attestation["attestation_hash"] = canonical_sha256(
+        {
+            "attestation_type": attestation["attestation_type"],
+            "attested_execution_id": attestation["attested_execution_id"],
+            "evidence_reference": attestation["evidence_reference"],
+        }
+    )
+    attestation["integrity_hash"] = make_integrity_hash(attestation)
+    return attestation
+
+
+def materialize_evidence_pack(fixture: dict, result: dict) -> dict:
+    request = fixture["input_data"]
+    expected_pack = fixture["expected_evidence"]
+    policy_reference = copy.deepcopy(expected_pack["policy_reference"])
+    attestation = materialize_attestation(fixture)
+
+    evidence_object = {
+        "evidence_id": expected_pack["evidence_object"]["evidence_id"],
+        "protocol_version": expected_pack["evidence_object"]["protocol_version"],
+        "schema_version": expected_pack["evidence_object"]["schema_version"],
+        "implementation_id": expected_pack["evidence_object"]["implementation_id"],
+        "execution_id": result["execution_id"],
+        "timestamp": expected_pack["evidence_object"]["timestamp"],
+        "policy_reference": policy_reference["object_id"],
+        "requirement_references": list(expected_pack["evidence_object"]["requirement_references"]),
+        "input_hash": request["input_hash"],
+        "output_hash": result["output_hash"],
+        "previous_evidence_hash": None,
+        "attestation_reference": attestation["object_id"],
+    }
+    evidence_object["evidence_hash"] = canonical_sha256(
+        {k: v for k, v in evidence_object.items() if k != "evidence_hash"}
+    )
+
+    integrity_metadata = {
+        "canonicalization_profile": expected_pack["integrity_metadata"]["canonicalization_profile"],
+        "digest_algorithm": expected_pack["integrity_metadata"]["digest_algorithm"],
+        "request_integrity_hash": request["integrity_hash"],
+        "result_integrity_hash": result["integrity_hash"],
+        "policy_integrity_hash": policy_reference["integrity_hash"],
+        "attestation_integrity_hash": attestation["integrity_hash"],
+    }
+
+    pack = {
+        "pack_id": expected_pack["pack_id"],
+        "pack_version": expected_pack["pack_version"],
+        "protocol_version": expected_pack["protocol_version"],
+        "schema_version": expected_pack["schema_version"],
+        "evidence_profile": expected_pack["evidence_profile"],
+        "requirement_references": list(expected_pack["requirement_references"]),
+        "evidence_object": evidence_object,
+        "evaluation_result": copy.deepcopy(result),
+        "policy_reference": policy_reference,
+        "attestation": attestation,
+        "integrity_metadata": integrity_metadata,
+    }
+    pack["pack_hash"] = canonical_sha256({k: v for k, v in pack.items() if k != "pack_hash"})
+    return pack
+
+
+def verify_deterministic_evaluation(fixture: dict) -> None:
+    first_result = materialize_result(fixture)
+    second_result = materialize_result(fixture)
+    assert_equal(first_result, second_result, "deterministic result replay")
+    assert_equal(first_result, fixture["expected_output"], "fixture expected_output")
+
+    first_pack = materialize_evidence_pack(fixture, first_result)
+    second_pack = materialize_evidence_pack(fixture, second_result)
+    assert_equal(first_pack, second_pack, "deterministic evidence replay")
+    assert_equal(first_pack, fixture["expected_evidence"], "fixture expected_evidence")
 
 
 def verify_pack_hashes(fixture: dict) -> None:
@@ -231,10 +359,12 @@ def main() -> int:
     validate_schema("evaluation-result.schema.json", fixture["expected_output"])
     validate_schema("evidence-pack.schema.json", fixture["expected_evidence"])
 
+    verify_deterministic_evaluation(fixture)
     verify_pack_hashes(fixture)
     verify_traceability(fixture)
     verify_mutation_detection(fixture)
 
+    print("CONF-001 PASS — identical FIX-001 inputs deterministically reproduce identical result and evidence objects")
     print("CONF-004 PASS — evidence mutation is detected by digest verification")
     print("CONF-005 PASS — execution, policy, attestation, and requirement links are coherent")
     print("CONF-010 PASS — input, output, evidence, and pack digests recompute correctly")
