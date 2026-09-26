@@ -316,7 +316,7 @@ The invariant with the strongest existing semantic contract but still-open cross
 
 ### WP-5 — Fixture promotion plan
 
-**Status:** OPEN
+**Status:** CLOSED
 **Goal:** distinguish placeholders and working corpus artifacts from candidate normative fixtures.
 
 Tasks:
@@ -327,6 +327,59 @@ Tasks:
 Expected output:
 - fixture promotion table covering `FIX-001`, `/fixtures/corpus/`, and `/fixtures/ck003/`
 - explicit minimum fixture set for early conformance execution
+
+#### WP-5 deliverable — fixture promotion register
+
+Classification model used here:
+
+- `PLACEHOLDER` — structure exists, but canonical test content is still TODO-bound
+- `WORKING` — usable closure artifact or draft fixture, but not yet fit for normative APS-500 promotion
+- `CANDIDATE NORMATIVE` — concrete fixture content exists and can be promoted once the remaining explicit gate is satisfied
+
+| Artifact | Scope | Related INV / CONF | Classification | Current basis | Promotion gate |
+|---|---|---|---|---|---|
+| `fixtures/core/FIX-001_BASIC_EVALUATION.json` | baseline evaluation | `INV-001`, `INV-014` / `CONF-001` | PLACEHOLDER | file exists, but `protocol_version`, canonical request, expected result, and evidence fields are still `TODO` | APS-200 entity schemas + APS-300 Evidence Pack contract |
+| `fixtures/corpus/FIX-INV-007_zero_float.json` | zero-float runtime | `INV-007` / `CONF-011` | CANDIDATE NORMATIVE | concrete input and expected runtime-domain assertions already exist | controlled execution evidence and promotion into APS-500 corpus |
+| `fixtures/corpus/FIX-INV-012_event_type.json` | audit/event-type semantics | `INV-012` / `CONF-012` | WORKING | fixture structure exists and captures strict rejection semantics | DQ-004 closure + approved registry entries |
+| `fixtures/corpus/FIX-INV-013_policy_determinism.json` | policy determinism | `INV-013` / `CONF-013` | WORKING | deterministic assertions exist, but policy version and canonical input remain unbound placeholders | bind concrete policy/input pair and capture execution evidence |
+| `fixtures/corpus/FIX-INV-014_aps500_compatibility.json` | corpus compatibility | `INV-014` / `CONF-014` | WORKING | fixture is structurally present, but explicitly blocked on APS-500 corpus/version binding | finalized normative APS-500 corpus version |
+| `fixtures/corpus/FIX-INV-015_canonical_identity.json` | canonical identity | `INV-015` / `CONF-015` | WORKING | fixture intent is clear, but required identity fields are not yet normatively bound | final APS-000 / APS-200 identity contract |
+| `fixtures/corpus/CANONICAL-001_jcs_evidence.json` | canonical serialization evidence vector | `INV-003` / `CONF-003` | WORKING | explicit canonical bytes, digest, and cross-language evidence exist | discriminating RFC 8785 vector to close DQ-006 residual R1 |
+| `fixtures/ck003/manifest.json` | CK-003 working corpus index | `INV-007`, `INV-012`, `INV-013`, `INV-014`, `INV-015` | WORKING | inventory and per-entry status are explicit | promote referenced fixtures individually; keep manifest as working orchestration metadata |
+| `fixtures/ck003/expected_digests.json` | expected digest registry | `INV-003` support, CK-003 closure work | WORKING | explicit `null` semantics prevent false PASS assumptions while contracts remain open | freeze canonical bytes / registry / policy / identity dependencies before filling unresolved digest slots |
+
+#### WP-5 — minimum fixture set for a first meaningful conformance run
+
+The smallest execution package that can advance conformance without waiting for the full APS-500 corpus is:
+
+1. **`FIX-INV-007` + `CONF-011`**
+   - first direct candidate for controlled execution
+   - no unresolved event-type, APS-500 corpus, or identity binding dependency
+2. **`FIX-INV-013` + `CONF-013`**
+   - executable after binding one concrete policy version and canonical input pair
+   - should be the second controlled run
+3. **`CANONICAL-001` + `CONF-003` + DQ-002 fixture vectors**
+   - sufficient for continued serialization/hash-domain evidence work
+   - not enough for final normative closure until a discriminating RFC 8785 vector exists
+
+This means the first meaningful conformance wave should target:
+
+- `INV-007`
+- `INV-013`
+- then `INV-003`
+
+#### WP-5 — dependency gates revealed by the promotion pass
+
+The promotion pass reduces the remaining blockers to four fixture-gate classes:
+
+1. **schema / Evidence Pack incompleteness**
+   - blocks `FIX-001`
+2. **event-type governance closure**
+   - blocks normative promotion of `FIX-INV-012`
+3. **APS-500 corpus and version binding**
+   - blocks `FIX-INV-014`
+4. **identity-contract closure**
+   - blocks `FIX-INV-015`
 
 ### WP-6 — Minimum automation plan
 

@@ -45,5 +45,5 @@
 | WP-2 APS reconciliation | OPEN | Initial reconciliation recorded for APS-100 / APS-200 / APS-300; correction queue now starts with APS-200, then APS-300, then APS-100 |
 | WP-3 CK-003 blocker register | CLOSED | CK-003 register recorded with explicit states for DQ-002 / DQ-003 / DQ-004 / DQ-006 and a minimal active DQ set |
 | WP-4 Traceability gap pass | CLOSED | One explicit `OPEN / BLOCKED / READY / NOT VERIFIED` state recorded for each invariant in the completion plan |
-| WP-5 Fixture promotion plan | OPEN | Placeholder / working / candidate normative classification |
+| WP-5 Fixture promotion plan | CLOSED | Fixture promotion register and minimum early conformance fixture set recorded in the completion plan |
 | WP-6 Minimum automation plan | OPEN | Safe-now tools vs schema-dependent deferred tools |
