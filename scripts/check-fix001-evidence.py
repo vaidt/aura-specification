@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 
 try:
-    from jsonschema import Draft202012Validator, RefResolver
+    from jsonschema import Draft202012Validator
 except ImportError as exc:  # pragma: no cover - dependency guard
     raise SystemExit(
         "Missing dependency: jsonschema. Install with `python -m pip install jsonschema`."
@@ -72,10 +72,26 @@ def canonical_sha256(obj: object) -> str:
     return hashlib.sha256(canonical_json(obj).encode("utf-8")).hexdigest()
 
 
+def expand_local_refs(node: object, cache: dict[str, object] | None = None) -> object:
+    cache = {} if cache is None else cache
+
+    if isinstance(node, dict):
+        ref = node.get("$ref")
+        if isinstance(ref, str) and not ref.startswith("#"):
+            if ref not in cache:
+                cache[ref] = expand_local_refs(load_json(SCHEMA_DIR / ref), cache)
+            return cache[ref]
+        return {key: expand_local_refs(value, cache) for key, value in node.items()}
+
+    if isinstance(node, list):
+        return [expand_local_refs(value, cache) for value in node]
+
+    return node
+
+
 def validate_schema(schema_name: str, instance: object) -> None:
-    schema = load_json(SCHEMA_DIR / schema_name)
-    resolver = RefResolver(base_uri=(SCHEMA_DIR.resolve().as_uri() + "/"), referrer=schema)
-    Draft202012Validator(schema, resolver=resolver).validate(instance)
+    schema = expand_local_refs(load_json(SCHEMA_DIR / schema_name))
+    Draft202012Validator(schema).validate(instance)
 
 
 def assert_equal(actual: object, expected: object, label: str) -> None:
@@ -294,12 +310,14 @@ def verify_deterministic_evaluation(fixture: dict) -> None:
 
 
 def verify_replay(fixture: dict) -> None:
+    request = fixture["input_data"]
     original_result = fixture["expected_output"]
     original_pack = fixture["expected_evidence"]
     replay_result = materialize_result(fixture)
     replay_pack = materialize_replay_pack(fixture, replay_result)
 
     validate_schema("evidence-pack.schema.json", replay_pack)
+    verify_evidence_pack_hashes(request, replay_result, replay_pack)
 
     assert_equal(replay_result, original_result, "replay result parity")
     assert_equal(replay_pack["evaluation_result"], original_result, "replay pack evaluation_result")
@@ -340,10 +358,7 @@ def verify_platform_independence(fixture: dict) -> None:
         assert_equal(pack, baseline_pack, f"{context_id} evidence parity")
 
 
-def verify_pack_hashes(fixture: dict) -> None:
-    request = fixture["input_data"]
-    result = fixture["expected_output"]
-    pack = fixture["expected_evidence"]
+def verify_evidence_pack_hashes(request: dict, result: dict, pack: dict) -> None:
     evidence_object = pack["evidence_object"]
     policy_reference = pack["policy_reference"]
     attestation = pack["attestation"]
@@ -424,6 +439,12 @@ def verify_pack_hashes(fixture: dict) -> None:
         pack["pack_hash"],
         canonical_sha256({k: v for k, v in pack.items() if k != "pack_hash"}),
         "pack_hash",
+    )
+
+
+def verify_pack_hashes(fixture: dict) -> None:
+    verify_evidence_pack_hashes(
+        fixture["input_data"], fixture["expected_output"], fixture["expected_evidence"]
     )
 
 
