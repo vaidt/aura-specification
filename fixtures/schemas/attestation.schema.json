@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AuraIDToken/aura-specification/fixtures/schemas/attestation.schema.json",
+  "title": "APS-200 ENT-006 Attestation",
+  "_status": "DRAFT TOP-LEVEL STRUCTURAL CONTRACT — semantic/profile closure remains governed by APS text and open decision records.",
+  "description": "Draft machine-readable top-level contract for an Attestation. Governance and approval lifecycle remain version-bound work outside the structural schema.",
+  "type": "object",
+  "allOf": [
+    { "$ref": "common-object-contract.schema.json" }
+  ],
+  "required": ["attestation_type", "attested_execution_id", "evidence_reference", "attestation_hash"],
+  "properties": {
+    "object_type": { "const": "Attestation" },
+    "attestation_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attested_execution_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_reference": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attestation_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "unevaluatedProperties": false
+}

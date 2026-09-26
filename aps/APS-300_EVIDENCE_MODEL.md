@@ -215,4 +215,25 @@ An implementation MUST declare which Evidence Profile it is producing. A profile
 
 ---
 
+## 14. Machine-readable schemas
+
+Draft machine-readable schemas for the current APS-300 structural contract are maintained under `fixtures/schemas/`:
+
+- `fixtures/schemas/evidence-object.schema.json`
+- `fixtures/schemas/evidence-pack.schema.json`
+
+These schemas close the **top-level structural contract** for:
+
+- the canonical Evidence object field set in §5;
+- the Evidence Pack envelope in §6;
+- the binding of Evidence Pack components to APS-200 `ENT-003`, `ENT-004`, and `ENT-006`.
+
+They do **not** yet close every downstream governance or profile dependency. The following remain explicitly open:
+
+1. the final attestation authority/lifecycle semantics for `ENT-006`;
+2. the exact `integrity_metadata` vocabulary for every Evidence Profile;
+3. the full executed fixture/evidence path required for CONF-004, CONF-005, CONF-009, and CONF-010.
+
+---
+
 *Source: Original text preserved in [`APS-300 — Evidence Model_260723_193234.txt`](../APS-300%20%E2%80%94%20Evidence%20Model_260723_193234.txt)*

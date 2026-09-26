@@ -40,19 +40,19 @@ Use this template to document an Evidence Pack. All fields marked MUST are requi
 
 ### 2. Evaluation Result (MUST — ENT-003)
 
-> **TODO**: Include the full Evaluation Result object per APS-200 ENT-003.
+> Include the full Evaluation Result object per APS-200 ENT-003. The draft machine-readable top-level schema lives at `fixtures/schemas/evaluation-result.schema.json`.
 
 ### 3. Policy Reference (MUST — ENT-004)
 
-> **TODO**: Include the Policy Reference object per APS-200 ENT-004.
+> Include the full Policy Reference object per APS-200 ENT-004. The draft machine-readable top-level schema lives at `fixtures/schemas/policy-reference.schema.json`.
 
 ### 4. Attestation (MUST — ENT-006)
 
-> **TODO**: Include the Attestation object per APS-200 ENT-006.
+> Include the full Attestation object per APS-200 ENT-006. The draft machine-readable top-level schema lives at `fixtures/schemas/attestation.schema.json`.
 
 ### 5. Integrity Metadata (MUST)
 
-> **TODO**: Define the Integrity Metadata structure. Minimum: SHA-256 of each component, SHA-256 of the full pack.
+> **TODO**: Define the final Integrity Metadata vocabulary. Until then, include at minimum SHA-256 of each component plus SHA-256 of the full pack.
 
 ---
 

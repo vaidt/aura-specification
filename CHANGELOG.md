@@ -21,6 +21,7 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 - SPEC-002 draft for the Constitution Artifact contract, including unresolved architectural decisions, traceability matrix, proposed acceptance criteria, and formal NOT READY status
 - RFC-001 (`rfcs/RFC-001_APS001_MILESTONE1_EXECUTION_SCOPE.md`) to formalize Milestone 1 first-increment scope, synchronization targets, and acceptance criteria for APS-001 alignment
 - `GOVERNANCE_STATUS_INDEX.md` as a short navigation index for current, historical, and non-constitutive governance/status artifacts
+- Draft machine-readable APS-200 entity schemas and APS-300 evidence schemas under `fixtures/schemas/`
 
 ### Changed
 - README.md restructured as canonical repository index
@@ -29,6 +30,8 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 - README.md now points readers to the current authority-binding artifact (`AUTHORITY_BINDING_RECORD_v1.1.md`) and the current DQ-006 status record (`closures/DQ-006_CLOSURE_PACKAGE.md`)
 - Added `closures/README.md` as the closure-record index, explicitly separating authoritative closure records from superseded historical copies
 - evidence/README.md now marks `evidence/DQ-006_CLOSURE_PACKAGE.md` as a historical copy and redirects readers to `/closures/`
+- APS-200 §10 and APS-300 §14 now distinguish the new published top-level structural schemas from the remaining open profile/governance dependencies
+- ROADMAP.md, TRACEABILITY_MODEL.md, docs/completion/01_CURRENT_STATE_MATRIX.md, and fixtures/README.md now reflect that machine-readable top-level schemas exist while fixture/evidence semantics remain open
 - Existing APS .txt source files preserved in root; canonical Markdown versions added in /aps/
 - **APS-200 §8** now binds the canonical serialization profile: RFC 8785 JCS, UTF-8 `canonical_bytes`, prohibited digest inputs, the SHA-256 / RFC 6962 byte domain, the cross-implementation byte-identity requirement, the scope boundary against event and version semantics, and migration. Declared the single normative authority for canonical serialization (DQ-006)
 - **APS-300 §5** now binds `evidence_hash`, `input_hash` and `output_hash` to APS-200 §8 canonical bytes, separates the evidence-hash and Merkle domains, and states migration; §8 chain links defer to §5.1 (DQ-006)

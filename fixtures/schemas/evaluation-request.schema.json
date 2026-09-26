@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/AuraIDToken/aura-specification/fixtures/schemas/evaluation-request.schema.json",
+  "title": "APS-200 ENT-002 Evaluation Request",
+  "_status": "DRAFT TOP-LEVEL STRUCTURAL CONTRACT — semantic/profile closure remains governed by APS text and open decision records.",
+  "description": "Draft machine-readable top-level contract for an Evaluation Request. The inner request_fields payload remains execution-profile-specific.",
+  "type": "object",
+  "allOf": [
+    { "$ref": "common-object-contract.schema.json" }
+  ],
+  "required": ["input_hash", "input_schema", "request_fields"],
+  "properties": {
+    "object_type": { "const": "EvaluationRequest" },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "input_schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "request_fields": {
+      "type": "object",
+      "description": "Profile-specific validated request payload."
+    }
+  },
+  "unevaluatedProperties": false
+}

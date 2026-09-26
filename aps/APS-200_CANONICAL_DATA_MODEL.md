@@ -93,7 +93,7 @@ Every entity MUST contain the following fields:
 | `input_schema` | string | MUST | Identifier of the input schema version |
 | `request_fields` | object | MUST | Validated, schema-conformant input payload |
 
-> **TODO**: Define the canonical schema for `request_fields`.
+The base APS-200 schema requires `request_fields` to be a JSON object. The exact payload members, constraints, and closed vocabularies for `request_fields` remain bound to the applicable execution profile and its approved schema contract.
 
 ---
 
@@ -318,7 +318,27 @@ Compatibility decisions MUST be governed by an explicit version-compatibility ma
 
 ## 10. JSON Schema
 
-Machine-readable schema definitions for canonical fixtures and shared object contracts are maintained under `fixtures/schemas/`. Entity-specific schemas remain subject to APS-200 completion and MUST be added before APS-001 v1.0 approval where required by the relevant entity contract.
+Machine-readable schema definitions for canonical fixtures and shared object contracts are maintained under `fixtures/schemas/`.
+
+Current draft schemas published from this APS:
+
+- `fixtures/schemas/common-object-contract.schema.json`
+- `fixtures/schemas/protocol-header.schema.json`
+- `fixtures/schemas/evaluation-request.schema.json`
+- `fixtures/schemas/evaluation-result.schema.json`
+- `fixtures/schemas/policy-reference.schema.json`
+- `fixtures/schemas/attestation.schema.json`
+- `fixtures/schemas/audit-record.schema.json`
+- `fixtures/schemas/implementation-metadata.schema.json`
+
+These schemas close the **top-level structural contract** for the APS-200 entities: required fields, top-level types, hash-field encoding, and object identity/version envelope.
+
+They do **not** yet close every profile-specific semantic dependency. The following remain explicitly open and version-bound:
+
+1. the exact `request_fields` payload schema(s) for each execution profile;
+2. the approved decision vocabulary/profile for `ENT-003.decision`;
+3. the final identity syntax/uniqueness rules needed for full `INV-015` closure;
+4. the approved `ENT-007.event_type` registry tokens and machine-readable registry closure required by DQ-004.
 
 The event-type vocabulary and validation contract are governed by `aps/EVENT_TYPE_REGISTRY.md`. That registry MUST be incorporated into the approved APS-200 profile before DQ-004 can be closed.
 

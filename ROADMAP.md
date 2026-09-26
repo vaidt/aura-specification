@@ -54,8 +54,8 @@ Priority: **High** — blocking conformance testing.
 
 - [ ] Define APS-200 entity schemas with precise field types and constraints
 - [ ] Define APS-300 canonical Evidence Pack schema with exact field names and cryptographic algorithm
-- [ ] Publish JSON Schema for all APS-200 entities
-- [ ] Publish JSON Schema for APS-300 Evidence Pack
+- [x] Publish JSON Schema for all APS-200 entities
+- [x] Publish JSON Schema for APS-300 Evidence Pack
 - [ ] Advance APS-200 and APS-300 to Approved status
 
 ---
