@@ -63,13 +63,13 @@ The current repository state distinguishes structural assignment from executable
 | CONF-001 | OPEN | `FIX-001` is now concrete draft fixture content, but controlled execution evidence is still missing |
 | CONF-002 | BLOCKED | replay fixture corpus not yet authored |
 | CONF-003 | OPEN | cross-language evidence exists, but the corpus still lacks a JCS-discriminating vector |
-| CONF-004 | BLOCKED | Evidence Pack fixture path still incomplete |
-| CONF-005 | BLOCKED | traceability/evidence fixture path still incomplete |
+| CONF-004 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |
+| CONF-005 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |
 | CONF-006 | BLOCKED | baseline fixture plus cross-platform evidence missing |
 | CONF-007 | BLOCKED | error-handling fixture missing |
 | CONF-008 | BLOCKED | DQ-003 compatibility matrix and bound fixture missing |
 | CONF-009 | OPEN | structural mapping exists, but the full invariant-to-execution gate is not yet evidenced |
-| CONF-010 | BLOCKED | cryptographic-verification fixture path incomplete |
+| CONF-010 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |
 | CONF-011 | READY | working fixture exists; remaining step is controlled execution evidence |
 | CONF-012 | BLOCKED | DQ-004 event-type registry closure required |
 | CONF-013 | READY | working fixture exists, but one concrete policy/input binding is still needed before execution |

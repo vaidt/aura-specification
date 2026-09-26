@@ -31,6 +31,8 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 - `fixtures/schemas/attestation.schema.json` and `fixtures/schemas/evidence-pack.schema.json` now validate the current draft `EPR-CORE` linkage and integrity-metadata vocabulary end-to-end
 - `fixtures/core/FIX-001_BASIC_EVALUATION.json` now carries concrete draft Evidence Pack content and computed digest/hash values instead of placeholder evidence publication fields
 - `fixtures/README.md`, APS-400, APS-500, completion docs, and traceability docs now reflect that FIX-001 is a concrete working draft fixture rather than a placeholder-only artifact
+- Added `scripts/check-fix001-evidence.py` as a repository-local draft execution path for CONF-004, CONF-005, and CONF-010 against `FIX-001`
+- CONF-004, CONF-005, and CONF-010 now carry explicit executable preconditions and procedures bound to `FIX-001` and the draft verifier script
 - GOVERNANCE.md, CONTRIBUTING.md, and VERSIONING.md now explicitly allow draft-stage closure work on canonical DRAFT documents without touching FROZEN artifacts, and they treat unpublished digest/checksum placeholders as draft-only rather than release authority
 - README.md restructured as canonical repository index
 - README.md now links to `GOVERNANCE_STATUS_INDEX.md` as the short routing index for governance/status artifacts

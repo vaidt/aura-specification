@@ -9,12 +9,15 @@ This directory contains tooling scripts for traceability validation and reposito
 | `check-doc-headers.sh` | Verify all normative documents have required metadata headers | IMMEDIATE | PLANNED |
 | `check-ids.sh` | Verify no identifier is reused across INV, CONF, FIX, ADR, RFC | IMMEDIATE | PLANNED |
 | `check-traceability.sh` | Verify every INV-xxx has a CONF-xxx; every CONF-xxx has a FIX-xxx | IMMEDIATE | PLANNED |
+| `check-fix001-evidence.py` | Execute the draft FIX-001 evidence integrity / traceability / digest checks for CONF-004/005/010 | CURRENT DRAFT WORKING PATH | READY |
 | `validate-fixtures.sh` | Validate all FIX-xxx JSON files against APS-200 schemas | DEFERRED | BLOCKED |
 | `generate-traceability-matrix.py` | Auto-generate TRACEABILITY_MATRIX.md from document metadata | DEFERRED | BLOCKED |
 
 ## Status
 
 > **Current plan**: start with repository-structure validators that do not freeze unstable payload contracts; defer schema-bound tooling until APS-200 / APS-300 / APS-500 dependencies are explicitly closed.
+
+The repository now also includes one bounded draft execution validator for the current `FIX-001` / `EPR-CORE` working path. It is intentionally narrow and does not yet claim normative APS-500 promotion or implementation conformance.
 
 ## Immediate implementation order
 
@@ -23,11 +26,32 @@ The current safe-first automation order is:
 1. `check-doc-headers.sh`
 2. `check-ids.sh`
 3. `check-traceability.sh`
+4. `check-fix001-evidence.py`
 
 The following remain intentionally deferred until APS-200 / APS-300 schemas and canonical fixture contracts are stable:
 
 - `validate-fixtures.sh`
 - `generate-traceability-matrix.py`
+
+## Current draft working validator
+
+`check-fix001-evidence.py` verifies the repository-local controlled draft path for:
+
+- `CONF-004` Evidence Integrity
+- `CONF-005` Traceability
+- `CONF-010` Cryptographic Verification
+
+It requires Python 3 plus:
+
+- `jsonschema`
+
+Run:
+
+```bash
+python scripts/check-fix001-evidence.py
+```
+
+The script validates the current `FIX-001` working fixture, recomputes all bound digest values, checks object linkage and requirement traceability, and executes one mutation-based negative control.
 
 ## Immediate Wave Scope
 
