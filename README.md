@@ -49,7 +49,7 @@ aura-specification/
 |----------|-------|--------|
 | [AURA Constitution](constitution/AURA_CONSTITUTION.md) | Constitutional Governance | FROZEN |
 | [APS-000](aps/APS-000_FOUNDATION_AND_TERMINOLOGY.md) | Foundation & Terminology | DRAFT |
-| [APS-001](aps/APS-001_PROTOCOL_SPECIFICATION.md) | Protocol Specification | TODO |
+| [APS-001](specification/APS-001_PROTOCOL_SPECIFICATION.md) | Protocol Specification | DRAFT |
 | [APS-100](aps/APS-100_PROTOCOL_INVARIANTS.md) | Protocol Invariants | DRAFT |
 | [APS-200](aps/APS-200_CANONICAL_DATA_MODEL.md) | Canonical Data Model | DRAFT |
 | [APS-300](aps/APS-300_EVIDENCE_MODEL.md) | Evidence Model | DRAFT |
