@@ -5,12 +5,39 @@
   "_status": "DRAFT CONTRACT — top-level structure is closed and the current working profile AURA-DRAFT-CORE-001 payload is closed; other future profiles remain version-bound.",
   "description": "Draft machine-readable contract for an Evaluation Request, including the current working-profile payload.",
   "type": "object",
-  "allOf": [
-    { "$ref": "common-object-contract.schema.json" }
+  "required": [
+    "object_id",
+    "object_type",
+    "protocol_version",
+    "schema_version",
+    "created_at",
+    "integrity_hash",
+    "input_hash",
+    "input_schema",
+    "request_fields"
   ],
-  "required": ["input_hash", "input_schema", "request_fields"],
   "properties": {
+    "object_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "object_type": { "const": "EvaluationRequest" },
+    "protocol_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "integrity_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "input_hash": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"

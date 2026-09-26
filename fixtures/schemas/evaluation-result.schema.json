@@ -5,12 +5,41 @@
   "_status": "DRAFT CONTRACT — top-level structure is closed and the current working profile AURA-DRAFT-CORE-001 result payload and decision vocabulary are closed; other future profiles remain version-bound.",
   "description": "Draft machine-readable contract for an Evaluation Result, including the current working-profile decision vocabulary and result payload.",
   "type": "object",
-  "allOf": [
-    { "$ref": "common-object-contract.schema.json" }
+  "required": [
+    "object_id",
+    "object_type",
+    "protocol_version",
+    "schema_version",
+    "created_at",
+    "integrity_hash",
+    "execution_id",
+    "decision",
+    "output_hash",
+    "policy_reference",
+    "result_fields"
   ],
-  "required": ["execution_id", "decision", "output_hash", "policy_reference", "result_fields"],
   "properties": {
+    "object_id": {
+      "type": "string",
+      "minLength": 1
+    },
     "object_type": { "const": "EvaluationResult" },
+    "protocol_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "integrity_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
     "execution_id": {
       "type": "string",
       "minLength": 1
