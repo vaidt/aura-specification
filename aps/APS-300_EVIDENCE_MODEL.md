@@ -5,7 +5,7 @@ Version: 1.0-DRAFT
 Status: DRAFT  
 Classification: Normative Specification  
 Authority: APS-001 · APS-100 · APS-200  
-Last Review: 2026-08-20
+Last Review: 2026-09-26
 
 ---
 
@@ -57,13 +57,14 @@ Every Evidence object MUST contain at minimum:
 
 | Field | Type | Requirement | Description |
 |-------|------|-------------|-------------|
-| `evidence_id` | string | MUST | Globally unique identifier (UUID v4) |
+| `evidence_id` | string | MUST | Globally unique canonical identifier conformant with APS-000 / APS-200 identity rules and the selected Evidence Profile |
 | `protocol_version` | string | MUST | APS version (e.g., `1.0`) |
 | `schema_version` | string | MUST | APS-300 schema version |
 | `implementation_id` | string | MUST | Identifier of the implementation (ENT-008) |
 | `execution_id` | string | MUST | References the Protocol Header execution_id (ENT-001) |
 | `timestamp` | string (ISO 8601) | MUST | Time of evidence generation (UTC) |
 | `policy_reference` | string | MUST | object_id of the Policy Reference (ENT-004) |
+| `requirement_references` | array[string] | MUST | Non-empty list of normative requirement identifiers or section references that this evidence is intended to demonstrate (e.g., `APS-001 §6`, `INV-005`, `CONF-005`) |
 | `input_hash` | string | MUST | SHA-256 hash of the canonical input |
 | `output_hash` | string | MUST | SHA-256 hash of the canonical output |
 | `evidence_hash` | string | MUST | SHA-256 hash of this Evidence object (excluding this field) |
@@ -114,13 +115,22 @@ Minimum contents:
 
 | Component | Type | Requirement |
 |-----------|------|-------------|
+| `pack_id` | string | MUST |
+| `pack_version` | string | MUST |
+| `protocol_version` | string | MUST |
+| `schema_version` | string | MUST |
+| `evidence_profile` | string | MUST |
+| `requirement_references` | array[string] | MUST |
 | Evidence Object | APS-300 §5 | MUST |
 | Evaluation Result | ENT-003 | MUST |
 | Policy Reference | ENT-004 | MUST |
 | Attestation | ENT-006 | MUST |
 | Integrity Metadata | object | MUST |
+| `pack_hash` | string | MUST |
 
-> **TODO**: Define the Evidence Pack container format (suggested: a JSON envelope with a `pack_hash` field covering all components).
+The canonical Evidence Pack container is a JSON envelope with the fields above. `pack_hash` MUST be computed over the canonical bytes of the pack object with the `pack_hash` member removed, using the same canonical byte domain defined in APS-200 §8 and APS-300 §5.1.
+
+`requirement_references` at pack level MUST be the union of the requirement references asserted by the enclosed Evidence Object and any additional pack-scoped conformance or release requirements.
 
 ---
 
@@ -152,6 +162,7 @@ Every Evidence object MUST enable verification of:
 - Data integrity (each hash matches)
 - Completeness of required fields
 - Correctness of Evidence Pack linkage
+- Traceability of the evidence to the normative requirement(s) it documents
 
 ---
 
@@ -191,10 +202,16 @@ Evidence is invalid if:
 
 ## 13. Evidence Profile (EPR)
 
-> **TODO**: Define Evidence Profiles for different use cases:
-> - EPR-CORE — minimum evidence set
-> - EPR-AUDIT — extended set for audit
-> - EPR-COMPLIANCE — full set for conformance certification
+Evidence Profiles define the minimum required contents and obligations for different evidence use cases.
+
+| Profile | Minimum scope | Additional requirements |
+|---------|---------------|-------------------------|
+| `EPR-CORE` | one Evidence Object, one Evaluation Result, one Policy Reference, one Integrity Metadata block | MUST include execution-scoped `requirement_references`; MAY omit chain history beyond the current execution |
+| `EPR-AUDIT` | all `EPR-CORE` contents plus Audit Record linkage | MUST include the applicable `ENT-007` references and any chain/integrity data needed to verify the audit trail |
+| `EPR-COMPLIANCE` | all `EPR-CORE` contents plus Attestation and conformance-result linkage | MUST bind the executed CONF/FIX scope and MUST include the attestation needed for certification evidence |
+| `EPR-REL` | release-level evidence package | MUST include the conformance report / release linkage and the full set of requirement references needed to support the release claim |
+
+An implementation MUST declare which Evidence Profile it is producing. A profile MAY extend these minimum contents, but it MUST NOT weaken a mandatory field or linkage defined by this specification.
 
 ---
 
