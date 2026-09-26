@@ -82,7 +82,7 @@ The following backlog defines the work that is actionable **now**, before full s
 
 ### WP-1 — APS-001 gap list
 
-**Status:** OPEN
+**Status:** CLOSED
 **Goal:** make APS-001 the stable reference point for every downstream correction.
 
 Tasks:
@@ -94,6 +94,69 @@ Tasks:
 Expected output:
 - a concise APS-001 gap register with per-section status
 - explicit list of unresolved contract dependencies
+
+#### WP-1 deliverable — APS-001 section gap register
+
+| APS-001 section | Status | Current assessment | Primary dependency / blocker |
+|---|---|---|---|
+| §1 Protocol Identity and Scope | READY FOR REVIEW | Mission, protocol identity, and scope boundary are consistent with the Constitution. | Architecture Review / approval only |
+| §2 Protocol Execution Model | OPEN | Execution flow is coherent, but the binding between execution profile, audit record, and evidence lifecycle still needs tighter downstream reconciliation. | APS-200 / APS-300 cross-references |
+| §3 Input Requirements | BLOCKED | Request validity depends on exact `ENT-002` schema, field constraints, numeric contract, and version-compatibility behaviour that are not fully closed. | APS-200 schemas; DQ-003 |
+| §4 Output Requirements | BLOCKED | Result requirements are directionally clear, but the exact `ENT-003` contract and canonical decision vocabulary are still unresolved. | APS-200 `ENT-003` closure |
+| §5 Policy Model | OPEN | Reproducibility and fail-closed semantics are stable, but canonical policy identity/version semantics need tighter binding. | DQ-003; APS-200 `ENT-004` |
+| §6 Evidence Generation Requirements | BLOCKED | Required evidence fields are listed, but exact Evidence Pack structure, attestation contract, and profile boundaries remain incomplete. | APS-300 pack schema; `ENT-006`; Evidence Profiles |
+| §7 Cryptographic Requirements | OPEN | Canonical-byte and hash-domain wording is materially stable, but full Merkle-profile closure and conformance evidence promotion remain incomplete. | DQ-002 scope; DQ-006 residuals |
+| §8 Error Handling | OPEN | Fail-closed behaviour is defined, but compatibility exceptions and error classification still depend on downstream harmonization. | APS-100 / APS-200 / version rules |
+| §9 Conformance Requirements | BLOCKED | The conformance gate is defined, but mandatory PASS evidence does not yet exist for fixtures, runner, and full matrix execution. | APS-400 / APS-500 / runner / CI |
+| §10 Normative Authority | READY FOR REVIEW | Hierarchy is explicit and consistent with the Constitution. | Downstream citation cleanup only |
+| §11 Traceability | OPEN | The required chain is correct, but APS-001 requirements are not yet exhaustively mapped to invariant-level verification rows. | APS-900 traceability completion |
+| §12 Version Binding | BLOCKED | The section requires an explicit compatibility matrix that does not yet exist as a settled normative contract. | DQ-003 |
+| §13 Release Gate | BLOCKED | The release gate is directionally correct, but fixtures, runner, CI, release evidence, and approval records are not yet in place. | APS-500 corpus; runner; CI; review evidence |
+| Appendix A — Open closure dependencies | OPEN | The blocker list is substantially correct and should remain the single short list for APS-001 approval gating. | Must stay synchronized with DQ-003 / DQ-004 / APS-200 / APS-300 / CI state |
+
+#### WP-1 — stable vs unresolved areas
+
+Stable enough for review:
+- §1 Protocol Identity and Scope
+- §10 Normative Authority
+- the core constitutional posture of APS-001 as a normative draft
+
+Open but not fully blocked:
+- §2 Protocol Execution Model
+- §5 Policy Model
+- §7 Cryptographic Requirements
+- §8 Error Handling
+- §11 Traceability
+- Appendix A maintenance and synchronization
+
+Blocked by unresolved downstream contracts:
+- §3 Input Requirements
+- §4 Output Requirements
+- §6 Evidence Generation Requirements
+- §9 Conformance Requirements
+- §12 Version Binding
+- §13 Release Gate
+
+#### WP-1 — immediate dependency set
+
+The smallest dependency set now controlling APS-001 approval readiness is:
+
+1. machine-readable APS-200 entity schemas
+2. exact APS-300 Evidence Pack schema and Evidence Profile boundaries
+3. DQ-003 version-compatibility semantics
+4. DQ-004 event-type semantics and approved registry entries
+5. canonical APS-500 fixture corpus
+6. executable cross-language conformance runner
+7. repository-native CI gate
+8. Architecture Review / Chief Architect approval record
+
+#### WP-1 — next correction queue triggered by this register
+
+1. APS-200 — close `ENT-002`, `ENT-003`, `ENT-004`, `ENT-006`, `ENT-007`, version-binding, and machine-readable schema gaps
+2. APS-300 — close Evidence Pack structure, attestation linkage, and Evidence Profile definitions
+3. APS-100 / APS-400 / APS-500 — align conformance language with the real fixture and execution state
+4. APS-900 — complete APS-001 requirement-to-traceability mapping
+5. CK-003 DQ-003 / DQ-004 blocker records — settle version and event-type semantics needed by APS-001 approval
 
 ### WP-2 — APS reconciliation pass
 

@@ -41,7 +41,7 @@
 
 | Work package | Status | Immediate output |
 |---|---|---|
-| WP-1 APS-001 gap list | OPEN | Per-section `READY FOR REVIEW / OPEN / BLOCKED` list for APS-001 |
+| WP-1 APS-001 gap list | CLOSED | Per-section `READY FOR REVIEW / OPEN / BLOCKED` list for APS-001 recorded in `docs/completion/00_MASTER_COMPLETION_PLAN.md` |
 | WP-2 APS reconciliation | OPEN | Ordered correction queue for APS-100/200/300/400/500/900/950 |
 | WP-3 CK-003 blocker register | OPEN | DQ-003 / DQ-004 / DQ-006 residual blocker list |
 | WP-4 Traceability gap pass | OPEN | One explicit state per `INV-001…INV-015` |
