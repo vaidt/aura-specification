@@ -7,24 +7,27 @@ This directory contains Reference Fixtures as defined in APS-500.
 ```
 fixtures/
 ├── README.md               This file
+├── ck003/                  CK-003 manifests and expected digests
+├── corpus/                 Working fixture corpus for open closure items
 ├── schemas/                JSON Schema definitions for APS-200 entities
 ├── core/                   FIX-CORE — baseline operation scenarios
-├── boundary/               FIX-BOUNDARY — boundary value testing
-├── error/                  FIX-ERROR — error handling
-├── replay/                 FIX-REPLAY — replay verification
-├── evidence/               FIX-EVIDENCE — Evidence Pack validation
-└── compatibility/          FIX-COMPAT — cross-version compatibility
+└── ...                     Additional APS-500 categories added as they are stabilized
 ```
 
 ## Status
 
-> **TODO**: All canonical fixtures (FIX-001+) are pending finalization of APS-200 entity schemas and APS-300 Evidence Pack format. See [ROADMAP.md](../ROADMAP.md) Milestone 2.
+> **Current state**: The canonical APS-500 fixture corpus is not yet finalized. `FIX-001` remains a placeholder, while `/fixtures/corpus/` and `/fixtures/ck003/` contain working fixtures and manifests for closure work that do not by themselves constitute release-ready APS-500 coverage.
 
 ## Fixture Index
 
 | Fixture ID | Name | Category | CONF Test | Status |
 |------------|------|----------|-----------|--------|
 | FIX-001 | Basic Evaluation | CORE | CONF-001 | TODO |
+| FIX-INV-007 | Zero Float Runtime | CORPUS | CONF-011 | READY (working corpus) |
+| FIX-INV-012 | Event Type / Auditability | CORPUS | CONF-012 | REGISTRY_DEPENDENT |
+| FIX-INV-013 | Policy Determinism | CORPUS | CONF-013 | PARAMETRIC |
+| FIX-INV-014 | APS-500 Compatibility | CORPUS | CONF-014 | APS500_VERSION_BLOCKED |
+| FIX-INV-015 | Canonical Identity | CORPUS | CONF-015 | APS000_BINDING_BLOCKED |
 
 ## Authoring New Fixtures
 
@@ -33,6 +36,8 @@ fixtures/
 3. Place in the appropriate category subdirectory
 4. Link to related CONF-xxx test(s) and INV-xxx invariants
 5. Submit via pull request with a reference to the related APS-500 section
+
+Working corpus fixtures in `/fixtures/corpus/` MAY evolve during closure work; only fixtures promoted into the approved APS-500 corpus are normative.
 
 ## Important Rules
 

@@ -12,7 +12,7 @@ It is maintained by the Chief Architect and updated after each Architecture Revi
 |------|--------|
 | AURA Constitution | ✅ FROZEN |
 | APS-000 Foundation & Terminology | 🟡 DRAFT |
-| APS-001 Protocol Specification | ❌ TODO |
+| APS-001 Protocol Specification | 🟡 DRAFT — Architecture Review Required |
 | APS-100 Protocol Invariants | 🟡 DRAFT |
 | APS-200 Canonical Data Model | 🟡 DRAFT |
 | APS-300 Evidence Model | 🟡 DRAFT |
@@ -29,9 +29,9 @@ It is maintained by the Chief Architect and updated after each Architecture Revi
 
 ## Milestone 1 — APS-001 and Full Review (Target: v0.2.0)
 
-Priority: **Critical** — APS-001 is the missing root normative document.
+Priority: **Critical** — APS-001 is the root normative draft and remains the principal blocker until reviewed and approved.
 
-- [ ] Author APS-001 Protocol Specification
+- [ ] Stabilize APS-001 Protocol Specification draft
 - [ ] Architecture Review of APS-001
 - [ ] Align APS-100 through APS-950 authority citations to APS-001
 - [ ] Advance APS-000 to Approved status

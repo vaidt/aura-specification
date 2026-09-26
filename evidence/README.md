@@ -7,7 +7,7 @@ This directory contains the Evidence Model templates and guidelines, supplementi
 | File | Description |
 |------|-------------|
 | [EVIDENCE_PACK_TEMPLATE.md](EVIDENCE_PACK_TEMPLATE.md) | Template for authoring an Evidence Pack |
-| [EVIDENCE_TYPES.md](EVIDENCE_TYPES.md) | Descriptions of each evidence type (EVID-CORE, EVID-AUDIT, etc.) |
+| This README | Current summary of supported evidence types (EVID-CORE, EVID-AUDIT, etc.) |
 
 ## Evidence Types
 

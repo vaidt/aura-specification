@@ -74,19 +74,16 @@ When a document changes, the following MUST be assessed:
 
 ## Gap Registry
 
-Current known traceability gaps (as of v0.1.0):
+Current known traceability gaps:
 
 | Gap | Blocking | Priority |
 |-----|----------|----------|
-| APS-001 does not exist | Yes — voids normative authority | Critical |
-| INV-007 has no CONF test | Yes — violates INV-010 | High |
-| INV-012 has no CONF test | Yes — violates INV-010 | High |
-| INV-013 has no CONF test | Yes — violates INV-010 | High |
-| INV-014 has no CONF test | Yes — violates INV-010 | Critical |
-| INV-015 has no CONF test | Yes — violates INV-010 | High |
+| APS-001 remains DRAFT and requires Architecture Review before approval | Yes — root normative authority remains open | Critical |
+| CONF-011 through CONF-015 are assigned but not yet evidenced through an executable conformance gate | Yes — prevents objective PASS claims for INV-007 and INV-012…INV-015 | High |
 | FIX-001 content is TODO | Yes — blocks CONF-001 | High |
 | APS-200 entity schemas are TODO | Yes — blocks CONF-003, CONF-008, CONF-009 | High |
 | APS-300 Evidence Pack format is TODO | Yes — blocks CONF-004, CONF-005, CONF-009, CONF-010 | High |
 | No Attestation (ENT-006) implementation | Yes — blocks CONF-005, CONF-009 | High |
+| No repository-native CI conformance gate | Yes — blocks release-ready automated verification | High |
 
 See [../../ROADMAP.md](../../ROADMAP.md) for remediation schedule.

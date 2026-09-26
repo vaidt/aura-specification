@@ -13,15 +13,15 @@ Accordingly, this branch is an implementation workspace. It may contain drafts, 
 
 ## 2. Verified starting condition
 
-- `APS-001_PROTOCOL_SPECIFICATION.md` is currently `0.1-DRAFT`, `Status: TODO`, and explicitly states that it does not yet exist. This is the principal repository-level blocker.
+- `specification/APS-001_PROTOCOL_SPECIFICATION.md` is currently `0.2-DRAFT`, `Status: DRAFT — ARCHITECTURE REVIEW REQUIRED`. It now exists as the root normative draft, but remains the principal repository-level blocker until review and approval.
 - APS-100 through APS-500, APS-900 and APS-950 exist as `1.0-DRAFT` documents.
 - APS-100 defines 15 invariants and requires every invariant to have a conformance test and evidence path.
-- APS-400 defines CONF-001 through CONF-010, but the repository currently contains the test-definition documents rather than an end-to-end executable conformance gate.
+- APS-400 defines CONF-001 through CONF-015, but the repository currently contains draft test-definition documents rather than an end-to-end executable conformance gate.
 - APS-500 defines the reference-fixture contract, but the canonical fixture set is not yet demonstrably complete against the invariant/test matrix.
 - APS-900 defines the required traceability chain from Constitution → APS Requirement → Invariant → Data Model → Evidence → Conformance Test → Fixture → Implementation → Release.
 - APS-950 identifies RI-PY (`aura-poc-a-core`) and RI-RS (`aura-guard`) as reference implementations and requires a full conformance process.
 - The repository currently has no `.github/workflows/` directory in the default branch; therefore a repository-native CI conformance gate is not yet evidenced.
-- CK-003 DQ-002 and DQ-003 work exists on separate branches and must be reviewed before integration; branch existence is not equivalent to closure.
+- CK-003 closure material exists in-repository, but evidence presence is not equivalent to normative closure; DQ-003/DQ-004 and release-gate promotion still require explicit review and acceptance.
 
 ## 3. Completion gates
 
