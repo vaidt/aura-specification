@@ -383,7 +383,7 @@ The promotion pass reduces the remaining blockers to four fixture-gate classes:
 
 ### WP-6 — Minimum automation plan
 
-**Status:** OPEN
+**Status:** CLOSED
 **Goal:** sequence safe automation work without freezing unstable contracts too early.
 
 Implement now:
@@ -398,6 +398,73 @@ Defer until schemas and canonical formats stabilize:
 Expected output:
 - phased automation order with prerequisites
 - explicit defer list for schema-dependent tooling
+
+#### WP-6 deliverable — phased minimum automation plan
+
+Automation is split into two waves:
+
+1. **safe-now repository validators**
+   - can be implemented without freezing unresolved schemas or fixture payload contracts
+2. **schema-bound automation**
+   - must wait until APS-200 / APS-300 / APS-500 contracts are explicitly stable
+
+#### WP-6 — immediate automation wave
+
+| Script | Primary purpose | Inputs / scope | Safe now because | Required prerequisite |
+|---|---|---|---|---|
+| `check-doc-headers.sh` | verify required metadata headers on normative documents | Constitution, APS, INV, CONF, compliance, reference, closure records | depends only on document structure already used throughout the repo | stable header convention per current documents |
+| `check-ids.sh` | detect accidental ID reuse across controlled namespaces | `INV`, `CONF`, `FIX`, `ADR`, `RFC`, related document identifiers | works on textual identifiers and does not require finalized schemas | stable identifier prefixes already exist |
+| `check-traceability.sh` | verify minimum structural links `INV → CONF` and `CONF → FIX` | invariant registry, conformance index/docs, fixture indexes/manifests | structural linkage can be checked before full PASS evidence exists | current registry + conformance catalog + fixture inventory |
+
+These three scripts form the **minimum safe automation baseline** because they validate repository integrity without interpreting unresolved protocol payload semantics.
+
+#### WP-6 — execution order and dependency logic
+
+1. **`check-doc-headers.sh` first**
+   - establishes that the repository metadata surface is parseable and consistent
+   - reduces false negatives in later ID / traceability checks
+2. **`check-ids.sh` second**
+   - validates identifier hygiene before link-graph checks
+   - prevents ambiguous traceability results caused by duplicate IDs
+3. **`check-traceability.sh` third**
+   - runs only after documents and IDs are stable enough to support deterministic graph traversal
+
+#### WP-6 — deferred automation set
+
+| Script | Why deferred | Explicit gate to unblock |
+|---|---|---|
+| `validate-fixtures.sh` | fixture payloads and expected evidence remain partially placeholder- or working-only, so schema validation would freeze unstable contracts too early | APS-200 machine-readable schemas + APS-300 Evidence Pack contract + promoted APS-500 fixture corpus |
+| `generate-traceability-matrix.py` | automatic matrix generation would encode unresolved semantics and maturity assumptions into generated outputs | stable APS requirement mapping + settled fixture promotion set + clearer release-evidence model |
+
+#### WP-6 — minimum implementation contract for each immediate script
+
+All immediate scripts should share the same operating contract:
+
+- read-only execution
+- deterministic output ordering
+- exit `0` on success and non-zero on failure
+- concise summary plus per-finding detail
+- no PASS claims about implementation conformance, only repository-structure validation
+
+#### WP-6 — next implementation wave after NOW
+
+Once the safe-now scripts exist, the next automation wave should be:
+
+1. implement `validate-fixtures.sh`
+2. implement `generate-traceability-matrix.py`
+3. then connect all of the above into repository-native CI
+
+#### WP-6 — NOW stage completion note
+
+With WP-6 recorded, the **NOW stage backlog is fully defined and closed as a planning tranche**:
+
+- WP-1 — CLOSED
+- WP-3 — CLOSED
+- WP-4 — CLOSED
+- WP-5 — CLOSED
+- WP-6 — CLOSED
+
+WP-2 remains the active normative-reconciliation stream that feeds the next execution wave.
 
 ## 7. Immediate execution order
 
@@ -418,3 +485,5 @@ The NOW stage is complete only when:
 4. Every invariant has an explicit traceability state.
 5. Fixtures are separated into placeholder / working / candidate normative sets.
 6. Automation order is defined without prematurely locking unstable schemas or formats.
+
+**Current assessment:** all six NOW-stage exit criteria are now explicitly satisfied in repository planning documents. The next execution focus should remain APS reconciliation plus the first controlled conformance wave.

@@ -46,4 +46,4 @@
 | WP-3 CK-003 blocker register | CLOSED | CK-003 register recorded with explicit states for DQ-002 / DQ-003 / DQ-004 / DQ-006 and a minimal active DQ set |
 | WP-4 Traceability gap pass | CLOSED | One explicit `OPEN / BLOCKED / READY / NOT VERIFIED` state recorded for each invariant in the completion plan |
 | WP-5 Fixture promotion plan | CLOSED | Fixture promotion register and minimum early conformance fixture set recorded in the completion plan |
-| WP-6 Minimum automation plan | OPEN | Safe-now tools vs schema-dependent deferred tools |
+| WP-6 Minimum automation plan | CLOSED | Phased automation order, immediate script scope, and deferred schema-bound tooling recorded in the completion plan |
