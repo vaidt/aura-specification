@@ -23,6 +23,9 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 
 ### Changed
 - README.md restructured as canonical repository index
+- README.md now points readers to the current authority-binding artifact (`AUTHORITY_BINDING_RECORD_v1.1.md`) and the current DQ-006 status record (`closures/DQ-006_CLOSURE_PACKAGE.md`)
+- Added `closures/README.md` as the closure-record index, explicitly separating authoritative closure records from superseded historical copies
+- evidence/README.md now marks `evidence/DQ-006_CLOSURE_PACKAGE.md` as a historical copy and redirects readers to `/closures/`
 - Existing APS .txt source files preserved in root; canonical Markdown versions added in /aps/
 - **APS-200 §8** now binds the canonical serialization profile: RFC 8785 JCS, UTF-8 `canonical_bytes`, prohibited digest inputs, the SHA-256 / RFC 6962 byte domain, the cross-implementation byte-identity requirement, the scope boundary against event and version semantics, and migration. Declared the single normative authority for canonical serialization (DQ-006)
 - **APS-300 §5** now binds `evidence_hash`, `input_hash` and `output_hash` to APS-200 §8 canonical bytes, separates the evidence-hash and Merkle domains, and states migration; §8 chain links defer to §5.1 (DQ-006)
