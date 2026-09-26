@@ -16,7 +16,7 @@ Last Review: 2026-09-26
 | Constitution Principle | APS Section | INV | ENT | CONF | FIX | EVID Type | RI-PY Status | RI-RS Status |
 |------------------------|-------------|-----|-----|------|-----|-----------|-------------|-------------|
 | Determinism by Design | APS-001 §2 | INV-001 | ENT-002, ENT-003 | CONF-001 | FIX-001 | EVID-CORE | NOT VERIFIED | NOT VERIFIED |
-| Determinism by Design | APS-001 §2 | INV-002 | ENT-001, ENT-005 | CONF-002 | FIX-001 | EVID-CORE, EVID-CHAIN | NOT VERIFIED | NOT VERIFIED |
+| Determinism by Design | APS-001 §2 | INV-002 | ENT-003, ENT-005, ENT-006 | CONF-002 | FIX-001 | EVID-CORE, EVID-CHAIN | NOT VERIFIED | NOT VERIFIED |
 | Explicit over Implicit | APS-200 §4, §8 | INV-003 | All ENT | CONF-003 | CANONICAL-001, CANONICAL-002 | EVID-CORE | PARTIAL | PARTIAL |
 | Immutable Evidence | APS-300 §3 | INV-004 | ENT-005 | CONF-004 | FIX-001 | EVID-CORE | NOT VERIFIED | NOT VERIFIED |
 | Evidence Before Trust | APS-300 §11 | INV-005 | ENT-005, ENT-006 | CONF-005 | FIX-001 | EVID-CORE | NOT VERIFIED | NOT VERIFIED |

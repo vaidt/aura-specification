@@ -313,17 +313,15 @@ def verify_deterministic_evaluation(fixture: dict) -> None:
 
 def verify_replay(fixture: dict) -> None:
     request = fixture["input_data"]
-    original_result = fixture["expected_output"]
     original_pack = fixture["expected_evidence"]
+    original_result = original_pack["evaluation_result"]
     materialized_result = materialize_result(fixture)
     assert_equal(
-        original_pack["evaluation_result"],
-        original_result,
-        "original pack evaluation_result parity",
+        fixture["expected_output"], original_result, "fixture/original pack result parity"
     )
     assert_equal(
         materialized_result,
-        original_pack["evaluation_result"],
+        original_result,
         "re-materialized replay result parity",
     )
     replay_result = materialized_result
@@ -341,12 +339,12 @@ def verify_replay(fixture: dict) -> None:
     )
     assert_equal(
         replay_pack["evidence_object"]["output_hash"],
-        original_result["output_hash"],
+        original_pack["evidence_object"]["output_hash"],
         "replay output_hash",
     )
     assert_equal(
         replay_pack["integrity_metadata"]["result_integrity_hash"],
-        original_result["integrity_hash"],
+        original_pack["integrity_metadata"]["result_integrity_hash"],
         "replay integrity_metadata.result_integrity_hash",
     )
 
