@@ -5,4 +5,6 @@
 /constitution/ @vaidt @Custodian
 /aps/ @vaidt
 /governance/ @vaidt @Custodian
-* @vaidt
+
+# Protect the CODEOWNERS file itself.
+/.github/CODEOWNERS @vaidt
