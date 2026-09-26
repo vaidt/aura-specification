@@ -86,4 +86,4 @@ Current known traceability gaps:
 | No Attestation (ENT-006) implementation | Yes — blocks CONF-005, CONF-009 | High |
 | No repository-native CI conformance gate | Yes — blocks release-ready automated verification | High |
 
-See [../../ROADMAP.md](../../ROADMAP.md) for remediation schedule.
+See [../ROADMAP.md](../ROADMAP.md) for remediation schedule.
