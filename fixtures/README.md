@@ -22,7 +22,7 @@ fixtures/
 
 | Fixture ID | Name | Category | CONF Test | Status |
 |------------|------|----------|-----------|--------|
-| FIX-001 | Basic Evaluation | CORE | CONF-001, CONF-004, CONF-005, CONF-006, CONF-010 | WORKING |
+| FIX-001 | Basic Evaluation | CORE | CONF-001, CONF-002, CONF-004, CONF-005, CONF-006, CONF-010 | WORKING |
 | FIX-INV-007 | Zero Float Runtime | CORPUS | CONF-011 | READY |
 | FIX-INV-012 | Event Type / Auditability | CORPUS | CONF-012 | REGISTRY_DEPENDENT |
 | FIX-INV-013 | Policy Determinism | CORPUS | CONF-013 | READY |
@@ -43,7 +43,7 @@ Use the following promotion classes when deciding whether an artifact belongs in
 
 | Artifact | Class | Reason | Explicit promotion gate |
 |----------|-------|--------|-------------------------|
-| `core/FIX-001_BASIC_EVALUATION.json` | `WORKING` | Current draft request/result payload and current draft `EPR-CORE` evidence content are concrete, and a repository-local verifier now executes CONF-001/004/005/006/010 against it | controlled implementation-side evidence + APS-500 promotion |
+| `core/FIX-001_BASIC_EVALUATION.json` | `WORKING` | Current draft request/result payload and current draft `EPR-CORE` evidence content are concrete, and a repository-local verifier now executes CONF-001/002/004/005/006/010 against it | controlled implementation-side evidence + APS-500 promotion |
 | `corpus/FIX-INV-007_zero_float.json` | `CANDIDATE NORMATIVE` | Fixture is now explicitly bound to `CONF-011` and marked ready for controlled execution | controlled execution evidence + APS-500 promotion |
 | `corpus/FIX-INV-012_event_type.json` | `WORKING` | Useful closure fixture, but depends on unresolved registry semantics | DQ-004 closure + approved event tokens |
 | `corpus/FIX-INV-013_policy_determinism.json` | `CANDIDATE NORMATIVE` | Fixture now binds one concrete policy/input pair for `CONF-013` | controlled execution evidence + APS-500 promotion |

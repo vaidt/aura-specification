@@ -37,6 +37,8 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 - CONF-001 readiness and fixture metadata now point to the same repository-local draft gate as CONF-004/005/010
 - `scripts/check-fix001-evidence.py` now also executes a local artifact-level CONF-006 platform-independence replay across multiple draft execution contexts declared by `FIX-001`
 - CONF-006 readiness and fixture metadata now point to the same repository-local draft gate as CONF-001/004/005/010
+- `scripts/check-fix001-evidence.py` now also executes a local CONF-002 replay path that derives chained replay evidence from the same `FIX-001` request/result/evidence set
+- CONF-002 readiness, traceability, and fixture metadata now point to the same repository-local draft gate family
 - GOVERNANCE.md, CONTRIBUTING.md, and VERSIONING.md now explicitly allow draft-stage closure work on canonical DRAFT documents without touching FROZEN artifacts, and they treat unpublished digest/checksum placeholders as draft-only rather than release authority
 - README.md restructured as canonical repository index
 - README.md now links to `GOVERNANCE_STATUS_INDEX.md` as the short routing index for governance/status artifacts

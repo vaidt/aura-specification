@@ -3,6 +3,7 @@
 
 This script executes the current repository-local draft verification path for:
 - CONF-001 Deterministic Evaluation
+- CONF-002 Replay Verification
 - CONF-006 Platform Independence
 - CONF-004 Evidence Integrity
 - CONF-005 Traceability
@@ -211,6 +212,75 @@ def materialize_evidence_pack(fixture: dict, result: dict) -> dict:
     return pack
 
 
+def materialize_replay_pack(fixture: dict, result: dict) -> dict:
+    original_pack = fixture["expected_evidence"]
+    policy_reference = copy.deepcopy(original_pack["policy_reference"])
+    replay_info = fixture["_draft_replay_materialization"]
+    attestation = {
+        "object_id": replay_info["attestation_id"],
+        "object_type": "Attestation",
+        "protocol_version": original_pack["attestation"]["protocol_version"],
+        "schema_version": original_pack["attestation"]["schema_version"],
+        "created_at": replay_info["timestamp"],
+        "attestation_type": "REPLAY",
+        "attested_execution_id": result["execution_id"],
+        "evidence_reference": replay_info["pack_id"],
+    }
+    attestation["attestation_hash"] = canonical_sha256(
+        {
+            "attestation_type": attestation["attestation_type"],
+            "attested_execution_id": attestation["attested_execution_id"],
+            "evidence_reference": attestation["evidence_reference"],
+        }
+    )
+    attestation["integrity_hash"] = make_integrity_hash(attestation)
+
+    evidence_object = {
+        "evidence_id": replay_info["evidence_id"],
+        "protocol_version": original_pack["evidence_object"]["protocol_version"],
+        "schema_version": original_pack["evidence_object"]["schema_version"],
+        "implementation_id": original_pack["evidence_object"]["implementation_id"],
+        "execution_id": result["execution_id"],
+        "timestamp": replay_info["timestamp"],
+        "policy_reference": policy_reference["object_id"],
+        "requirement_references": list(replay_info["evidence_requirement_references"]),
+        "input_hash": fixture["input_data"]["input_hash"],
+        "output_hash": result["output_hash"],
+        "previous_evidence_hash": original_pack["evidence_object"]["evidence_hash"],
+        "attestation_reference": attestation["object_id"],
+    }
+    evidence_object["evidence_hash"] = canonical_sha256(
+        {k: v for k, v in evidence_object.items() if k != "evidence_hash"}
+    )
+
+    integrity_metadata = {
+        "canonicalization_profile": original_pack["integrity_metadata"]["canonicalization_profile"],
+        "digest_algorithm": original_pack["integrity_metadata"]["digest_algorithm"],
+        "request_integrity_hash": fixture["input_data"]["integrity_hash"],
+        "result_integrity_hash": result["integrity_hash"],
+        "policy_integrity_hash": policy_reference["integrity_hash"],
+        "attestation_integrity_hash": attestation["integrity_hash"],
+    }
+
+    replay_pack = {
+        "pack_id": replay_info["pack_id"],
+        "pack_version": replay_info["pack_version"],
+        "protocol_version": original_pack["protocol_version"],
+        "schema_version": original_pack["schema_version"],
+        "evidence_profile": original_pack["evidence_profile"],
+        "requirement_references": list(replay_info["pack_requirement_references"]),
+        "evidence_object": evidence_object,
+        "evaluation_result": copy.deepcopy(result),
+        "policy_reference": policy_reference,
+        "attestation": attestation,
+        "integrity_metadata": integrity_metadata,
+    }
+    replay_pack["pack_hash"] = canonical_sha256(
+        {k: v for k, v in replay_pack.items() if k != "pack_hash"}
+    )
+    return replay_pack
+
+
 def verify_deterministic_evaluation(fixture: dict) -> None:
     first_result = materialize_result(fixture)
     second_result = materialize_result(fixture)
@@ -221,6 +291,33 @@ def verify_deterministic_evaluation(fixture: dict) -> None:
     second_pack = materialize_evidence_pack(fixture, second_result)
     assert_equal(first_pack, second_pack, "deterministic evidence replay")
     assert_equal(first_pack, fixture["expected_evidence"], "fixture expected_evidence")
+
+
+def verify_replay(fixture: dict) -> None:
+    original_result = fixture["expected_output"]
+    original_pack = fixture["expected_evidence"]
+    replay_result = materialize_result(fixture)
+    replay_pack = materialize_replay_pack(fixture, replay_result)
+
+    validate_schema("evidence-pack.schema.json", replay_pack)
+
+    assert_equal(replay_result, original_result, "replay result parity")
+    assert_equal(replay_pack["evaluation_result"], original_result, "replay pack evaluation_result")
+    assert_equal(
+        replay_pack["evidence_object"]["previous_evidence_hash"],
+        original_pack["evidence_object"]["evidence_hash"],
+        "replay chain linkage",
+    )
+    assert_equal(
+        replay_pack["evidence_object"]["output_hash"],
+        original_result["output_hash"],
+        "replay output_hash",
+    )
+    assert_equal(
+        replay_pack["integrity_metadata"]["result_integrity_hash"],
+        original_result["integrity_hash"],
+        "replay integrity_metadata.result_integrity_hash",
+    )
 
 
 def verify_platform_independence(fixture: dict) -> None:
@@ -397,12 +494,14 @@ def main() -> int:
     validate_schema("evidence-pack.schema.json", fixture["expected_evidence"])
 
     verify_deterministic_evaluation(fixture)
+    verify_replay(fixture)
     verify_platform_independence(fixture)
     verify_pack_hashes(fixture)
     verify_traceability(fixture)
     verify_mutation_detection(fixture)
 
     print("CONF-001 PASS — identical FIX-001 inputs deterministically reproduce identical result and evidence objects")
+    print("CONF-002 PASS — replay from FIX-001 evidence reproduces the identical result and a valid chained replay evidence pack")
     print("CONF-006 PASS — draft platform contexts reproduce identical result and evidence artifacts")
     print("CONF-004 PASS — evidence mutation is detected by digest verification")
     print("CONF-005 PASS — execution, policy, attestation, and requirement links are coherent")
