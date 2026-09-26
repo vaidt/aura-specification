@@ -12,6 +12,8 @@
 **Status:** TECHNICAL RECONCILIATION · NON-CONSTITUTIVE  
 **Governance:** PROPOSED / NOT RATIFIED
 
+> Navigation: this errata is non-constitutive; see [`GOVERNANCE_STATUS_INDEX.md`](GOVERNANCE_STATUS_INDEX.md) for the current routing of governance/status records.
+
 ## 1. Purpose & Scope
 
 Niniejsza errata stanowi techniczny dokument rekoncyliacyjny, którego celem jest usunięcie rozbieżności pomiędzy tekstowym opisem kontraktu **AURA — WAVE 1 — Contract Closure Addendum v1** a jego zwalidowaną maszynowo reprezentacją w ramach schematów JSON Schema Draft-07.

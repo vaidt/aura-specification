@@ -93,7 +93,18 @@ Every entity MUST contain the following fields:
 | `input_schema` | string | MUST | Identifier of the input schema version |
 | `request_fields` | object | MUST | Validated, schema-conformant input payload |
 
-> **TODO**: Define the canonical schema for `request_fields`.
+The base APS-200 schema requires `request_fields` to be a JSON object.
+
+For the current repository working profile `AURA-DRAFT-CORE-001`, `input_schema` MUST equal `AURA-DRAFT-CORE-001` and `request_fields` MUST contain exactly:
+
+| Field | Type | Requirement | Description |
+|-------|------|-------------|-------------|
+| `profile_id` | string | MUST | MUST equal `AURA-DRAFT-CORE-001` |
+| `subject_id` | string | MUST | Canonical subject identifier under the active draft identity rules |
+| `measurement_value` | integer | MUST | Deterministic integer/fixed-point input value bound to the current working profile |
+| `actor_tier` | string | MUST | Profile-scoped actor tier token carried as input, not inferred implicitly |
+
+Additional request payload members require a version-bound profile/schema update. Other future execution profiles MAY define a different `input_schema` and payload contract, but they are not closed by this draft.
 
 ---
 
@@ -105,11 +116,30 @@ Every entity MUST contain the following fields:
 |-------|------|-------------|-------------|
 | Common Object Contract fields | — | MUST | See §4 |
 | `execution_id` | string | MUST | References ENT-001 `execution_id` |
-| `decision` | string | MUST | Canonical decision value (e.g., `ALLOW`, `DENY`, `MEASURE`) |
+| `decision` | string | MUST | Canonical decision value |
 | `output_hash` | string | MUST | SHA-256 hash of the canonical output payload |
 | `policy_reference` | ENT-004 | MUST | Policy used to produce this result |
+| `result_fields` | object | MUST | Validated, schema-conformant result payload |
 
-The exact decision vocabulary is defined by the applicable execution profile and schema. In strict conformance mode, an implementation MUST reject an unknown decision token rather than silently coerce it into another semantic value.
+For the current repository working profile `AURA-DRAFT-CORE-001`, a successful `decision` MUST be one of:
+
+- `ALLOW`
+- `DENY`
+- `MEASURE`
+- `NOT_APPLICABLE`
+
+Invalid, ambiguous, blocked, or fail-closed executions MUST NOT emit `ENT-003`; they MUST halt per APS-001 §8 instead of inventing an out-of-band decision token.
+
+For the same current working profile, `result_fields` MUST contain exactly:
+
+| Field | Type | Requirement | Description |
+|-------|------|-------------|-------------|
+| `profile_id` | string | MUST | MUST equal `AURA-DRAFT-CORE-001` |
+| `subject_id` | string | MUST | Echoes the canonical subject identifier used in the request |
+| `measurement_value` | integer | MUST | Deterministic integer/fixed-point value used by the current working profile |
+| `matched_policy_rule` | string | MUST | Human-readable identifier or text for the rule branch that produced the decision |
+
+In strict conformance mode, an implementation MUST reject an unknown decision token or malformed `result_fields` payload rather than silently coerce it into another semantic value.
 
 ---
 
@@ -145,7 +175,7 @@ See APS-300 for the full Evidence Model. The canonical Evidence object fields ar
 | Common Object Contract fields | — | MUST | See §4 |
 | `attestation_type` | string | MUST | Type (e.g., `CONFORMANCE`, `EXECUTION`) |
 | `attested_execution_id` | string | MUST | The execution_id this attests |
-| `evidence_reference` | string | MUST | object_id of the Evidence Pack |
+| `evidence_reference` | string | MUST | `pack_id` of the Evidence Pack |
 | `attestation_hash` | string | MUST | SHA-256 hash of attestation content |
 
 The full Attestation lifecycle and approval authority remain version-bound specification work. Until that lifecycle is fully closed, conformant artifacts MUST still preserve a stable `attested_execution_id` and `evidence_reference` so that attestation linkage can be validated objectively once the final authority model is approved.
@@ -318,7 +348,26 @@ Compatibility decisions MUST be governed by an explicit version-compatibility ma
 
 ## 10. JSON Schema
 
-Machine-readable schema definitions for canonical fixtures and shared object contracts are maintained under `fixtures/schemas/`. Entity-specific schemas remain subject to APS-200 completion and MUST be added before APS-001 v1.0 approval where required by the relevant entity contract.
+Machine-readable schema definitions for canonical fixtures and shared object contracts are maintained under `fixtures/schemas/`.
+
+Current draft schemas published from this APS:
+
+- `fixtures/schemas/common-object-contract.schema.json`
+- `fixtures/schemas/protocol-header.schema.json`
+- `fixtures/schemas/evaluation-request.schema.json`
+- `fixtures/schemas/evaluation-result.schema.json`
+- `fixtures/schemas/policy-reference.schema.json`
+- `fixtures/schemas/attestation.schema.json`
+- `fixtures/schemas/audit-record.schema.json`
+- `fixtures/schemas/implementation-metadata.schema.json`
+
+These schemas close the **top-level structural contract** for the APS-200 entities: required fields, top-level types, hash-field encoding, object identity/version envelope, and the current repository working-profile payloads for `ENT-002` / `ENT-003`.
+
+They do **not** yet close every profile-specific semantic dependency. The following remain explicitly open and version-bound:
+
+1. additional execution-profile payload schemas beyond `AURA-DRAFT-CORE-001`;
+2. the final identity syntax/uniqueness rules needed for full `INV-015` closure;
+3. the approved `ENT-007.event_type` registry tokens and machine-readable registry closure required by DQ-004.
 
 The event-type vocabulary and validation contract are governed by `aps/EVENT_TYPE_REGISTRY.md`. That registry MUST be incorporated into the approved APS-200 profile before DQ-004 can be closed.
 

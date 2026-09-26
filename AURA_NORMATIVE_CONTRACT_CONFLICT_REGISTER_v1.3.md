@@ -13,6 +13,8 @@
 - **Assessment rule:** existence of a document, branch, fixture, test, implementation, commit, or execution result is not by itself proof of approval, ratification, authority, competence, conformance, M1 closure, or TCK authorization
 - **Final control statement:** This register is an evidence-linked proposed decision register. It does **not** create normative authority, establish governance competence, ratify a protocol contract, close M1, authorize TCK implementation, authorize repository merging, or authorize code migration.
 
+> Navigation: for the current repository-level routing of governance/status artifacts, see [`GOVERNANCE_STATUS_INDEX.md`](GOVERNANCE_STATUS_INDEX.md).
+
 ### Enumerations used in this register
 
 | Field | Values used here |

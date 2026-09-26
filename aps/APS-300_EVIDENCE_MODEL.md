@@ -86,6 +86,13 @@ evidence_hash(E)   = SHA-256( canonical_bytes(E) )
 
 `input_hash` and `output_hash` are `SHA-256(canonical_bytes(...))` of the canonical input and canonical output objects respectively, under the same profile.
 
+For the current repository working profile `AURA-DRAFT-CORE-001`, the canonical hash inputs are closed as follows:
+
+- `input_hash` = `SHA-256(canonical_bytes(ENT-002.request_fields))`
+- `output_hash` = `SHA-256(canonical_bytes({ "decision": ENT-003.decision, "result_fields": ENT-003.result_fields }))`
+
+This closes the draft publication hash scope needed by `FIX-001` without declaring release-ready approval for other future execution profiles.
+
 ### 5.2 Domain separation
 
 The following are distinct values and MUST NOT be conflated, substituted for one another, or inferred to be equal by name:
@@ -131,6 +138,25 @@ Minimum contents:
 The canonical Evidence Pack container is a JSON envelope with the fields above. `pack_hash` MUST be computed over the canonical bytes of the pack object with the `pack_hash` member removed, using the same canonical byte domain defined in APS-200 §8 and APS-300 §5.1.
 
 `requirement_references` at pack level MUST be the union of the requirement references asserted by the enclosed Evidence Object and any additional pack-scoped conformance or release requirements.
+
+### 6.1 Current draft `EPR-CORE` working contract
+
+For the current repository working path used by `FIX-001`, the pack-level draft contract is closed as follows:
+
+1. `evidence_profile` MUST be `EPR-CORE`.
+2. `attestation.evidence_reference` MUST equal the enclosing Evidence Pack `pack_id`.
+3. `integrity_metadata` MUST contain exactly:
+   - `canonicalization_profile` = `RFC8785-JCS`
+   - `digest_algorithm` = `SHA-256`
+   - `request_integrity_hash`
+   - `result_integrity_hash`
+   - `policy_integrity_hash`
+   - `attestation_integrity_hash`
+4. `request_integrity_hash` MUST be the APS-200 common-object `integrity_hash` value for the bound `ENT-002` request object.
+5. `result_integrity_hash`, `policy_integrity_hash`, and `attestation_integrity_hash` MUST exactly equal the `integrity_hash` of the enclosed `ENT-003`, `ENT-004`, and `ENT-006` objects respectively.
+6. `attestation_hash` MUST be computed over the canonical bytes of the attestation content object `{ "attestation_type", "attested_execution_id", "evidence_reference" }`, not over the hexadecimal text of another digest.
+
+This closes the current draft Evidence Pack content enough to publish concrete non-placeholder `FIX-001` values while leaving broader attestation governance and release certification open.
 
 ---
 
@@ -206,12 +232,34 @@ Evidence Profiles define the minimum required contents and obligations for diffe
 
 | Profile | Minimum scope | Additional requirements |
 |---------|---------------|-------------------------|
-| `EPR-CORE` | one Evidence Object, one Evaluation Result, one Policy Reference, one Integrity Metadata block | MUST include execution-scoped `requirement_references`; MAY omit chain history beyond the current execution |
+| `EPR-CORE` | one Evidence Object, one Evaluation Result, one Policy Reference, one Integrity Metadata block | MUST include execution-scoped `requirement_references`; for the current draft working contract, MUST use the §6.1 `integrity_metadata` vocabulary; MAY omit chain history beyond the current execution |
 | `EPR-AUDIT` | all `EPR-CORE` contents plus Audit Record linkage | MUST include the applicable `ENT-007` references and any chain/integrity data needed to verify the audit trail |
 | `EPR-COMPLIANCE` | all `EPR-CORE` contents plus Attestation and conformance-result linkage | MUST bind the executed CONF/FIX scope and MUST include the attestation needed for certification evidence |
 | `EPR-REL` | release-level evidence package | MUST include the conformance report / release linkage and the full set of requirement references needed to support the release claim |
 
 An implementation MUST declare which Evidence Profile it is producing. A profile MAY extend these minimum contents, but it MUST NOT weaken a mandatory field or linkage defined by this specification.
+
+---
+
+## 14. Machine-readable schemas
+
+Draft machine-readable schemas for the current APS-300 structural contract are maintained under `fixtures/schemas/`:
+
+- `fixtures/schemas/evidence-object.schema.json`
+- `fixtures/schemas/evidence-pack.schema.json`
+
+These schemas close the **top-level structural contract** for:
+
+- the canonical Evidence object field set in §5;
+- the Evidence Pack envelope in §6;
+- the binding of Evidence Pack components to APS-200 `ENT-003`, `ENT-004`, and `ENT-006`;
+- the current draft `EPR-CORE` integrity-metadata vocabulary needed by `FIX-001`.
+
+They do **not** yet close every downstream governance or profile dependency. The following remain explicitly open:
+
+1. the final attestation authority/lifecycle semantics for `ENT-006`;
+2. the exact `integrity_metadata` vocabulary for Evidence Profiles beyond the current draft `EPR-CORE` working contract;
+3. the full executed fixture/evidence path required for CONF-004, CONF-005, CONF-009, and CONF-010.
 
 ---
 

@@ -19,6 +19,13 @@ This directory contains the Evidence Model templates and guidelines, supplementi
 | EVID-REL | Release Evidence | Evidence linked to a release |
 | EVID-CHAIN | Chain Evidence | Links to a previous Evidence entry |
 
+## Historical status records
+
+Some files in this directory are retained as historical evidence copies rather than current status records.
+
+- [`DQ-006_CLOSURE_PACKAGE.md`](DQ-006_CLOSURE_PACKAGE.md) is a superseded historical copy
+- the current DQ-006 status of record is [`../closures/DQ-006_CLOSURE_PACKAGE.md`](../closures/DQ-006_CLOSURE_PACKAGE.md)
+
 ## Key Requirements (APS-300)
 
 Every Evidence object MUST include:

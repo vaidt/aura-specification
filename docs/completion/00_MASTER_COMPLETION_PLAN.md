@@ -20,7 +20,7 @@ Accordingly, this branch is an implementation workspace. It may contain drafts, 
 - APS-500 defines the reference-fixture contract, but the canonical fixture set is not yet demonstrably complete against the invariant/test matrix.
 - APS-900 defines the required traceability chain from Constitution → APS Requirement → Invariant → Data Model → Evidence → Conformance Test → Fixture → Implementation → Release.
 - APS-950 identifies RI-PY (`aura-poc-a-core`) and RI-RS (`aura-guard`) as reference implementations and requires a full conformance process.
-- The repository currently has no `.github/workflows/` directory in the default branch; therefore a repository-native CI conformance gate is not yet evidenced.
+- The repository now has a draft repository-native conformance workflow at `.github/workflows/draft-conformance.yml`, but it still executes only the current repository-local subset and is not yet equivalent to RI-PY / RI-RS certification evidence.
 - CK-003 closure material exists in-repository, but evidence presence is not equivalent to normative closure; DQ-003/DQ-004 and release-gate promotion still require explicit review and acceptance.
 
 ## 3. Completion gates
@@ -189,8 +189,8 @@ This first WP-2 pass covers the highest-priority normative dependencies reviewed
 | Document | Authority-chain assessment | Missing or weak traceability path | Must-fix semantic conflicts | Correction priority |
 |---|---|---|---|---|
 | APS-100 | Authority citation to APS-001 is correct, but the document body no longer matches the current APS-400 / registry state. | `§3` still shows no CONF assignment for `INV-007`, `INV-012`, `INV-013`, `INV-014`, `INV-015`; `§5` traceability order differs from APS-001 / APS-900; the catalogue entries do not carry the verification/evidence detail that `§2` says every invariant MUST define. | stale invariant-to-CONF catalogue; APS-100's own structure requirements are satisfied only in the registry, not in the APS-100 body; compliance wording assumes invariant PASS status without defining a canonical invariant-status model. | HIGH |
-| APS-200 | Authority chain is directionally correct and now carries the DQ-006 serialization closure, but several required contracts are still only partial. | No exact machine-readable schema set for `ENT-001…ENT-008`; `ENT-004` has no CONF mapping in `§10`; `execution_id`, `request_fields`, decision vocabulary, and attestation lifecycle remain TODO-level contracts. | `object_id` allows `UUID v4 or canonical format`, which is too loose for INV-015 / APS-001 identity semantics; `ENT-007.event_type` depends on a registry with no approved tokens yet (DQ-004 blocker); evidence / attestation / audit relationships remain under-specified for APS-001 approval. | CRITICAL |
-| APS-300 | Authority chain is correct and cryptographic byte-domain binding is materially aligned with APS-200 §8. | No exact Evidence Pack container contract; no defined Evidence Profiles; no explicit required field linking evidence to the APS requirement(s) it documents even though INV-005 / APS-001 §6 require that traceability. | `evidence_id` is fixed to UUID v4, which may conflict with the unresolved canonical-identity contract; `attestation_reference` is mandatory while `ENT-006` lifecycle/authority is unresolved in APS-200; verification claims conformance/invariant verification without a fully specified pack/linkage model. | CRITICAL |
+| APS-200 | Authority chain is directionally correct and now carries the DQ-006 serialization closure, but several required contracts are still only partial. | No exact machine-readable schema set for `ENT-001…ENT-008`; `ENT-004` has no CONF mapping in `§10`; attestation lifecycle and additional profile contracts remain open even though the current draft `ENT-002`/`ENT-003` working profile is now closed. | `object_id` allows `UUID v4 or canonical format`, which is too loose for INV-015 / APS-001 identity semantics; `ENT-007.event_type` depends on a registry with no approved tokens yet (DQ-004 blocker); evidence / attestation / audit relationships remain under-specified for APS-001 approval. | CRITICAL |
+| APS-300 | Authority chain is correct and cryptographic byte-domain binding is materially aligned with APS-200 §8. | The current draft `EPR-CORE` pack contract and requirement-reference linkage are now explicit, but attestation authority/lifecycle and additional Evidence Profile vocabularies remain open. | `evidence_id` is fixed to UUID v4, which may conflict with the unresolved canonical-identity contract; `attestation_reference` is mandatory while `ENT-006` lifecycle/authority is unresolved in APS-200; verification claims conformance/invariant verification without fully executed pack/linkage evidence. | CRITICAL |
 
 #### WP-2 — reconciliation conclusions from this first pass
 
@@ -301,18 +301,18 @@ Status model used here:
 
 | INV | APS source | CONF | FIX | Evidence | RI relevance | Status | Weakest missing link / reason |
 |---|---|---|---|---|---|---|---|
-| INV-001 | APS-001 §2 | CONF-001 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | `FIX-001` remains placeholder-only, so deterministic execution cannot be evidenced objectively yet. |
-| INV-002 | APS-001 §2 | CONF-002 | FIX-REPLAY (TODO) | EVID-CORE, EVID-CHAIN | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Replay fixture corpus is still missing. |
+| INV-001 | APS-001 §2 | CONF-001 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local deterministic request/result/evidence verification now runs against `FIX-001`, but implementation-side controlled evidence is still missing. |
+| INV-002 | APS-001 §2 | CONF-002 | FIX-001 | EVID-CORE, EVID-CHAIN | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local replay verification now runs against `FIX-001`, but implementation-side replay evidence is still missing. |
 | INV-003 | APS-200 §4, §8 | CONF-003 | CANONICAL-001 | EVID-CORE | RI-PY / RI-RS `PARTIAL` | OPEN | Canonical serialization contract is settled, but DQ-006 remains open because discriminating cross-language closure evidence is incomplete. |
-| INV-004 | APS-300 §3, §7 | CONF-004 | FIX-EVIDENCE (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Evidence-integrity fixture coverage and final Evidence Pack execution path are still missing. |
-| INV-005 | APS-300 §11, APS-900 | CONF-005 | FIX-EVIDENCE (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Requirement-traceability fields are now defined, but fixture coverage and attestation-linked execution evidence are not yet in place. |
-| INV-006 | APS-001 §2 | CONF-006 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Platform-independence still depends on a finalized baseline fixture and cross-platform execution evidence. |
+| INV-004 | APS-300 §3, §7 | CONF-004 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local draft execution path exists via `scripts/check-fix001-evidence.py`, but implementation-side controlled evidence is still missing. |
+| INV-005 | APS-300 §11, APS-900 | CONF-005 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local traceability verification now runs against `FIX-001`, but implementation-side attestation-linked evidence is still missing. |
+| INV-006 | APS-001 §2 | CONF-006 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local artifact-level platform-independence verification now runs against `FIX-001`, but implementation-side cross-platform evidence is still missing. |
 | INV-007 | APS-001 §3 | CONF-011 | FIX-INV-007 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Working fixture and test assignment exist; the remaining gap is controlled execution and evidence, not unresolved contract semantics. |
 | INV-008 | APS-001 §8 | CONF-007 | FIX-ERROR (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Error-handling fixture coverage is still missing. |
-| INV-009 | APS-001 §12, APS-200 §9 | CONF-008 | FIX-COMPAT (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | DQ-003 compatibility matrix and version-binding fixtures are not yet closed. |
+| INV-009 | APS-001 §12, APS-200 §9 | CONF-008 | FIX-COMPAT-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local DQ-003 compatibility matrix and bound fixture now execute through the draft runner, but implementation-side evidence is still missing. |
 | INV-010 | APS-400 | CONF-009 | all FIX | EVID-CONF | RI-PY / RI-RS `NOT VERIFIED` | OPEN | Structural CONF assignment is complete, but objective execution evidence for the full invariant matrix is still absent. |
-| INV-011 | APS-300 §7 | CONF-010 | FIX-EVIDENCE (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Cryptographic-verification fixtures and final Evidence Pack execution remain incomplete. |
-| INV-012 | APS-300, APS-200 ENT-007 | CONF-012 | FIX-INV-012 | EVID-AUDIT | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Auditability depends on DQ-004 because the fixture is registry-dependent and the normative event vocabulary is not yet approved. |
+| INV-011 | APS-300 §7 | CONF-010 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local digest verification now runs against `FIX-001`, but implementation-side cryptographic evidence is still missing. |
+| INV-012 | APS-300, APS-200 ENT-007 | CONF-012 | FIX-INV-012 | EVID-AUDIT | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local DQ-004 registry token, bound fixture, and draft CONF-012 gate now exist, but broader vocabulary and implementation-side evidence are still missing. |
 | INV-013 | APS-001 §5 | CONF-013 | FIX-INV-013 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Policy-determinism semantics are defined and the fixture path exists, but execution evidence is still outstanding. |
 | INV-014 | APS-500 | CONF-014 | FIX-INV-014 | EVID-CORE, EVID-CONF | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | APS-500 corpus is not yet finalized; fixture is explicitly `APS500_VERSION_BLOCKED`. |
 | INV-015 | APS-000 §4, APS-200 §4 | CONF-015 | FIX-INV-015 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Canonical identity still depends on final APS-000 / APS-200 binding and fixture promotion. |
@@ -323,9 +323,9 @@ The traceability pass shows four dominant blocker classes:
 
 1. **missing canonical fixtures**
    - INV-001, INV-002, INV-004, INV-005, INV-006, INV-008, INV-011
-2. **version and event-type closure dependencies**
-   - INV-009 depends on DQ-003
+2. **event-type and remaining closure dependencies**
    - INV-012 depends on DQ-004
+   - INV-003 still depends on DQ-006 residual execution evidence
 3. **APS-500 corpus immaturity**
    - INV-014 remains blocked until the normative fixture corpus is finalized
 4. **identity-contract incompleteness**
@@ -336,6 +336,7 @@ The traceability pass shows four dominant blocker classes:
 The invariants currently closest to controlled execution are:
 
 - `INV-007` — `READY`
+- `INV-009` — `READY`
 - `INV-013` — `READY`
 
 The invariant with the strongest existing semantic contract but still-open cross-language evidence is:
@@ -366,7 +367,7 @@ Classification model used here:
 
 | Artifact | Scope | Related INV / CONF | Classification | Current basis | Promotion gate |
 |---|---|---|---|---|---|
-| `fixtures/core/FIX-001_BASIC_EVALUATION.json` | baseline evaluation | `INV-001`, `INV-014` / `CONF-001` | PLACEHOLDER | file exists, but `protocol_version`, canonical request, expected result, and evidence fields are still `TODO` | APS-200 entity schemas + APS-300 Evidence Pack contract |
+| `fixtures/core/FIX-001_BASIC_EVALUATION.json` | baseline evaluation | `INV-001`, `INV-014` / `CONF-001` | WORKING | canonical request, result, and current draft `EPR-CORE` evidence content are now concrete | controlled execution evidence + APS-500 promotion |
 | `fixtures/corpus/FIX-INV-007_zero_float.json` | zero-float runtime | `INV-007` / `CONF-011` | CANDIDATE NORMATIVE | fixture is explicitly bound to `CONF-011` and marked ready for controlled execution | controlled execution evidence and promotion into APS-500 corpus |
 | `fixtures/corpus/FIX-INV-012_event_type.json` | audit/event-type semantics | `INV-012` / `CONF-012` | WORKING | fixture structure exists and captures strict rejection semantics | DQ-004 closure + approved registry entries |
 | `fixtures/corpus/FIX-INV-013_policy_determinism.json` | policy determinism | `INV-013` / `CONF-013` | CANDIDATE NORMATIVE | one concrete policy/input pair is now bound for controlled execution | controlled execution evidence and promotion into APS-500 corpus |

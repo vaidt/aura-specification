@@ -77,9 +77,10 @@ The repository currently contains three distinct kinds of fixture artifacts:
 
 | Artifact | Class | Related CONF | Current posture | Explicit promotion gate |
 |---|---|---|---|---|
-| `fixtures/core/FIX-001_BASIC_EVALUATION.json` | PLACEHOLDER | `CONF-001` | schema and evidence content still TODO-bound | APS-200 entity schemas + APS-300 Evidence Pack contract |
+| `fixtures/core/FIX-001_BASIC_EVALUATION.json` | WORKING | `CONF-001`, `CONF-002`, `CONF-004`, `CONF-005`, `CONF-006`, `CONF-010` | request/result payload and current draft `EPR-CORE` evidence content are now concrete, and a repository-local verifier executes the current draft request/result/evidence/replay/platform gate | controlled implementation-side evidence + explicit APS-500 promotion |
+| `fixtures/compatibility/FIX-COMPAT-001_VERSION_MATRIX.json` | WORKING | `CONF-008` | concrete repository-local compatibility fixture bound to the current DQ-003 matrix and draft runner | implementation-side RI evidence + explicit APS-500 promotion |
 | `fixtures/corpus/FIX-INV-007_zero_float.json` | CANDIDATE NORMATIVE | `CONF-011` | concrete fixture content exists and is explicitly bound to `CONF-011` | controlled execution evidence + explicit APS-500 promotion |
-| `fixtures/corpus/FIX-INV-012_event_type.json` | WORKING | `CONF-012` | fixture exists, but event vocabulary is unresolved | DQ-004 closure + approved registry entries |
+| `fixtures/corpus/FIX-INV-012_event_type.json` | WORKING | `CONF-012` | fixture now binds one concrete draft Audit Record and the current local DQ-004 registry token | broader approved event vocabulary + implementation-side evidence |
 | `fixtures/corpus/FIX-INV-013_policy_determinism.json` | CANDIDATE NORMATIVE | `CONF-013` | fixture now binds one concrete policy/input pair | controlled execution evidence + explicit APS-500 promotion |
 | `fixtures/corpus/FIX-INV-014_aps500_compatibility.json` | WORKING | `CONF-014` | structurally present but blocked on corpus versioning | finalized normative APS-500 corpus version |
 | `fixtures/corpus/FIX-INV-015_canonical_identity.json` | WORKING | `CONF-015` | identity semantics not yet finally bound | APS-000 / APS-200 identity closure |
@@ -102,7 +103,7 @@ Before the full APS-500 corpus is frozen, the first meaningful conformance wave 
 **Category:** FIX-CORE
 **Related Test:** CONF-001
 **Related Invariants:** INV-001, INV-014
-**Status:** PLACEHOLDER — input and output schemas pending APS-200 finalization
+**Status:** WORKING — current draft input/output payload and `EPR-CORE` evidence content are bound, but controlled execution evidence is still pending
 See [../fixtures/core/FIX-001_BASIC_EVALUATION.json](../fixtures/core/FIX-001_BASIC_EVALUATION.json)
 
 ---
@@ -160,14 +161,14 @@ Fixtures are stored in [`../fixtures/`](../fixtures/):
 fixtures/
 ├── README.md
 ├── ck003/                working manifests and expected digests for closure work
+├── compatibility/        FIX-COMPAT fixtures
 ├── corpus/               working fixture corpus for open closure items
 ├── schemas/              JSON Schema definitions for APS-200 entities
 ├── core/                 FIX-CORE fixtures
 ├── boundary/             FIX-BOUNDARY fixtures
 ├── error/                FIX-ERROR fixtures
 ├── replay/               FIX-REPLAY fixtures
-├── evidence/             FIX-EVIDENCE fixtures
-└── compatibility/        FIX-COMPAT fixtures
+└── evidence/             FIX-EVIDENCE fixtures
 ```
 
 Only fixtures explicitly promoted into the normative APS-500 corpus are certification-grade fixtures.

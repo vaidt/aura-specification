@@ -10,28 +10,28 @@
 | APS-000 | **DRAFT** | `aps/APS-000_FOUNDATION_AND_TERMINOLOGY.md` | Complete review + approval |
 | APS-001 | **DRAFT / CRITICAL** | `specification/APS-001_PROTOCOL_SPECIFICATION.md` exists as `0.2-DRAFT — ARCHITECTURE REVIEW REQUIRED` | Reconcile dependent APS documents + complete Architecture Review / approval path |
 | APS-100 | **DRAFT / OPEN** | 15 invariants defined and mapped to CONF-001…015 | Align authority, verification language and execution evidence with APS-001 |
-| APS-200 | **DRAFT / OPEN** | Canonical entities + common object contract | Exact schemas, field constraints, canonical serialization |
-| APS-300 | **DRAFT / OPEN** | Evidence model exists | Exact Evidence Pack schema + cryptographic binding |
-| APS-400 | **DRAFT / INCOMPLETE** | CONF-001…015 documents exist | Execute the matrix through a runner and gather objective PASS/FAIL evidence |
-| APS-500 | **DRAFT / INCOMPLETE** | Fixture contract exists | Publish canonical machine-readable fixture set and expected outputs |
+| APS-200 | **DRAFT / OPEN** | Canonical entities + common object contract; draft machine-readable schemas now close the current working-profile ENT-002/ENT-003 payloads under `fixtures/schemas/`, and the current DQ-003 compatibility matrix is now explicit | Additional profile schemas, identity closure, approved event-type registry tokens |
+| APS-300 | **DRAFT / OPEN** | Evidence model exists; draft machine-readable Evidence Object / Evidence Pack schemas now publish a concrete current draft `EPR-CORE` content contract for `FIX-001` under `fixtures/schemas/` | Attestation lifecycle closure beyond the current draft working path, additional profile vocabularies, executable fixture/evidence path |
+| APS-400 | **DRAFT / INCOMPLETE** | CONF-001/002/004/005/006/010 run via `scripts/check-fix001-evidence.py`, and CONF-008 plus CONF-012 now run through `scripts/run-draft-conformance.py` against explicit local DQ artifacts | Expand executable coverage beyond the current draft-local subset and gather implementation-side PASS/FAIL evidence |
+| APS-500 | **DRAFT / INCOMPLETE** | Fixture contract exists; `FIX-001` supports the current draft request/result/evidence/replay/platform gate and `FIX-COMPAT-001` now binds the current DQ-003 compatibility matrix | Publish canonical machine-readable fixture set and expected outputs |
 | APS-900 | **DRAFT / INCOMPLETE** | Traceability model exists | Every normative requirement must resolve to test, fixture, evidence, implementation and release |
 | APS-950 | **DRAFT / OPEN** | RI requirements exist | Reference implementation certification after conformance gate |
 | Invariant Registry | **DRAFT / OPEN** | `INVARIANT_REGISTRY.md` maps all invariants to CONF identifiers | Validate assignments against executable evidence and finalized normative contracts |
 | Traceability Matrix | **DRAFT / INCOMPLETE** | `compliance/TRACEABILITY_MATRIX.md` contains current mappings but mixed status maturity | Populate objective statuses; no unsupported PASS claims |
 | CK-003 DQ-002 | **PARTIAL / EVIDENCE PRESENT** | `ck003/dq-002-hash-domain` | Keep only the accepted hash-domain contract as normative and preserve the rest as evidence/history |
-| CK-003 DQ-003 | **OPEN / SNAPSHOT ONLY** | versioning snapshot and decision material exist, but closure is not yet evidenced end-to-end | Record normative version semantics, fixture binding and promotion status explicitly |
-| CK-003 DQ-004 | **OPEN** | No DQ-004 closure package on `main` found | Complete event-type semantics, fixture, conformance and gate |
-| CI | **OPEN / CRITICAL** | `.github` contains CODEOWNERS/templates but no workflow directory on `main` | Add executable repository-native conformance CI |
+| CK-003 DQ-003 | **READY / LOCAL GATE** | versioning snapshot, explicit compatibility matrix, bound fixture, and repo-local CONF-008 gate now exist | Run the same matrix against RI-PY / RI-RS and promote it from local draft use to release-grade evidence |
+| CK-003 DQ-004 | **READY / LOCAL GATE** | event-type semantics, a current draft registry token, a bound fixture, and a repo-local CONF-012 gate now exist | Extend the registry beyond the local draft token and promote the gate with RI evidence |
+| CI | **DRAFT / READY** | `.github/workflows/draft-conformance.yml` now runs the repo-native draft conformance runner and publishes a JSON report artifact | Extend the gate beyond the current draft-local subset and bind it to RI evidence |
 | Release v1.0 | **NOT READY** | Roadmap Milestone 4 remains unchecked | Only release after all mandatory gates are evidenced |
 
 ## Immediate blockers
 
 1. **APS-001** is the root normative blocker.
 2. **INV-010** is mapped structurally, but CONF-011…CONF-015 still require executable evidence before they can support PASS claims.
-3. APS-200/300 do not yet expose exact machine-verifiable schemas sufficient to support cross-language conformance.
+3. APS-200/300 now expose draft machine-readable schemas, but APS-300 remains incomplete beyond the current draft `EPR-CORE` working path and APS-200 still needs additional profile contracts.
 4. APS-500 does not yet provide the complete canonical fixture corpus required by APS-400/950.
-5. The repository lacks an executable GitHub Actions conformance gate.
-6. CK-003 evidence exists, but unresolved DQ-003/DQ-004 and release-gate promotion still block closure.
+5. The repository now has a draft GitHub Actions conformance gate, but it still covers only the current local subset.
+6. CK-003 evidence exists, but unresolved DQ-004, DQ-006 residuals, and release-gate promotion still block closure.
 
 ## Execution order
 
