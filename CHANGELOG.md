@@ -19,6 +19,7 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 - Traceability Model
 - ADR and RFC process templates
 - SPEC-002 draft for the Constitution Artifact contract, including unresolved architectural decisions, traceability matrix, proposed acceptance criteria, and formal NOT READY status
+- RFC-001 (`rfcs/RFC-001_APS001_MILESTONE1_EXECUTION_SCOPE.md`) to formalize Milestone 1 first-increment scope, synchronization targets, and acceptance criteria for APS-001 alignment
 
 ### Changed
 - README.md restructured as canonical repository index
@@ -29,6 +30,10 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 - **CONF-003** rewritten as a normative conformance requirement demanding independently produced RI-PY/RI-RS artifacts, gate-side digest and leaf recomputation, negative controls, and a JCS-discriminating fixture
 - **ADR-CK003-DQ006** reconciled to ACCEPTED, distinguishing the normative protocol contract from conformance implementation detail
 - **DQ-006 status of record** reconciled from CLOSED to **OPEN** in `closures/DQ-006_CLOSURE_PACKAGE.md`, now the single authoritative closure record; four duplicate records marked SUPERSEDED. Cross-language byte/SHA-256/leaf equality on CANONICAL-001 remains PASS; closure is withheld pending a JCS-discriminating cross-language vector, evidence reachability, and ratification
+- Milestone 1 execution planning was initialized in `ROADMAP.md` with explicit M1-I1 scope for APS-001 section synchronization
+- APS-100/200/300/400/500/900/950 authority metadata now uses explicit APS-001 section references; Last Review metadata updated for touched normative APS documents
+- `compliance/TRACEABILITY_MATRIX.md` now references concrete APS-001 sections for INV-001/002/006/007/008/013 mappings instead of APS-001 TODO placeholders
+- APS index/readme links and status entries now consistently point APS-001 to `specification/APS-001_PROTOCOL_SPECIFICATION.md` as DRAFT
 
 ---
 
