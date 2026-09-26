@@ -334,7 +334,7 @@ def verify_replay(fixture: dict) -> None:
         original_result,
         "re-materialized replay result parity",
     )
-    replay_result = materialized_result
+    replay_result = copy.deepcopy(original_result)
     replay_pack = materialize_replay_pack(fixture, replay_result)
 
     validate_schema("evidence-pack.schema.json", replay_pack)

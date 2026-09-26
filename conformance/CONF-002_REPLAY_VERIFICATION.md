@@ -38,8 +38,8 @@ Verify that an execution can be replayed from its Evidence Pack to produce an id
 
 1. Load `FIX-001` and validate the request, result, and original Evidence Pack against the current draft schemas.
 2. Using the original `FIX-001` Evidence Pack and its bound replay metadata, execute the repository-local replay path in `scripts/check-fix001-evidence.py`.
-3. Materialize the replayed `ENT-003` result from the same bound request/policy inputs.
-4. Materialize a replay `EPR-CORE` Evidence Pack whose `previous_evidence_hash` points to the original Evidence object hash.
+3. Re-materialize the `ENT-003` result from the same bound request/policy inputs and verify byte-identical parity with the original Evidence Pack result.
+4. Materialize a replay `EPR-CORE` Evidence Pack from the original Evidence Pack result and bound replay metadata, with `previous_evidence_hash` pointing to the original Evidence object hash.
 5. Compare the replayed Evaluation Result to the original result byte-for-byte and verify the replay chain linkage.
 
 ---
