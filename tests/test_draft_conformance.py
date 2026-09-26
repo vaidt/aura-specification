@@ -66,6 +66,17 @@ class DraftRunnerTests(unittest.TestCase):
         self.assertIn("boom", conf008["note"])
         self.assertEqual(report["summary"]["FAIL"], 1)
 
+    def test_run_fix001_results_failure_is_reported_as_failures(self) -> None:
+        failing_gate = mock.Mock()
+        failing_gate.run_fix001_gate.side_effect = RuntimeError("fix001 boom")
+
+        with mock.patch.object(runner, "load_fix001_gate_module", return_value=failing_gate):
+            results = runner.run_fix001_results()
+
+        self.assertEqual({result["status"] for result in results}, {"FAIL"})
+        self.assertEqual({result["id"] for result in results}, set(runner.FIX001_CONF_IDS))
+        self.assertTrue(all("fix001 boom" in result["note"] for result in results))
+
 
 if __name__ == "__main__":
     unittest.main()

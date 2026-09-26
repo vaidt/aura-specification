@@ -35,6 +35,7 @@ except ImportError as exc:  # pragma: no cover - dependency guard
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_PATH = ROOT / "fixtures" / "core" / "FIX-001_BASIC_EVALUATION.json"
 SCHEMA_DIR = ROOT / "fixtures" / "schemas"
+EXPANDED_SCHEMA_CACHE: dict[str, object] = {}
 FIX001_CONF_MESSAGES = {
     "CONF-001": "identical FIX-001 inputs deterministically reproduce identical result and evidence objects",
     "CONF-002": "replay from FIX-001 evidence reproduces the identical result and a valid chained replay evidence pack",
@@ -86,7 +87,9 @@ def expand_local_refs(node: object, cache: dict[str, object] | None = None) -> o
 
 
 def validate_schema(schema_name: str, instance: object) -> None:
-    schema = expand_local_refs(load_json(SCHEMA_DIR / schema_name))
+    if schema_name not in EXPANDED_SCHEMA_CACHE:
+        EXPANDED_SCHEMA_CACHE[schema_name] = expand_local_refs(load_json(SCHEMA_DIR / schema_name))
+    schema = copy.deepcopy(EXPANDED_SCHEMA_CACHE[schema_name])
     Draft202012Validator(
         schema, format_checker=Draft202012Validator.FORMAT_CHECKER
     ).validate(instance)
