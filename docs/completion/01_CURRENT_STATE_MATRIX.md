@@ -36,3 +36,14 @@
 ## Execution order
 
 `APS-001 → normative reconciliation → DQ closure → APS-200/300 schemas → complete INV/CONF matrix → fixtures → executable runner → CI → RI-PY/RI-RS certification → release evidence`.
+
+## Immediate backlog — NOW
+
+| Work package | Status | Immediate output |
+|---|---|---|
+| WP-1 APS-001 gap list | OPEN | Per-section `READY FOR REVIEW / OPEN / BLOCKED` list for APS-001 |
+| WP-2 APS reconciliation | OPEN | Ordered correction queue for APS-100/200/300/400/500/900/950 |
+| WP-3 CK-003 blocker register | OPEN | DQ-003 / DQ-004 / DQ-006 residual blocker list |
+| WP-4 Traceability gap pass | OPEN | One explicit state per `INV-001…INV-015` |
+| WP-5 Fixture promotion plan | OPEN | Placeholder / working / candidate normative classification |
+| WP-6 Minimum automation plan | OPEN | Safe-now tools vs schema-dependent deferred tools |

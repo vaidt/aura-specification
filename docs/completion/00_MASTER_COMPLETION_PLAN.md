@@ -75,3 +75,127 @@ The repository is **not complete** merely because documents exist. Completion re
 ## 5. Execution discipline
 
 No production implementation in Core or Guard is modified as a side effect of completing this specification repository. Specification closure precedes implementation remediation. Once the specification is stable, Core and Guard are brought into conformance against it.
+
+## 6. Immediate execution backlog — NOW
+
+The following backlog defines the work that is actionable **now**, before full schema closure, conformance automation, or release work.
+
+### WP-1 — APS-001 gap list
+
+**Status:** OPEN  
+**Goal:** make APS-001 the stable reference point for every downstream correction.
+
+Tasks:
+1. Review APS-001 section-by-section against the Constitution and existing APS dependencies.
+2. Mark each section as `READY FOR REVIEW`, `OPEN`, or `BLOCKED`.
+3. Record where APS-001 depends on unresolved APS-200 / APS-300 contracts, DQ-003 version semantics, or DQ-004 event-type semantics.
+4. Produce one consolidated gap list rather than rewriting the full document.
+
+Expected output:
+- a concise APS-001 gap register with per-section status
+- explicit list of unresolved contract dependencies
+
+### WP-2 — APS reconciliation pass
+
+**Status:** OPEN  
+**Goal:** identify the first downstream documents that must change once APS-001 gaps are agreed.
+
+Priority order:
+1. APS-100
+2. APS-200
+3. APS-300
+4. APS-400
+5. APS-500
+6. APS-900
+7. APS-950
+
+Tasks:
+1. Check each document's authority chain and APS-001 references.
+2. Find MUST-level requirements without a single clear path to `INV / CONF / FIX / EVID`.
+3. Record semantic conflicts in versioning, canonical bytes, evidence, identity, audit record, and policy semantics.
+4. Produce an ordered correction list for the next edit wave.
+
+Expected output:
+- ordered reconciliation queue for APS-100/200/300/400/500/900/950
+- list of must-fix semantic conflicts
+
+### WP-3 — CK-003 blocker register
+
+**Status:** OPEN  
+**Goal:** separate normative decisions from working evidence and unresolved closure gates.
+
+Tasks:
+1. List all DQ items still blocking release-readiness.
+2. Separate already-bound normative decisions from working evidence and unresolved closure requirements.
+3. Treat DQ-003, DQ-004, and DQ-006 residuals as the immediate blocker set.
+4. Keep DQ-002 in scope only where it changes the normative contract.
+
+Expected output:
+- one CK-003 blocker register using only `OPEN / BLOCKED / READY / CLOSED`
+- explicit minimum DQ set required before schema + conformance promotion
+
+### WP-4 — Traceability gap pass
+
+**Status:** OPEN  
+**Goal:** make every invariant traceability state explicit before claiming closure progress.
+
+Tasks:
+1. Walk `INV-001` through `INV-015`.
+2. Confirm for each invariant: APS source, CONF assignment, fixture status, expected evidence type, and RI relevance.
+3. Mark the weakest missing link as exactly one of: `OPEN`, `BLOCKED`, `READY`, `NOT VERIFIED`.
+
+Expected output:
+- a working traceability gap register with one row per invariant
+- no unstated assumptions about fixture or evidence readiness
+
+### WP-5 — Fixture promotion plan
+
+**Status:** OPEN  
+**Goal:** distinguish placeholders and working corpus artifacts from candidate normative fixtures.
+
+Tasks:
+1. Classify each current fixture as `PLACEHOLDER`, `WORKING`, or `CANDIDATE NORMATIVE`.
+2. Identify the minimum fixture set needed for a first meaningful conformance run.
+3. Record fixture dependencies on APS-200 schemas, APS-300 pack structure, and specific CONF procedures.
+
+Expected output:
+- fixture promotion table covering `FIX-001`, `/fixtures/corpus/`, and `/fixtures/ck003/`
+- explicit minimum fixture set for early conformance execution
+
+### WP-6 — Minimum automation plan
+
+**Status:** OPEN  
+**Goal:** sequence safe automation work without freezing unstable contracts too early.
+
+Implement now:
+1. `check-doc-headers.sh`
+2. `check-ids.sh`
+3. `check-traceability.sh`
+
+Defer until schemas and canonical formats stabilize:
+- `validate-fixtures.sh`
+- `generate-traceability-matrix.py`
+
+Expected output:
+- phased automation order with prerequisites
+- explicit defer list for schema-dependent tooling
+
+## 7. Immediate execution order
+
+1. WP-1 — APS-001 gap list
+2. WP-2 — APS-100/200/300 reconciliation
+3. WP-3 — CK-003 blocker register
+4. WP-4 — INV → CONF → FIX traceability pass
+5. WP-5 — fixture promotion plan
+6. WP-6 — minimum automation plan
+
+## 8. Exit criteria for the NOW stage
+
+The NOW stage is complete only when:
+
+1. APS-001 has a concrete per-section gap list.
+2. The next APS correction queue is ordered and justified.
+3. CK-003 has an explicit blocker register.
+4. Every invariant has an explicit traceability state.
+5. Fixtures are separated into placeholder / working / candidate normative sets.
+6. Automation order is defined without prematurely locking unstable schemas or formats.

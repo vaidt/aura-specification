@@ -54,8 +54,8 @@ Priority: **High** — blocking conformance testing.
 
 Priority: **High** — enables formal certification.
 
-- [ ] Define CONF-001 through CONF-010 with full test procedures and pass/fail criteria
-- [ ] Define FIX-001 through FIX-010 canonical reference fixtures
+- [ ] Define and evidence CONF-001 through CONF-015 with full test procedures and pass/fail criteria
+- [ ] Promote the working fixture corpus into a canonical APS-500 reference fixture set
 - [ ] Publish machine-readable fixture format
 - [ ] Advance APS-400 and APS-500 to Approved status
 

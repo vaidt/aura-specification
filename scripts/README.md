@@ -16,6 +16,19 @@ This directory contains tooling scripts for traceability validation and reposito
 
 > **TODO**: Scripts are pending finalization of APS-200 schemas and canonical document format.
 
+## Immediate implementation order
+
+The current safe-first automation order is:
+
+1. `check-doc-headers.sh`
+2. `check-ids.sh`
+3. `check-traceability.sh`
+
+The following remain intentionally deferred until APS-200 / APS-300 schemas and canonical fixture contracts are stable:
+
+- `validate-fixtures.sh`
+- `generate-traceability-matrix.py`
+
 ## Conventions
 
 - All scripts MUST be idempotent
