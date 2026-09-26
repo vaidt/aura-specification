@@ -25,7 +25,7 @@ The register does not itself grant closure. It summarizes the authoritative stat
 | Item | State | Why this state | Immediate blocker / next act | Governing source |
 |---|---|---|---|---|
 | DQ-002 — hash-domain closure | `CLOSED` | `closures/DQ-002_FINAL_CLOSURE.md` records `CLOSED / PASS`. The protocol hash-domain contract is frozen in the specification corpus. | No immediate specification-side action required for APS stabilization. Monitor only because DQ-006 records an inherited evidentiary caveat against the basis of the closure. | `/home/runner/work/aura-specification/aura-specification/closures/DQ-002_FINAL_CLOSURE.md` |
-| DQ-003 — version semantics | `OPEN` | The semantic split between `protocol_version` and `schema_version` is already present in APS-001 / APS-200, but the executable compatibility matrix and fixtures are still missing. | Define and approve the explicit compatibility matrix; add version-binding fixtures and conformance coverage. | `/home/runner/work/aura-specification/aura-specification/ck003/decisions/DQ-003/current_versioning_snapshot.md` |
+| DQ-003 — version semantics | `READY` | The semantic split between `protocol_version` and `schema_version` is already present in APS-001 / APS-200, and the repository now has an explicit compatibility matrix, a bound fixture, and a local CONF-008 gate. | Run the same matrix against RI-PY / RI-RS and promote it from local draft use to approved evidence. | `/home/runner/work/aura-specification/aura-specification/ck003/decisions/DQ-003/current_versioning_snapshot.md` |
 | DQ-004 — event-type semantics | `BLOCKED` | The semantic contract is defined, but the approved vocabulary is still empty. Strict conformance therefore cannot pass for normative event tokens yet. | Populate and approve the event-type registry plus the referenced fixtures and machine-readable registry form. | `/home/runner/work/aura-specification/aura-specification/ck003/DQ-004_EVENT_TYPE_SEMANTICS.md`, `/home/runner/work/aura-specification/aura-specification/aps/EVENT_TYPE_REGISTRY.md` |
 | DQ-006 — canonical serialization closure | `OPEN` | The normative decision is settled in APS-200 §8 / APS-300 §5, but the conformance-evidence and procedural closure criteria remain unmet. | Execute R1–R4: discriminating fixture, single RI-RS boundary, reachable evidence, Chief Architect ratification. | `/home/runner/work/aura-specification/aura-specification/closures/DQ-006_CLOSURE_PACKAGE.md`, `/home/runner/work/aura-specification/aura-specification/ck003/dq-006-final-closure-execution/DQ-006_FINAL_CLOSURE_EXECUTION_ORDER.md` |
 
@@ -65,9 +65,9 @@ The minimal CK-003 set that still controls further stabilization of the specific
 
 For the specification repository, the controlled order is:
 
-1. close **DQ-003** version-policy artifacts
-2. close **DQ-004** event-type registry + fixtures
-3. execute **DQ6-R1…R4** for DQ-006
+1. close **DQ-004** event-type registry + fixtures
+2. execute **DQ6-R1…R4** for DQ-006
+3. promote **DQ-003** from local draft gate to RI-backed approval evidence
 
 This order best supports the current APS blockers:
 

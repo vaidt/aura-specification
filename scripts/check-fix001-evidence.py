@@ -34,6 +34,14 @@ except ImportError as exc:  # pragma: no cover - dependency guard
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_PATH = ROOT / "fixtures" / "core" / "FIX-001_BASIC_EVALUATION.json"
 SCHEMA_DIR = ROOT / "fixtures" / "schemas"
+FIX001_CONF_MESSAGES = {
+    "CONF-001": "identical FIX-001 inputs deterministically reproduce identical result and evidence objects",
+    "CONF-002": "replay from FIX-001 evidence reproduces the identical result and a valid chained replay evidence pack",
+    "CONF-004": "evidence mutation is detected by digest verification",
+    "CONF-005": "execution, policy, attestation, and requirement links are coherent",
+    "CONF-006": "draft platform contexts reproduce identical result and evidence artifacts",
+    "CONF-010": "input, output, evidence, and pack digests recompute correctly",
+}
 
 
 def load_json(path: Path) -> dict:
@@ -528,7 +536,7 @@ def verify_mutation_detection(fixture: dict) -> None:
     raise AssertionError("Mutation control did not detect Evidence tampering")
 
 
-def main() -> int:
+def run_fix001_gate() -> dict[str, str]:
     fixture = load_json(FIXTURE_PATH)
 
     validate_schema("evaluation-request.schema.json", fixture["input_data"])
@@ -542,12 +550,14 @@ def main() -> int:
     verify_traceability(fixture)
     verify_mutation_detection(fixture)
 
-    print("CONF-001 PASS — identical FIX-001 inputs deterministically reproduce identical result and evidence objects")
-    print("CONF-002 PASS — replay from FIX-001 evidence reproduces the identical result and a valid chained replay evidence pack")
-    print("CONF-006 PASS — draft platform contexts reproduce identical result and evidence artifacts")
-    print("CONF-004 PASS — evidence mutation is detected by digest verification")
-    print("CONF-005 PASS — execution, policy, attestation, and requirement links are coherent")
-    print("CONF-010 PASS — input, output, evidence, and pack digests recompute correctly")
+    return dict(FIX001_CONF_MESSAGES)
+
+
+def main() -> int:
+    results = run_fix001_gate()
+
+    for conf_id in ["CONF-001", "CONF-002", "CONF-006", "CONF-004", "CONF-005", "CONF-010"]:
+        print(f"{conf_id} PASS — {results[conf_id]}")
     return 0
 
 

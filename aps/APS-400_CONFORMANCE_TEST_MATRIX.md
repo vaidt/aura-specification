@@ -67,7 +67,7 @@ The current repository state distinguishes structural assignment from executable
 | CONF-005 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |
 | CONF-006 | READY | controlled draft verifier exists for `FIX-001`; implementation-side cross-platform evidence is still missing |
 | CONF-007 | BLOCKED | error-handling fixture missing |
-| CONF-008 | BLOCKED | DQ-003 compatibility matrix and bound fixture missing |
+| CONF-008 | READY | repository-local draft compatibility matrix, bound FIX-COMPAT-001 fixture, and draft runner now exist; RI-PY / RI-RS evidence is still missing |
 | CONF-009 | OPEN | structural mapping exists, but the full invariant-to-execution gate is not yet evidenced |
 | CONF-010 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |
 | CONF-011 | READY | working fixture exists; remaining step is controlled execution evidence |

@@ -182,6 +182,8 @@ A requirement without a verification path is OPEN and MUST NOT be represented as
 
 Compatibility MUST be defined by an explicit version-compatibility matrix; implementations MUST NOT infer compatibility solely from numeric ordering.
 
+The current repository-local draft compatibility matrix is maintained under `ck003/decisions/DQ-003/` and is exercised by `CONF-008` / `FIX-COMPAT-001`. This draft-local gate does not by itself constitute release-grade implementation evidence.
+
 Changes affecting canonical bytes, hash domains, required fields, field interpretation or conformance outcomes MUST be version-bound and accompanied by impact analysis.
 
 ## 13. Release Gate

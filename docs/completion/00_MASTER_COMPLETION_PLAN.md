@@ -20,7 +20,7 @@ Accordingly, this branch is an implementation workspace. It may contain drafts, 
 - APS-500 defines the reference-fixture contract, but the canonical fixture set is not yet demonstrably complete against the invariant/test matrix.
 - APS-900 defines the required traceability chain from Constitution → APS Requirement → Invariant → Data Model → Evidence → Conformance Test → Fixture → Implementation → Release.
 - APS-950 identifies RI-PY (`aura-poc-a-core`) and RI-RS (`aura-guard`) as reference implementations and requires a full conformance process.
-- The repository currently has no `.github/workflows/` directory in the default branch; therefore a repository-native CI conformance gate is not yet evidenced.
+- The repository now has a draft repository-native conformance workflow at `.github/workflows/draft-conformance.yml`, but it still executes only the current repository-local subset and is not yet equivalent to RI-PY / RI-RS certification evidence.
 - CK-003 closure material exists in-repository, but evidence presence is not equivalent to normative closure; DQ-003/DQ-004 and release-gate promotion still require explicit review and acceptance.
 
 ## 3. Completion gates
@@ -309,7 +309,7 @@ Status model used here:
 | INV-006 | APS-001 §2 | CONF-006 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local artifact-level platform-independence verification now runs against `FIX-001`, but implementation-side cross-platform evidence is still missing. |
 | INV-007 | APS-001 §3 | CONF-011 | FIX-INV-007 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Working fixture and test assignment exist; the remaining gap is controlled execution and evidence, not unresolved contract semantics. |
 | INV-008 | APS-001 §8 | CONF-007 | FIX-ERROR (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Error-handling fixture coverage is still missing. |
-| INV-009 | APS-001 §12, APS-200 §9 | CONF-008 | FIX-COMPAT (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | DQ-003 compatibility matrix and version-binding fixtures are not yet closed. |
+| INV-009 | APS-001 §12, APS-200 §9 | CONF-008 | FIX-COMPAT-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local DQ-003 compatibility matrix and bound fixture now execute through the draft runner, but implementation-side evidence is still missing. |
 | INV-010 | APS-400 | CONF-009 | all FIX | EVID-CONF | RI-PY / RI-RS `NOT VERIFIED` | OPEN | Structural CONF assignment is complete, but objective execution evidence for the full invariant matrix is still absent. |
 | INV-011 | APS-300 §7 | CONF-010 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Repository-local digest verification now runs against `FIX-001`, but implementation-side cryptographic evidence is still missing. |
 | INV-012 | APS-300, APS-200 ENT-007 | CONF-012 | FIX-INV-012 | EVID-AUDIT | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Auditability depends on DQ-004 because the fixture is registry-dependent and the normative event vocabulary is not yet approved. |
@@ -323,9 +323,9 @@ The traceability pass shows four dominant blocker classes:
 
 1. **missing canonical fixtures**
    - INV-001, INV-002, INV-004, INV-005, INV-006, INV-008, INV-011
-2. **version and event-type closure dependencies**
-   - INV-009 depends on DQ-003
+2. **event-type and remaining closure dependencies**
    - INV-012 depends on DQ-004
+   - INV-003 still depends on DQ-006 residual execution evidence
 3. **APS-500 corpus immaturity**
    - INV-014 remains blocked until the normative fixture corpus is finalized
 4. **identity-contract incompleteness**
@@ -336,6 +336,7 @@ The traceability pass shows four dominant blocker classes:
 The invariants currently closest to controlled execution are:
 
 - `INV-007` — `READY`
+- `INV-009` — `READY`
 - `INV-013` — `READY`
 
 The invariant with the strongest existing semantic contract but still-open cross-language evidence is:

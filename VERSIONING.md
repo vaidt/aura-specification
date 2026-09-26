@@ -93,6 +93,23 @@ A FROZEN document **never receives a new version number**. A revision creates a 
 - Old fixture IDs are deprecated, not overwritten.
 - Fixture IDs (FIX-xxx) are **never reused**.
 
+### 7.1 Current draft compatibility matrix
+
+Compatibility decisions are explicit and version-bound. They MUST NOT be inferred from numeric ordering, lexical ordering, or partial field overlap.
+
+The current repository-local draft compatibility matrix is maintained in:
+
+- `ck003/decisions/DQ-003/CURRENT_VERSION_COMPATIBILITY_MATRIX.md`
+- `ck003/decisions/DQ-003/CURRENT_VERSION_COMPATIBILITY_MATRIX.json`
+
+For the current draft working path:
+
+| Protocol version | Allowed schema versions | Allowed input schema | Allowed evidence profile | Allowed fixture bindings |
+|---|---|---|---|---|
+| `1.0-DRAFT` | `EvaluationRequest=1.0-DRAFT`, `EvaluationResult=1.0-DRAFT`, `PolicyReference=1.0-DRAFT`, `Attestation=1.0-DRAFT`, `EvidencePack=1.0-DRAFT` | `AURA-DRAFT-CORE-001` | `EPR-CORE` | `FIX-001@0.2-DRAFT`, `FIX-COMPAT-001@0.1-DRAFT` |
+
+Any combination outside the matrix is incompatible in strict conformance mode until explicitly added by a versioned specification change with impact analysis.
+
 ---
 
 ## 8. Identifier Reuse Policy

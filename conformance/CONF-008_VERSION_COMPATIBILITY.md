@@ -8,16 +8,16 @@
 Verify that protocol, schema, fixture, and evidence version references are mutually compatible under the approved version-compatibility contract.
 
 ## Preconditions
-- A version-compatibility matrix exists and is approved for the target protocol release.
-- The applicable compatibility fixture is bound to that matrix.
-- The implementation can emit the version-bearing artifacts required by APS-200 and APS-300.
+- The repository-local draft compatibility matrix `ck003/decisions/DQ-003/CURRENT_VERSION_COMPATIBILITY_MATRIX.md` is available.
+- The bound compatibility fixture `fixtures/compatibility/FIX-COMPAT-001_VERSION_MATRIX.json` is available.
+- The implementation or verifier can inspect the version-bearing artifacts required by APS-200 and APS-300.
 
 ## Procedure
 1. Resolve the governing compatibility matrix for the protocol version under test.
 2. Load the applicable compatibility fixture set for that matrix.
-3. Execute the implementation and collect the resulting version-bearing artifacts.
-4. Inspect all required version references, including protocol version, schema version, fixture corpus version, and evidence/document bindings.
-5. Compare the observed combination against the approved compatibility matrix.
+3. Collect the version-bearing artifacts required by the fixture, including protocol version, schema versions, input-schema binding, evidence-profile binding, and fixture version.
+4. Compare the observed combination against the explicit compatibility matrix.
+5. Execute at least one negative compatibility case outside the matrix.
 6. Record any missing, ambiguous, or incompatible version references.
 
 ## Expected Result
@@ -36,8 +36,8 @@ EVID-CORE containing the observed version fields, the resolved compatibility mat
 |-------|-------|
 | Test ID | CONF-008 |
 | Invariant | INV-009 |
-| Related Fixture | FIX-COMPAT / compatibility fixture set bound to the approved matrix |
+| Related Fixture | `FIX-COMPAT-001` / compatibility fixture set bound to the approved matrix |
 | Evidence Type | EVID-CORE |
 
 ## Current readiness note
-CONF-008 is currently **BLOCKED** in repository planning because DQ-003 version semantics and the bound compatibility fixture are not yet normatively closed.
+CONF-008 is now **READY at repository-local draft level**. The current local gate is executed by `scripts/run-draft-conformance.py` against `fixtures/compatibility/FIX-COMPAT-001_VERSION_MATRIX.json` and the machine-readable DQ-003 compatibility matrix. Implementation-side RI-PY / RI-RS evidence is still outstanding.
