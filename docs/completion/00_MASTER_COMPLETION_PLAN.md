@@ -182,6 +182,43 @@ Expected output:
 - ordered reconciliation queue for APS-100/200/300/400/500/900/950
 - list of must-fix semantic conflicts
 
+#### WP-2 deliverable — initial reconciliation pass for APS-100 / APS-200 / APS-300
+
+This first WP-2 pass covers the highest-priority normative dependencies reviewed directly against APS-001.
+
+| Document | Authority-chain assessment | Missing or weak traceability path | Must-fix semantic conflicts | Correction priority |
+|---|---|---|---|---|
+| APS-100 | Authority citation to APS-001 is correct, but the document body no longer matches the current APS-400 / registry state. | `§3` still shows no CONF assignment for `INV-007`, `INV-012`, `INV-013`, `INV-014`, `INV-015`; `§5` traceability order differs from APS-001 / APS-900; the catalogue entries do not carry the verification/evidence detail that `§2` says every invariant MUST define. | stale invariant-to-CONF catalogue; APS-100's own structure requirements are satisfied only in the registry, not in the APS-100 body; compliance wording assumes invariant PASS status without defining a canonical invariant-status model. | HIGH |
+| APS-200 | Authority chain is directionally correct and now carries the DQ-006 serialization closure, but several required contracts are still only partial. | No exact machine-readable schema set for `ENT-001…ENT-008`; `ENT-004` has no CONF mapping in `§10`; `execution_id`, `request_fields`, decision vocabulary, and attestation lifecycle remain TODO-level contracts. | `object_id` allows `UUID v4 or canonical format`, which is too loose for INV-015 / APS-001 identity semantics; `ENT-007.event_type` depends on a registry with no approved tokens yet (DQ-004 blocker); evidence / attestation / audit relationships remain under-specified for APS-001 approval. | CRITICAL |
+| APS-300 | Authority chain is correct and cryptographic byte-domain binding is materially aligned with APS-200 §8. | No exact Evidence Pack container contract; no defined Evidence Profiles; no explicit required field linking evidence to the APS requirement(s) it documents even though INV-005 / APS-001 §6 require that traceability. | `evidence_id` is fixed to UUID v4, which may conflict with the unresolved canonical-identity contract; `attestation_reference` is mandatory while `ENT-006` lifecycle/authority is unresolved in APS-200; verification claims conformance/invariant verification without a fully specified pack/linkage model. | CRITICAL |
+
+#### WP-2 — reconciliation conclusions from this first pass
+
+1. **APS-200 is the first correction target.**
+   APS-001 blockers for input, output, policy-reference, audit-record, identity, and version-binding semantics all terminate in APS-200 gaps.
+
+2. **APS-300 is the second correction target.**
+   APS-001 evidence-generation and release-gate blockers cannot close until the Evidence Pack, attestation linkage, and Evidence Profile boundaries are explicit.
+
+3. **APS-100 needs alignment after APS-200 / APS-300 stabilization.**
+   Its largest issues are catalogue staleness and mismatch with the current registry / APS-400 state, not the absence of an authority chain.
+
+#### WP-2 — ordered correction queue triggered by these findings
+
+1. APS-200
+   - tighten canonical identity semantics for `object_id` / `object_type`
+   - close `execution_id`, `request_fields`, decision vocabulary, and attestation lifecycle contracts
+   - complete entity-to-CONF traceability, especially `ENT-004` and `ENT-007`
+   - convert entity contracts into machine-readable schemas
+2. APS-300
+   - define the Evidence Pack container and linkage model
+   - add the missing requirement-to-evidence traceability field/contract needed by INV-005
+   - define Evidence Profiles and attestation expectations
+3. APS-100
+   - reconcile the invariant catalogue with CONF-011…CONF-015
+   - align APS-100 traceability wording with APS-001 / APS-900
+   - decide whether APS-100 itself or the registry is the authoritative home for invariant verification/evidence detail
+
 ### WP-3 — CK-003 blocker register
 
 **Status:** OPEN
