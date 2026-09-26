@@ -3,6 +3,7 @@
 
 This script executes the current repository-local draft verification path for:
 - CONF-001 Deterministic Evaluation
+- CONF-006 Platform Independence
 - CONF-004 Evidence Integrity
 - CONF-005 Traceability
 - CONF-010 Cryptographic Verification
@@ -85,6 +86,13 @@ def make_integrity_hash(obj: dict) -> str:
     return canonical_sha256({k: v for k, v in obj.items() if k != "integrity_hash"})
 
 
+def reorder_mapping(source: dict, ordered_keys: list[str]) -> dict:
+    reordered: dict = {}
+    for key in ordered_keys:
+        reordered[key] = source[key]
+    return reordered
+
+
 def evaluate_request(request_fields: dict) -> tuple[str, str]:
     measurement_value = request_fields["measurement_value"]
     if measurement_value <= 500:
@@ -119,6 +127,15 @@ def materialize_result(fixture: dict) -> dict:
     }
     result["integrity_hash"] = make_integrity_hash(result)
     return result
+
+
+def materialize_result_for_context(fixture: dict, context: dict) -> dict:
+    fixture_variant = copy.deepcopy(fixture)
+    order = context["request_field_order"]
+    fixture_variant["input_data"]["request_fields"] = reorder_mapping(
+        fixture["input_data"]["request_fields"], order
+    )
+    return materialize_result(fixture_variant)
 
 
 def materialize_attestation(fixture: dict) -> dict:
@@ -204,6 +221,26 @@ def verify_deterministic_evaluation(fixture: dict) -> None:
     second_pack = materialize_evidence_pack(fixture, second_result)
     assert_equal(first_pack, second_pack, "deterministic evidence replay")
     assert_equal(first_pack, fixture["expected_evidence"], "fixture expected_evidence")
+
+
+def verify_platform_independence(fixture: dict) -> None:
+    contexts = fixture["_draft_execution_contexts"]
+    if len(contexts) < 2:
+        raise AssertionError("At least two draft execution contexts are required for CONF-006")
+
+    materialized = []
+    for context in contexts:
+        result = materialize_result_for_context(fixture, context)
+        pack = materialize_evidence_pack(fixture, result)
+        materialized.append((context["context_id"], result, pack))
+
+    baseline_context, baseline_result, baseline_pack = materialized[0]
+    assert_equal(baseline_result, fixture["expected_output"], f"{baseline_context} result")
+    assert_equal(baseline_pack, fixture["expected_evidence"], f"{baseline_context} evidence")
+
+    for context_id, result, pack in materialized[1:]:
+        assert_equal(result, baseline_result, f"{context_id} result parity")
+        assert_equal(pack, baseline_pack, f"{context_id} evidence parity")
 
 
 def verify_pack_hashes(fixture: dict) -> None:
@@ -360,11 +397,13 @@ def main() -> int:
     validate_schema("evidence-pack.schema.json", fixture["expected_evidence"])
 
     verify_deterministic_evaluation(fixture)
+    verify_platform_independence(fixture)
     verify_pack_hashes(fixture)
     verify_traceability(fixture)
     verify_mutation_detection(fixture)
 
     print("CONF-001 PASS — identical FIX-001 inputs deterministically reproduce identical result and evidence objects")
+    print("CONF-006 PASS — draft platform contexts reproduce identical result and evidence artifacts")
     print("CONF-004 PASS — evidence mutation is detected by digest verification")
     print("CONF-005 PASS — execution, policy, attestation, and requirement links are coherent")
     print("CONF-010 PASS — input, output, evidence, and pack digests recompute correctly")

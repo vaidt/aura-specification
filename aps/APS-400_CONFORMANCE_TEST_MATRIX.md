@@ -65,7 +65,7 @@ The current repository state distinguishes structural assignment from executable
 | CONF-003 | OPEN | cross-language evidence exists, but the corpus still lacks a JCS-discriminating vector |
 | CONF-004 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |
 | CONF-005 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |
-| CONF-006 | BLOCKED | baseline fixture plus cross-platform evidence missing |
+| CONF-006 | READY | controlled draft verifier exists for `FIX-001`; implementation-side cross-platform evidence is still missing |
 | CONF-007 | BLOCKED | error-handling fixture missing |
 | CONF-008 | BLOCKED | DQ-003 compatibility matrix and bound fixture missing |
 | CONF-009 | OPEN | structural mapping exists, but the full invariant-to-execution gate is not yet evidenced |

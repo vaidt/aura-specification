@@ -9,7 +9,7 @@ This directory contains tooling scripts for traceability validation and reposito
 | `check-doc-headers.sh` | Verify all normative documents have required metadata headers | IMMEDIATE | PLANNED |
 | `check-ids.sh` | Verify no identifier is reused across INV, CONF, FIX, ADR, RFC | IMMEDIATE | PLANNED |
 | `check-traceability.sh` | Verify every INV-xxx has a CONF-xxx; every CONF-xxx has a FIX-xxx | IMMEDIATE | PLANNED |
-| `check-fix001-evidence.py` | Execute the draft FIX-001 local gate for CONF-001/004/005/010 | CURRENT DRAFT WORKING PATH | READY |
+| `check-fix001-evidence.py` | Execute the draft FIX-001 local gate for CONF-001/004/005/006/010 | CURRENT DRAFT WORKING PATH | READY |
 | `validate-fixtures.sh` | Validate all FIX-xxx JSON files against APS-200 schemas | DEFERRED | BLOCKED |
 | `generate-traceability-matrix.py` | Auto-generate TRACEABILITY_MATRIX.md from document metadata | DEFERRED | BLOCKED |
 
@@ -38,6 +38,7 @@ The following remain intentionally deferred until APS-200 / APS-300 schemas and 
 `check-fix001-evidence.py` verifies the repository-local controlled draft path for:
 
 - `CONF-001` Deterministic Evaluation
+- `CONF-006` Platform Independence
 - `CONF-004` Evidence Integrity
 - `CONF-005` Traceability
 - `CONF-010` Cryptographic Verification
@@ -52,7 +53,7 @@ Run:
 python scripts/check-fix001-evidence.py
 ```
 
-The script validates the current `FIX-001` working fixture, deterministically materializes the current draft result/evidence path twice, recomputes all bound digest values, checks object linkage and requirement traceability, and executes one mutation-based negative control.
+The script validates the current `FIX-001` working fixture, deterministically materializes the current draft result/evidence path twice, replays it across multiple draft platform contexts, recomputes all bound digest values, checks object linkage and requirement traceability, and executes one mutation-based negative control.
 
 ## Immediate Wave Scope
 

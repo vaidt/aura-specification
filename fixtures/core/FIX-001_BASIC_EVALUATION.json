@@ -15,7 +15,34 @@
     "CONF-001",
     "CONF-004",
     "CONF-005",
+    "CONF-006",
     "CONF-010"
+  ],
+  "_draft_execution_contexts": [
+    {
+      "context_id": "linux-x86_64-cpython",
+      "architecture": "x86_64",
+      "os": "linux",
+      "locale": "C",
+      "request_field_order": [
+        "profile_id",
+        "subject_id",
+        "measurement_value",
+        "actor_tier"
+      ]
+    },
+    {
+      "context_id": "linux-aarch64-cpython",
+      "architecture": "aarch64",
+      "os": "linux",
+      "locale": "pl_PL.UTF-8",
+      "request_field_order": [
+        "actor_tier",
+        "measurement_value",
+        "subject_id",
+        "profile_id"
+      ]
+    }
   ],
   "input_data": {
     "object_id": "FIX-001-REQ-001",
