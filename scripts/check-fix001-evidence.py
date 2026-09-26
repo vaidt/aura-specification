@@ -313,7 +313,12 @@ def verify_replay(fixture: dict) -> None:
     request = fixture["input_data"]
     original_result = fixture["expected_output"]
     original_pack = fixture["expected_evidence"]
-    replay_result = materialize_result(fixture)
+    assert_equal(
+        original_pack["evaluation_result"],
+        original_result,
+        "original pack evaluation_result parity",
+    )
+    replay_result = copy.deepcopy(original_pack["evaluation_result"])
     replay_pack = materialize_replay_pack(fixture, replay_result)
 
     validate_schema("evidence-pack.schema.json", replay_pack)

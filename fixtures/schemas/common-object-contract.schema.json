@@ -52,5 +52,6 @@
       "pattern": "^[a-f0-9]{64}$",
       "description": "Lowercase hexadecimal SHA-256 digest of the canonical object, excluding the integrity_hash member itself."
     }
-  }
+  },
+  "unevaluatedProperties": false
 }
