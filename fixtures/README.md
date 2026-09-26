@@ -16,13 +16,13 @@ fixtures/
 
 ## Status
 
-> **Current state**: The canonical APS-500 fixture corpus is not yet finalized. Draft machine-readable APS-200/APS-300 schemas now exist under `/fixtures/schemas/`; `FIX-001` now binds the current draft ENT-002/ENT-003 working-profile payload, but its digest/evidence publication values remain draft-only placeholders, while `/fixtures/corpus/` and `/fixtures/ck003/` contain working fixtures and manifests for closure work that do not by themselves constitute release-ready APS-500 coverage.
+> **Current state**: The canonical APS-500 fixture corpus is not yet finalized. Draft machine-readable APS-200/APS-300 schemas now exist under `/fixtures/schemas/`; `FIX-001` now binds the current draft ENT-002/ENT-003 working-profile payload and the current draft `EPR-CORE` evidence pack content, while `/fixtures/corpus/` and `/fixtures/ck003/` still contain working fixtures and manifests for closure work that do not by themselves constitute release-ready APS-500 coverage.
 
 ## Fixture Index
 
 | Fixture ID | Name | Category | CONF Test | Status |
 |------------|------|----------|-----------|--------|
-| FIX-001 | Basic Evaluation | CORE | CONF-001 | TODO |
+| FIX-001 | Basic Evaluation | CORE | CONF-001 | WORKING |
 | FIX-INV-007 | Zero Float Runtime | CORPUS | CONF-011 | READY |
 | FIX-INV-012 | Event Type / Auditability | CORPUS | CONF-012 | REGISTRY_DEPENDENT |
 | FIX-INV-013 | Policy Determinism | CORPUS | CONF-013 | READY |
@@ -43,7 +43,7 @@ Use the following promotion classes when deciding whether an artifact belongs in
 
 | Artifact | Class | Reason | Explicit promotion gate |
 |----------|-------|--------|-------------------------|
-| `core/FIX-001_BASIC_EVALUATION.json` | `WORKING` | Current draft request/result payload is now bound to `AURA-DRAFT-CORE-001`, but digest/evidence publication values are still placeholders | APS-300 evidence-content closure + release-grade expected digests |
+| `core/FIX-001_BASIC_EVALUATION.json` | `WORKING` | Current draft request/result payload and current draft `EPR-CORE` evidence content are now concrete, but the fixture is still not release-grade conformance evidence | controlled execution evidence + APS-500 promotion |
 | `corpus/FIX-INV-007_zero_float.json` | `CANDIDATE NORMATIVE` | Fixture is now explicitly bound to `CONF-011` and marked ready for controlled execution | controlled execution evidence + APS-500 promotion |
 | `corpus/FIX-INV-012_event_type.json` | `WORKING` | Useful closure fixture, but depends on unresolved registry semantics | DQ-004 closure + approved event tokens |
 | `corpus/FIX-INV-013_policy_determinism.json` | `CANDIDATE NORMATIVE` | Fixture now binds one concrete policy/input pair for `CONF-013` | controlled execution evidence + APS-500 promotion |

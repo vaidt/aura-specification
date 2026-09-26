@@ -175,7 +175,7 @@ See APS-300 for the full Evidence Model. The canonical Evidence object fields ar
 | Common Object Contract fields | — | MUST | See §4 |
 | `attestation_type` | string | MUST | Type (e.g., `CONFORMANCE`, `EXECUTION`) |
 | `attested_execution_id` | string | MUST | The execution_id this attests |
-| `evidence_reference` | string | MUST | object_id of the Evidence Pack |
+| `evidence_reference` | string | MUST | `pack_id` of the Evidence Pack |
 | `attestation_hash` | string | MUST | SHA-256 hash of attestation content |
 
 The full Attestation lifecycle and approval authority remain version-bound specification work. Until that lifecycle is fully closed, conformant artifacts MUST still preserve a stable `attested_execution_id` and `evidence_reference` so that attestation linkage can be validated objectively once the final authority model is approved.

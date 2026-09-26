@@ -2,8 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/AuraIDToken/aura-specification/fixtures/schemas/evidence-pack.schema.json",
   "title": "APS-300 Evidence Pack",
-  "_status": "DRAFT TOP-LEVEL STRUCTURAL CONTRACT — semantic/profile closure remains governed by APS text and open decision records.",
-  "description": "Draft machine-readable top-level contract for the canonical APS-300 Evidence Pack envelope.",
+  "_status": "DRAFT CONTRACT — top-level structure is closed and the current draft EPR-CORE integrity-metadata vocabulary is closed; other profile-specific semantics remain version-bound.",
+  "description": "Draft machine-readable contract for the canonical APS-300 Evidence Pack envelope.",
   "type": "object",
   "required": [
     "pack_id",
@@ -63,11 +63,65 @@
     "integrity_metadata": {
       "type": "object",
       "minProperties": 1,
-      "description": "Pack-scoped integrity metadata. Exact component-hash vocabulary remains profile-bound."
+      "description": "Pack-scoped integrity metadata. The current draft EPR-CORE vocabulary is closed; other profile vocabularies remain profile-bound."
     },
     "pack_hash": {
       "type": "string",
       "pattern": "^[a-f0-9]{64}$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "evidence_profile": { "const": "EPR-CORE" }
+        }
+      },
+      "then": {
+        "properties": {
+          "integrity_metadata": {
+            "$ref": "#/$defs/epr_core_integrity_metadata"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "epr_core_integrity_metadata": {
+      "type": "object",
+      "required": [
+        "canonicalization_profile",
+        "digest_algorithm",
+        "request_integrity_hash",
+        "result_integrity_hash",
+        "policy_integrity_hash",
+        "attestation_integrity_hash"
+      ],
+      "properties": {
+        "canonicalization_profile": {
+          "const": "RFC8785-JCS"
+        },
+        "digest_algorithm": {
+          "const": "SHA-256"
+        },
+        "request_integrity_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "result_integrity_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "policy_integrity_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "attestation_integrity_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false

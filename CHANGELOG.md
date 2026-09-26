@@ -27,7 +27,10 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 - APS-200 ENT-002 / ENT-003 now close the current draft working-profile payload contract (`AURA-DRAFT-CORE-001`), including a concrete request payload, result payload, and working decision vocabulary
 - APS-001 now points to the closed draft working-profile request/result payload contract and removes APS-200 machine-readable schemas from its open-dependency list
 - `fixtures/schemas/evaluation-request.schema.json` and `fixtures/schemas/evaluation-result.schema.json` now enforce the current draft working-profile payload shape instead of only top-level structure
-- `fixtures/core/FIX-001_BASIC_EVALUATION.json`, `fixtures/README.md`, APS-500, ROADMAP, the current-state matrix, and the traceability model now reflect that FIX-001 is a working draft fixture with payloads bound but evidence/digest publication still open
+- APS-300 now closes the current draft `EPR-CORE` integrity-metadata and publication-hash contract needed by `FIX-001`, and APS-200 clarifies that attestation `evidence_reference` targets the Evidence Pack `pack_id`
+- `fixtures/schemas/attestation.schema.json` and `fixtures/schemas/evidence-pack.schema.json` now validate the current draft `EPR-CORE` linkage and integrity-metadata vocabulary end-to-end
+- `fixtures/core/FIX-001_BASIC_EVALUATION.json` now carries concrete draft Evidence Pack content and computed digest/hash values instead of placeholder evidence publication fields
+- `fixtures/README.md`, APS-400, APS-500, completion docs, and traceability docs now reflect that FIX-001 is a concrete working draft fixture rather than a placeholder-only artifact
 - GOVERNANCE.md, CONTRIBUTING.md, and VERSIONING.md now explicitly allow draft-stage closure work on canonical DRAFT documents without touching FROZEN artifacts, and they treat unpublished digest/checksum placeholders as draft-only rather than release authority
 - README.md restructured as canonical repository index
 - README.md now links to `GOVERNANCE_STATUS_INDEX.md` as the short routing index for governance/status artifacts

@@ -52,7 +52,20 @@ Use this template to document an Evidence Pack. All fields marked MUST are requi
 
 ### 5. Integrity Metadata (MUST)
 
-> **TODO**: Define the final Integrity Metadata vocabulary. Until then, include at minimum SHA-256 of each component plus SHA-256 of the full pack.
+For the current draft `EPR-CORE` working contract used by `FIX-001`, include exactly:
+
+```json
+{
+  "canonicalization_profile": "RFC8785-JCS",
+  "digest_algorithm": "SHA-256",
+  "request_integrity_hash": "TODO — SHA-256",
+  "result_integrity_hash": "TODO — SHA-256",
+  "policy_integrity_hash": "TODO — SHA-256",
+  "attestation_integrity_hash": "TODO — SHA-256"
+}
+```
+
+Other Evidence Profiles remain open draft work until APS-300 closes their exact vocabulary.
 
 ---
 
