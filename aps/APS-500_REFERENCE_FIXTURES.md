@@ -4,7 +4,7 @@ Document ID: APS-500
 Version: 1.0-DRAFT  
 Status: DRAFT  
 Classification: Normative Test Specification  
-Authority: APS-100 · APS-200 · APS-300 · APS-400  
+Authority: APS-001 §9 · APS-100 · APS-200 · APS-300 · APS-400
 Last Review: 2026-09-26
 
 ---

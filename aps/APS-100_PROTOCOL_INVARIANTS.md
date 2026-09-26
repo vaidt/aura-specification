@@ -4,7 +4,7 @@ Document ID: APS-100
 Version: 1.0-DRAFT  
 Status: DRAFT  
 Classification: Normative Specification  
-Authority: APS-001 — Aura Protocol Specification  
+Authority: APS-001 §2, §8, §9, §11 — Aura Protocol Specification
 Last Review: 2026-09-26
 
 ---

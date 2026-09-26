@@ -4,7 +4,7 @@ Document ID: APS-200
 Version: 1.0-DRAFT  
 Status: DRAFT  
 Classification: Normative Specification  
-Authority: APS-001 · APS-100  
+Authority: APS-001 §3, §4, §7, §12 · APS-100
 Last Review: 2026-09-26
 
 ---

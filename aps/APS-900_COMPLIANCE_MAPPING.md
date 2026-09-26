@@ -4,7 +4,7 @@ Document ID: APS-900
 Version: 1.0-DRAFT  
 Status: DRAFT  
 Classification: Normative Governance Specification  
-Authority: APS-001 · APS-100 · APS-200 · APS-300 · APS-400 · APS-500  
+Authority: APS-001 §11 · APS-100 · APS-200 · APS-300 · APS-400 · APS-500
 Last Review: 2026-09-26
 
 ---

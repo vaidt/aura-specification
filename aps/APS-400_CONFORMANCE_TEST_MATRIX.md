@@ -4,7 +4,7 @@ Document ID: APS-400
 Version: 1.0-DRAFT  
 Status: DRAFT  
 Classification: Normative Specification  
-Authority: APS-001 · APS-100 · APS-200 · APS-300  
+Authority: APS-001 §9, §11 · APS-100 · APS-200 · APS-300
 Last Review: 2026-09-26
 
 ---

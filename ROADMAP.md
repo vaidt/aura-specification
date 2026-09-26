@@ -36,6 +36,16 @@ Priority: **Critical** — APS-001 is the root normative draft and remains the p
 - [ ] Align APS-100 through APS-950 authority citations to APS-001
 - [ ] Advance APS-000 to Approved status
 
+### Milestone 1 — Initial Increment (M1-I1)
+
+Scope for the first execution increment:
+
+- [x] Define APS-001 section baseline for synchronization: §2 Execution Model, §5 Policy Model, §8 Error Handling, §9 Conformance, §11 Traceability
+- [x] Synchronize authority citations in APS-100, APS-200, APS-300, APS-400, APS-500, APS-900, APS-950 to explicit APS-001 section references
+- [x] Create formal change artifact for this increment in `rfcs/`
+- [x] Update traceability links where APS-001 section placeholders were marked TODO
+- [ ] Complete Architecture Review record (ARR) for APS-001 increment acceptance
+
 ---
 
 ## Milestone 2 — Canonical Data Model and Evidence Pack (Target: v0.3.0)
