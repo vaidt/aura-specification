@@ -250,7 +250,7 @@ DQ-002 remains closed and is not part of the minimum active workset for continue
 
 ### WP-4 — Traceability gap pass
 
-**Status:** OPEN
+**Status:** CLOSED
 **Goal:** make every invariant traceability state explicit before claiming closure progress.
 
 Tasks:
@@ -261,6 +261,58 @@ Tasks:
 Expected output:
 - a working traceability gap register with one row per invariant
 - no unstated assumptions about fixture or evidence readiness
+
+#### WP-4 deliverable — invariant traceability gap register
+
+Status model used here:
+
+- `BLOCKED` — a prerequisite contract, fixture, or registry is still missing
+- `OPEN` — the semantic path exists, but required closure work is still incomplete
+- `READY` — the prerequisite contract and fixture path are sufficiently defined for controlled execution
+- `NOT VERIFIED` — the path exists but lacks objective implementation evidence
+
+| INV | APS source | CONF | FIX | Evidence | RI relevance | Status | Weakest missing link / reason |
+|---|---|---|---|---|---|---|---|
+| INV-001 | APS-001 §2 | CONF-001 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | `FIX-001` remains placeholder-only, so deterministic execution cannot be evidenced objectively yet. |
+| INV-002 | APS-001 §2 | CONF-002 | FIX-REPLAY (TODO) | EVID-CORE, EVID-CHAIN | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Replay fixture corpus is still missing. |
+| INV-003 | APS-200 §4, §8 | CONF-003 | CANONICAL-001 | EVID-CORE | RI-PY / RI-RS `PARTIAL` | OPEN | Canonical serialization contract is settled, but DQ-006 remains open because discriminating cross-language closure evidence is incomplete. |
+| INV-004 | APS-300 §3, §7 | CONF-004 | FIX-EVIDENCE (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Evidence-integrity fixture coverage and final Evidence Pack execution path are still missing. |
+| INV-005 | APS-300 §11, APS-900 | CONF-005 | FIX-EVIDENCE (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Requirement-traceability fields are now defined, but fixture coverage and attestation-linked execution evidence are not yet in place. |
+| INV-006 | APS-001 §2 | CONF-006 | FIX-001 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Platform-independence still depends on a finalized baseline fixture and cross-platform execution evidence. |
+| INV-007 | APS-001 §3 | CONF-011 | FIX-INV-007 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Working fixture and test assignment exist; the remaining gap is controlled execution and evidence, not unresolved contract semantics. |
+| INV-008 | APS-001 §8 | CONF-007 | FIX-ERROR (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Error-handling fixture coverage is still missing. |
+| INV-009 | APS-001 §12, APS-200 §9 | CONF-008 | FIX-COMPAT (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | DQ-003 compatibility matrix and version-binding fixtures are not yet closed. |
+| INV-010 | APS-400 | CONF-009 | all FIX | EVID-CONF | RI-PY / RI-RS `NOT VERIFIED` | OPEN | Structural CONF assignment is complete, but objective execution evidence for the full invariant matrix is still absent. |
+| INV-011 | APS-300 §7 | CONF-010 | FIX-EVIDENCE (TODO) | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Cryptographic-verification fixtures and final Evidence Pack execution remain incomplete. |
+| INV-012 | APS-300, APS-200 ENT-007 | CONF-012 | FIX-INV-012 | EVID-AUDIT | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Auditability depends on DQ-004 because the fixture is registry-dependent and the normative event vocabulary is not yet approved. |
+| INV-013 | APS-001 §5 | CONF-013 | FIX-INV-013 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | READY | Policy-determinism semantics are defined and the fixture path exists, but execution evidence is still outstanding. |
+| INV-014 | APS-500 | CONF-014 | FIX-INV-014 | EVID-CORE, EVID-CONF | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | APS-500 corpus is not yet finalized; fixture is explicitly `APS500_VERSION_BLOCKED`. |
+| INV-015 | APS-000 §4, APS-200 §4 | CONF-015 | FIX-INV-015 | EVID-CORE | RI-PY / RI-RS `NOT VERIFIED` | BLOCKED | Canonical identity still depends on final APS-000 / APS-200 binding and fixture promotion. |
+
+#### WP-4 — dominant blocker summary
+
+The traceability pass shows four dominant blocker classes:
+
+1. **missing canonical fixtures**
+   - INV-001, INV-002, INV-004, INV-005, INV-006, INV-008, INV-011
+2. **version and event-type closure dependencies**
+   - INV-009 depends on DQ-003
+   - INV-012 depends on DQ-004
+3. **APS-500 corpus immaturity**
+   - INV-014 remains blocked until the normative fixture corpus is finalized
+4. **identity-contract incompleteness**
+   - INV-015 remains blocked until APS-000 / APS-200 identity binding is fully closed
+
+#### WP-4 — immediately executable subset
+
+The invariants currently closest to controlled execution are:
+
+- `INV-007` — `READY`
+- `INV-013` — `READY`
+
+The invariant with the strongest existing semantic contract but still-open cross-language evidence is:
+
+- `INV-003` — `OPEN`
 
 ### WP-5 — Fixture promotion plan
 
