@@ -8,7 +8,7 @@
 Verify that protocol, schema, fixture, and evidence version references are mutually compatible under the approved version-compatibility contract.
 
 ## Preconditions
-- The repository-local draft compatibility matrix `ck003/decisions/DQ-003/CURRENT_VERSION_COMPATIBILITY_MATRIX.md` is available.
+- The repository-local draft compatibility matrix is available in human-readable form at `ck003/decisions/DQ-003/CURRENT_VERSION_COMPATIBILITY_MATRIX.md` and in machine-readable form at `ck003/decisions/DQ-003/CURRENT_VERSION_COMPATIBILITY_MATRIX.json`.
 - The bound compatibility fixture `fixtures/compatibility/FIX-COMPAT-001_VERSION_MATRIX.json` is available.
 - The implementation or verifier can inspect the version-bearing artifacts required by APS-200 and APS-300.
 
