@@ -78,12 +78,13 @@ The repository currently contains three distinct kinds of fixture artifacts:
 | Artifact | Class | Related CONF | Current posture | Explicit promotion gate |
 |---|---|---|---|---|
 | `fixtures/core/FIX-001_BASIC_EVALUATION.json` | PLACEHOLDER | `CONF-001` | schema and evidence content still TODO-bound | APS-200 entity schemas + APS-300 Evidence Pack contract |
-| `fixtures/corpus/FIX-INV-007_zero_float.json` | CANDIDATE NORMATIVE | `CONF-011` | concrete fixture content exists | controlled execution evidence + explicit APS-500 promotion |
+| `fixtures/corpus/FIX-INV-007_zero_float.json` | CANDIDATE NORMATIVE | `CONF-011` | concrete fixture content exists and is explicitly bound to `CONF-011` | controlled execution evidence + explicit APS-500 promotion |
 | `fixtures/corpus/FIX-INV-012_event_type.json` | WORKING | `CONF-012` | fixture exists, but event vocabulary is unresolved | DQ-004 closure + approved registry entries |
-| `fixtures/corpus/FIX-INV-013_policy_determinism.json` | WORKING | `CONF-013` | fixture intent is clear, but policy/input pair remains unbound | concrete policy/input binding |
+| `fixtures/corpus/FIX-INV-013_policy_determinism.json` | CANDIDATE NORMATIVE | `CONF-013` | fixture now binds one concrete policy/input pair | controlled execution evidence + explicit APS-500 promotion |
 | `fixtures/corpus/FIX-INV-014_aps500_compatibility.json` | WORKING | `CONF-014` | structurally present but blocked on corpus versioning | finalized normative APS-500 corpus version |
 | `fixtures/corpus/FIX-INV-015_canonical_identity.json` | WORKING | `CONF-015` | identity semantics not yet finally bound | APS-000 / APS-200 identity closure |
 | `fixtures/corpus/CANONICAL-001_jcs_evidence.json` | WORKING | `CONF-003` | strong evidence vector exists | discriminating RFC 8785 vector for final CONF-003 PASS |
+| `fixtures/corpus/CANONICAL-002_jcs_discriminating.json` | WORKING | `CONF-003` | first discriminating candidate fixture is prepared for cross-language execution | execute on RI-PY + RI-RS and record observed bytes |
 | `fixtures/ck003/manifest.json` | WORKING | working corpus index | orchestration/support artifact only | promote referenced fixtures individually |
 | `fixtures/ck003/expected_digests.json` | WORKING | serialization support | unresolved digest slots intentionally preserved | freeze canonical-byte / registry / identity dependencies |
 
@@ -92,8 +93,8 @@ The repository currently contains three distinct kinds of fixture artifacts:
 Before the full APS-500 corpus is frozen, the first meaningful conformance wave should focus on:
 
 1. `FIX-INV-007` with `CONF-011`
-2. `FIX-INV-013` with `CONF-013` once a concrete policy/input pair is bound
-3. `CANONICAL-001` with `CONF-003` plus the DQ-002 hash-domain vectors as supporting serialization evidence
+2. `FIX-INV-013` with `CONF-013`
+3. `CANONICAL-001` and `CANONICAL-002` with `CONF-003` plus the DQ-002 hash-domain vectors as supporting serialization evidence
 
 ### 5.3 Placeholder baseline fixture
 

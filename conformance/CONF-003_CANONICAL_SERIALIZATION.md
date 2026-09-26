@@ -40,7 +40,10 @@ CONF-003 does not define canonical serialization. APS-200 §8 does. This test ve
 4. Neither implementation reads the other's artifact, and neither reads a frozen expected value in order to produce its own output.
 5. No state from a prior test run is present.
 
-Bound fixture: **CANONICAL-001** — [`fixtures/corpus/CANONICAL-001_jcs_evidence.json`](../fixtures/corpus/CANONICAL-001_jcs_evidence.json).
+Bound fixtures:
+
+- **CANONICAL-001** — [`fixtures/corpus/CANONICAL-001_jcs_evidence.json`](../fixtures/corpus/CANONICAL-001_jcs_evidence.json)
+- **CANONICAL-002** — [`fixtures/corpus/CANONICAL-002_jcs_discriminating.json`](../fixtures/corpus/CANONICAL-002_jcs_discriminating.json)
 
 ---
 
@@ -141,10 +144,11 @@ Plus: the gate's own output, the negative-control results, and a production-inte
 |---|---|---|
 | CANONICAL-001, RI-PY actual execution | PASS | `rfc8785` 0.1.4 @ `49d0e4f6` |
 | CANONICAL-001, RI-RS actual execution | PASS | `serde_json_canonicalizer` 0.3.2 @ `4e9e2284` |
+| CANONICAL-002 discriminating fixture | READY FOR EXECUTION | working corpus candidate prepared; cross-language execution pending |
 | C1–C8 | PASS | CROSS-LANGUAGE-001 |
 | N1–N3 | PASS (all rejected) | CROSS-LANGUAGE-001 |
 | §4.3 profile discrimination, RI-PY only | PASS | `test_jcs_behavior.py`, 13 passed |
-| §4.3 profile discrimination, cross-language | **NOT ESTABLISHED** | CANONICAL-001 is JCS-degenerate |
+| §4.3 profile discrimination, cross-language | READY FOR EXECUTION | CANONICAL-002 prepared to discriminate RFC 8785 from naive sorted JSON |
 | §4.5 prohibited-input controls | NOT EXECUTED | — |
 
 **CONF-003 verdict: PARTIAL.** See [`closures/DQ-006_CLOSURE_PACKAGE.md`](../closures/DQ-006_CLOSURE_PACKAGE.md).
@@ -159,6 +163,6 @@ Plus: the gate's own output, the negative-control results, and a production-inte
 | Invariant | INV-003 (exercises INV-006, INV-011) |
 | Normative source | APS-200 §8 · APS-300 §5 |
 | Decision | ADR-CK003-DQ006 · DQ-006 |
-| Fixture | CANONICAL-001 |
+| Fixture | CANONICAL-001, CANONICAL-002 |
 | Evidence Type | EVID-CORE |
 | Closure record | `closures/DQ-006_CLOSURE_PACKAGE.md` |

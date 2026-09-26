@@ -23,9 +23,9 @@ fixtures/
 | Fixture ID | Name | Category | CONF Test | Status |
 |------------|------|----------|-----------|--------|
 | FIX-001 | Basic Evaluation | CORE | CONF-001 | TODO |
-| FIX-INV-007 | Zero Float Runtime | CORPUS | CONF-011 | READY (working corpus) |
+| FIX-INV-007 | Zero Float Runtime | CORPUS | CONF-011 | READY |
 | FIX-INV-012 | Event Type / Auditability | CORPUS | CONF-012 | REGISTRY_DEPENDENT |
-| FIX-INV-013 | Policy Determinism | CORPUS | CONF-013 | PARAMETRIC |
+| FIX-INV-013 | Policy Determinism | CORPUS | CONF-013 | READY |
 | FIX-INV-014 | APS-500 Compatibility | CORPUS | CONF-014 | APS500_VERSION_BLOCKED |
 | FIX-INV-015 | Canonical Identity | CORPUS | CONF-015 | APS000_BINDING_BLOCKED |
 
@@ -44,12 +44,13 @@ Use the following promotion classes when deciding whether an artifact belongs in
 | Artifact | Class | Reason | Explicit promotion gate |
 |----------|-------|--------|-------------------------|
 | `core/FIX-001_BASIC_EVALUATION.json` | `PLACEHOLDER` | Canonical request/result/evidence content still contains TODO fields | APS-200 schemas + APS-300 Evidence Pack contract |
-| `corpus/FIX-INV-007_zero_float.json` | `CANDIDATE NORMATIVE` | Concrete input and expected assertions already exist | controlled execution evidence + APS-500 promotion |
+| `corpus/FIX-INV-007_zero_float.json` | `CANDIDATE NORMATIVE` | Fixture is now explicitly bound to `CONF-011` and marked ready for controlled execution | controlled execution evidence + APS-500 promotion |
 | `corpus/FIX-INV-012_event_type.json` | `WORKING` | Useful closure fixture, but depends on unresolved registry semantics | DQ-004 closure + approved event tokens |
-| `corpus/FIX-INV-013_policy_determinism.json` | `WORKING` | Determinism intent is defined, but policy/input binding is still placeholder-based | bind concrete policy/input pair |
+| `corpus/FIX-INV-013_policy_determinism.json` | `CANDIDATE NORMATIVE` | Fixture now binds one concrete policy/input pair for `CONF-013` | controlled execution evidence + APS-500 promotion |
 | `corpus/FIX-INV-014_aps500_compatibility.json` | `WORKING` | Fixture is present but explicitly blocked on corpus/version binding | finalized APS-500 corpus version |
 | `corpus/FIX-INV-015_canonical_identity.json` | `WORKING` | Identity expectations exist, but canonical fields are not yet normatively fixed | APS-000 / APS-200 identity closure |
 | `corpus/CANONICAL-001_jcs_evidence.json` | `WORKING` | Strong evidence vector, but not yet discriminating enough for final profile closure | discriminating RFC 8785 vector (DQ-006 residual R1) |
+| `corpus/CANONICAL-002_jcs_discriminating.json` | `WORKING` | First JCS-discriminating candidate fixture is prepared for cross-language execution | execute on RI-PY + RI-RS and record observed bytes |
 | `ck003/manifest.json` | `WORKING` | Useful working-corpus inventory, not a normative fixture by itself | promote referenced fixtures individually |
 | `ck003/expected_digests.json` | `WORKING` | Explicitly preserves unresolved digest slots without false PASS claims | freeze remaining canonical-byte / registry / identity dependencies |
 
@@ -58,8 +59,8 @@ Use the following promotion classes when deciding whether an artifact belongs in
 The minimum fixture set worth executing before the full APS-500 corpus is frozen is:
 
 1. `FIX-INV-007` with `CONF-011`
-2. `FIX-INV-013` with `CONF-013` once one concrete policy/input pair is bound
-3. `CANONICAL-001` with `CONF-003` and the DQ-002 hash-domain vectors as supporting serialization evidence
+2. `FIX-INV-013` with `CONF-013`
+3. `CANONICAL-001` and `CANONICAL-002` with `CONF-003`, with the DQ-002 hash-domain vectors as supporting serialization evidence
 
 This package supports the first meaningful controlled conformance wave for:
 
