@@ -23,6 +23,7 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 - `GOVERNANCE_STATUS_INDEX.md` as a short navigation index for current, historical, and non-constitutive governance/status artifacts
 - Draft machine-readable APS-200 entity schemas and APS-300 evidence schemas under `fixtures/schemas/`
 - Current DQ-003 version-compatibility matrix artifacts under `ck003/decisions/DQ-003/`, bound compatibility fixture `fixtures/compatibility/FIX-COMPAT-001_VERSION_MATRIX.json`, repo-native draft runner `scripts/run-draft-conformance.py`, and GitHub Actions workflow `.github/workflows/draft-conformance.yml`
+- Current DQ-004 event-type registry artifacts under `ck003/decisions/DQ-004/` for the local CONF-012 gate
 
 ### Changed
 - APS-200 ENT-002 / ENT-003 now close the current draft working-profile payload contract (`AURA-DRAFT-CORE-001`), including a concrete request payload, result payload, and working decision vocabulary
@@ -61,6 +62,7 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 - `compliance/TRACEABILITY_MATRIX.md` now references concrete APS-001 sections for INV-001/002/006/007/008/013 mappings instead of APS-001 TODO placeholders
 - APS index/readme links and status entries now consistently point APS-001 to `specification/APS-001_PROTOCOL_SPECIFICATION.md` as DRAFT
 - CONF-008, VERSIONING, APS-400, APS-500, traceability docs, and completion/status docs now reflect the explicit DQ-003 compatibility matrix, the bound FIX-COMPAT-001 fixture, the repo-native draft runner, and the new repository-local CI gate
+- CONF-012, the event-type registry/docs, FIX-INV-012, APS-400/APS-500, and completion/status docs now reflect the current repository-local DQ-004 auditability gate
 
 ---
 

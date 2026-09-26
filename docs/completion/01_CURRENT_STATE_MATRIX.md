@@ -12,7 +12,7 @@
 | APS-100 | **DRAFT / OPEN** | 15 invariants defined and mapped to CONF-001…015 | Align authority, verification language and execution evidence with APS-001 |
 | APS-200 | **DRAFT / OPEN** | Canonical entities + common object contract; draft machine-readable schemas now close the current working-profile ENT-002/ENT-003 payloads under `fixtures/schemas/`, and the current DQ-003 compatibility matrix is now explicit | Additional profile schemas, identity closure, approved event-type registry tokens |
 | APS-300 | **DRAFT / OPEN** | Evidence model exists; draft machine-readable Evidence Object / Evidence Pack schemas now publish a concrete current draft `EPR-CORE` content contract for `FIX-001` under `fixtures/schemas/` | Attestation lifecycle closure beyond the current draft working path, additional profile vocabularies, executable fixture/evidence path |
-| APS-400 | **DRAFT / INCOMPLETE** | CONF-001…015 documents exist; CONF-001/002/004/005/006/010 run via `scripts/check-fix001-evidence.py`, and CONF-008 now runs through `scripts/run-draft-conformance.py` against the explicit DQ-003 matrix | Expand executable coverage beyond the current draft-local subset and gather implementation-side PASS/FAIL evidence |
+| APS-400 | **DRAFT / INCOMPLETE** | CONF-001/002/004/005/006/010 run via `scripts/check-fix001-evidence.py`, and CONF-008 plus CONF-012 now run through `scripts/run-draft-conformance.py` against explicit local DQ artifacts | Expand executable coverage beyond the current draft-local subset and gather implementation-side PASS/FAIL evidence |
 | APS-500 | **DRAFT / INCOMPLETE** | Fixture contract exists; `FIX-001` supports the current draft request/result/evidence/replay/platform gate and `FIX-COMPAT-001` now binds the current DQ-003 compatibility matrix | Publish canonical machine-readable fixture set and expected outputs |
 | APS-900 | **DRAFT / INCOMPLETE** | Traceability model exists | Every normative requirement must resolve to test, fixture, evidence, implementation and release |
 | APS-950 | **DRAFT / OPEN** | RI requirements exist | Reference implementation certification after conformance gate |
@@ -20,7 +20,7 @@
 | Traceability Matrix | **DRAFT / INCOMPLETE** | `compliance/TRACEABILITY_MATRIX.md` contains current mappings but mixed status maturity | Populate objective statuses; no unsupported PASS claims |
 | CK-003 DQ-002 | **PARTIAL / EVIDENCE PRESENT** | `ck003/dq-002-hash-domain` | Keep only the accepted hash-domain contract as normative and preserve the rest as evidence/history |
 | CK-003 DQ-003 | **READY / LOCAL GATE** | versioning snapshot, explicit compatibility matrix, bound fixture, and repo-local CONF-008 gate now exist | Run the same matrix against RI-PY / RI-RS and promote it from local draft use to release-grade evidence |
-| CK-003 DQ-004 | **OPEN** | No DQ-004 closure package on `main` found | Complete event-type semantics, fixture, conformance and gate |
+| CK-003 DQ-004 | **READY / LOCAL GATE** | event-type semantics, a current draft registry token, a bound fixture, and a repo-local CONF-012 gate now exist | Extend the registry beyond the local draft token and promote the gate with RI evidence |
 | CI | **DRAFT / READY** | `.github/workflows/draft-conformance.yml` now runs the repo-native draft conformance runner and publishes a JSON report artifact | Extend the gate beyond the current draft-local subset and bind it to RI evidence |
 | Release v1.0 | **NOT READY** | Roadmap Milestone 4 remains unchecked | Only release after all mandatory gates are evidenced |
 

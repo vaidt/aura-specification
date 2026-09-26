@@ -67,6 +67,7 @@ It:
 
 - executes the `FIX-001` local draft gate for `CONF-001/002/004/005/006/010`;
 - executes the current DQ-003 compatibility matrix gate for `CONF-008`;
+- executes the current DQ-004 auditability gate for `CONF-012`;
 - emits one status per `CONF-001…CONF-015`, using `PASS / FAIL / ERROR / OPEN / BLOCKED / READY`;
 - can write a machine-readable JSON report for CI.
 

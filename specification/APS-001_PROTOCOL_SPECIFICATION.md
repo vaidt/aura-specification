@@ -206,7 +206,7 @@ This draft does not itself grant approval.
 The following must be closed before APS-001 can be approved:
 
 1. exact APS-300 Evidence Pack schema — *the cryptographic binding is closed: APS-300 §5.1 binds `evidence_hash` to APS-200 §8 canonical bytes*;
-2. DQ-004 event-type semantics;
+2. broader DQ-004 event-type vocabulary and implementation evidence beyond the current repository-local draft gate;
 3. conformance coverage for all 15 invariants;
 4. canonical APS-500 fixture corpus;
 5. executable cross-language conformance runner;

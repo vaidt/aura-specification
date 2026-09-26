@@ -26,7 +26,7 @@ fixtures/
 | FIX-001 | Basic Evaluation | CORE | CONF-001, CONF-002, CONF-004, CONF-005, CONF-006, CONF-010 | WORKING |
 | FIX-COMPAT-001 | Version Compatibility Matrix | COMPATIBILITY | CONF-008 | WORKING |
 | FIX-INV-007 | Zero Float Runtime | CORPUS | CONF-011 | READY |
-| FIX-INV-012 | Event Type / Auditability | CORPUS | CONF-012 | REGISTRY_DEPENDENT |
+| FIX-INV-012 | Event Type / Auditability | CORPUS | CONF-012 | WORKING |
 | FIX-INV-013 | Policy Determinism | CORPUS | CONF-013 | READY |
 | FIX-INV-014 | APS-500 Compatibility | CORPUS | CONF-014 | APS500_VERSION_BLOCKED |
 | FIX-INV-015 | Canonical Identity | CORPUS | CONF-015 | APS000_BINDING_BLOCKED |
@@ -48,7 +48,7 @@ Use the following promotion classes when deciding whether an artifact belongs in
 | `core/FIX-001_BASIC_EVALUATION.json` | `WORKING` | Current draft request/result payload and current draft `EPR-CORE` evidence content are concrete, and a repository-local verifier now executes CONF-001/002/004/005/006/010 against it | controlled implementation-side evidence + APS-500 promotion |
 | `compatibility/FIX-COMPAT-001_VERSION_MATRIX.json` | `WORKING` | Binds the current DQ-003 matrix to executable positive/negative compatibility cases for CONF-008 | implementation-side RI evidence + APS-500 promotion |
 | `corpus/FIX-INV-007_zero_float.json` | `CANDIDATE NORMATIVE` | Fixture is now explicitly bound to `CONF-011` and marked ready for controlled execution | controlled execution evidence + APS-500 promotion |
-| `corpus/FIX-INV-012_event_type.json` | `WORKING` | Useful closure fixture, but depends on unresolved registry semantics | DQ-004 closure + approved event tokens |
+| `corpus/FIX-INV-012_event_type.json` | `WORKING` | Binds one concrete draft Audit Record and the current local DQ-004 registry token for CONF-012 | broader approved event vocabulary + implementation-side evidence |
 | `corpus/FIX-INV-013_policy_determinism.json` | `CANDIDATE NORMATIVE` | Fixture now binds one concrete policy/input pair for `CONF-013` | controlled execution evidence + APS-500 promotion |
 | `corpus/FIX-INV-014_aps500_compatibility.json` | `WORKING` | Fixture is present but explicitly blocked on corpus/version binding | finalized APS-500 corpus version |
 | `corpus/FIX-INV-015_canonical_identity.json` | `WORKING` | Identity expectations exist, but canonical fields are not yet normatively fixed | APS-000 / APS-200 identity closure |

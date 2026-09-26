@@ -45,9 +45,9 @@ class DraftRunnerTests(unittest.TestCase):
     def test_build_report_summary_counts(self) -> None:
         report = runner.build_report()
         self.assertEqual(len(report["results"]), 15)
-        self.assertEqual(report["summary"]["PASS"], 7)
+        self.assertEqual(report["summary"]["PASS"], 8)
         self.assertEqual(report["summary"]["OPEN"], 2)
-        self.assertEqual(report["summary"]["BLOCKED"], 4)
+        self.assertEqual(report["summary"]["BLOCKED"], 3)
         self.assertEqual(report["summary"]["READY"], 2)
 
     def test_build_report_conf008_failure_result(self) -> None:
@@ -65,6 +65,29 @@ class DraftRunnerTests(unittest.TestCase):
         self.assertEqual(conf008["status"], "FAIL")
         self.assertIn("boom", conf008["note"])
         self.assertEqual(report["summary"]["FAIL"], 1)
+
+    def test_run_conf012_result_passes(self) -> None:
+        result = runner.run_conf012_result()
+        self.assertEqual(result["id"], "CONF-012")
+        self.assertEqual(result["status"], "PASS")
+
+    def test_build_report_conf012_failure_result(self) -> None:
+        fake_fix001_results = [
+            runner.make_result(conf_id, "PASS", "ok") for conf_id in runner.FIX001_CONF_IDS
+        ]
+
+        with mock.patch.object(runner, "run_fix001_results", return_value=fake_fix001_results):
+            with mock.patch.object(
+                runner, "run_conf008_result", return_value=runner.make_result("CONF-008", "PASS", "ok")
+            ):
+                with mock.patch.object(
+                    runner, "run_conf012_result", side_effect=RuntimeError("audit boom")
+                ):
+                    report = runner.build_report()
+
+        conf012 = next(result for result in report["results"] if result["id"] == "CONF-012")
+        self.assertEqual(conf012["status"], "FAIL")
+        self.assertIn("audit boom", conf012["note"])
 
     def test_run_fix001_results_failure_is_reported_as_failures(self) -> None:
         failing_gate = mock.Mock()

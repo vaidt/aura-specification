@@ -71,7 +71,7 @@ The current repository state distinguishes structural assignment from executable
 | CONF-009 | OPEN | structural mapping exists, but the full invariant-to-execution gate is not yet evidenced |
 | CONF-010 | READY | controlled draft verifier exists for `FIX-001`; implementation-side execution evidence is still missing |
 | CONF-011 | READY | working fixture exists; remaining step is controlled execution evidence |
-| CONF-012 | BLOCKED | DQ-004 event-type registry closure required |
+| CONF-012 | READY | repository-local draft event registry, bound FIX-INV-012 fixture, and draft runner gate now exist; broader vocabulary and RI evidence are still missing |
 | CONF-013 | READY | working fixture exists, but one concrete policy/input binding is still needed before execution |
 | CONF-014 | BLOCKED | APS-500 corpus version is not yet normatively frozen |
 | CONF-015 | BLOCKED | APS-000 / APS-200 identity contract still incomplete |

@@ -18,6 +18,8 @@ COMPAT_FIXTURE_PATH = ROOT / "fixtures" / "compatibility" / "FIX-COMPAT-001_VERS
 COMPAT_MATRIX_PATH = (
     ROOT / "ck003" / "decisions" / "DQ-003" / "CURRENT_VERSION_COMPATIBILITY_MATRIX.json"
 )
+AUDIT_FIXTURE_PATH = ROOT / "fixtures" / "corpus" / "FIX-INV-012_event_type.json"
+EVENT_REGISTRY_PATH = ROOT / "ck003" / "decisions" / "DQ-004" / "CURRENT_EVENT_TYPE_REGISTRY.json"
 
 CONF_TITLES = {
     "CONF-001": "Deterministic Evaluation",
@@ -57,11 +59,6 @@ NON_EXECUTED_RESULTS = [
         "CONF-011",
         "READY",
         "FIX-INV-007 exists; the remaining step is controlled execution evidence.",
-    ),
-    (
-        "CONF-012",
-        "BLOCKED",
-        "DQ-004 event vocabulary is still empty, so strict auditability cannot yet PASS.",
     ),
     (
         "CONF-013",
@@ -216,12 +213,55 @@ def run_conf008_result() -> dict:
     )
 
 
+def run_conf012_result() -> dict:
+    support = load_fix001_gate_module()
+    registry = load_json(EVENT_REGISTRY_PATH)
+    fixture = load_json(AUDIT_FIXTURE_PATH)
+    audit_record = fixture["expected_audit_record"]
+    payload = fixture["input"]["event_payload"]
+
+    support.validate_schema("event_types.json", registry)
+    support.validate_schema("audit-record.schema.json", audit_record)
+
+    registry_tokens = {entry["event_type"] for entry in registry["event_types"]}
+    if fixture["input"]["valid_event_type"] not in registry_tokens:
+        raise AssertionError("valid_event_type is not registered in the current DQ-004 registry")
+    if fixture["input"]["invalid_event_type"] in registry_tokens:
+        raise AssertionError("invalid_event_type must remain unregistered")
+    if fixture["input"]["alias_event_type"] in registry_tokens:
+        raise AssertionError("alias_event_type must not be silently accepted as a registered token")
+    if len(registry_tokens) != fixture["expected"]["registered_token_count"]:
+        raise AssertionError("registered token count does not match FIX-INV-012 expectations")
+
+    payload_hash = support.canonical_sha256(payload)
+    if audit_record["event_payload_hash"] != payload_hash:
+        raise AssertionError("event_payload_hash does not match canonical payload bytes")
+    if audit_record["integrity_hash"] != support.make_integrity_hash(audit_record):
+        raise AssertionError("audit_record integrity_hash does not match canonical object bytes")
+    if audit_record["event_type"] != fixture["input"]["valid_event_type"]:
+        raise AssertionError("audit_record event_type does not match the registered fixture token")
+    if audit_record["previous_record_hash"] != "0" * 64:
+        raise AssertionError("draft local CONF-012 gate expects the first-record zero sentinel")
+    if audit_record["sequence_number"] != 0:
+        raise AssertionError("draft local CONF-012 gate expects a first-record sequence_number of 0")
+
+    return make_result(
+        "CONF-012",
+        "PASS",
+        "CURRENT_EVENT_TYPE_REGISTRY registers AUDIT_RECORD, FIX-INV-012 validates registry membership and syntax, and the draft Audit Record hashes recompute correctly",
+    )
+
+
 def build_report() -> dict:
     results = run_fix001_results()
     try:
         results.append(run_conf008_result())
     except Exception as exc:  # pragma: no cover - top-level reporting path
         results.append(make_result("CONF-008", "FAIL", f"CONF-008 draft gate failed: {exc}"))
+    try:
+        results.append(run_conf012_result())
+    except Exception as exc:  # pragma: no cover - top-level reporting path
+        results.append(make_result("CONF-012", "FAIL", f"CONF-012 draft gate failed: {exc}"))
     results.extend(make_result(*entry) for entry in NON_EXECUTED_RESULTS)
     results.sort(key=lambda item: item["id"])
 
