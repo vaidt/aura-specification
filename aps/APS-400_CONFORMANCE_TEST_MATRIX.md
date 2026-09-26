@@ -4,7 +4,7 @@ Document ID: APS-400
 Version: 1.0-DRAFT  
 Status: DRAFT  
 Classification: Normative Specification  
-Authority: APS-001 §9, §11 · APS-100 · APS-200 · APS-300  
+Authority: APS-001 §9, §11 · APS-100 · APS-200 · APS-300
 Last Review: 2026-09-26
 
 ---
@@ -12,6 +12,8 @@ Last Review: 2026-09-26
 ## 1. Purpose
 
 APS-400 defines the official set of Conformance Tests that every Aura implementation MUST pass to be considered conformant with the protocol.
+
+Assignment of a `CONF-xxx` identifier is a structural requirement only. It does **not** constitute execution evidence or a PASS result.
 
 ## 2. Test Categories
 
@@ -44,13 +46,35 @@ Full test definitions: [../conformance/](../conformance/)
 | CONF-006 | Platform Independence | INV-006 | Functional | DRAFT |
 | CONF-007 | Fail Closed | INV-008 | Security | DRAFT |
 | CONF-008 | Version Compatibility | INV-009 | Compatibility | DRAFT |
-| CONF-009 | Evidence Completeness | INV-004 · INV-005 | Evidence | DRAFT |
+| CONF-009 | Conformance Completeness | INV-010 | Structural / Traceability | DRAFT |
 | CONF-010 | Cryptographic Verification | INV-011 | Integrity | DRAFT |
 | CONF-011 | Zero Float Runtime | INV-007 | Determinism / Static Analysis | DRAFT |
 | CONF-012 | Auditability | INV-012 | Evidence / Audit | DRAFT |
 | CONF-013 | Policy Determinism | INV-013 | Determinism / Functional | DRAFT |
 | CONF-014 | Reference Compatibility | INV-014 | Compatibility / Fixtures | DRAFT |
 | CONF-015 | Canonical Identity | INV-015 | Identity / Data Model | DRAFT |
+
+### 4.1 Current execution readiness posture
+
+The current repository state distinguishes structural assignment from executable readiness:
+
+| Test ID | Execution posture | Current limiting factor |
+|---|---|---|
+| CONF-001 | BLOCKED | `FIX-001` remains placeholder-only |
+| CONF-002 | BLOCKED | replay fixture corpus not yet authored |
+| CONF-003 | OPEN | cross-language evidence exists, but the corpus still lacks a JCS-discriminating vector |
+| CONF-004 | BLOCKED | Evidence Pack fixture path still incomplete |
+| CONF-005 | BLOCKED | traceability/evidence fixture path still incomplete |
+| CONF-006 | BLOCKED | baseline fixture plus cross-platform evidence missing |
+| CONF-007 | BLOCKED | error-handling fixture missing |
+| CONF-008 | BLOCKED | DQ-003 compatibility matrix and bound fixture missing |
+| CONF-009 | OPEN | structural mapping exists, but the full invariant-to-execution gate is not yet evidenced |
+| CONF-010 | BLOCKED | cryptographic-verification fixture path incomplete |
+| CONF-011 | READY | working fixture exists; remaining step is controlled execution evidence |
+| CONF-012 | BLOCKED | DQ-004 event-type registry closure required |
+| CONF-013 | READY | working fixture exists, but one concrete policy/input binding is still needed before execution |
+| CONF-014 | BLOCKED | APS-500 corpus version is not yet normatively frozen |
+| CONF-015 | BLOCKED | APS-000 / APS-200 identity contract still incomplete |
 
 ### CONF-001…CONF-010
 
@@ -88,7 +112,9 @@ See [../conformance/CONF-015_CANONICAL_IDENTITY.md](../conformance/CONF-015_CANO
 
 ## 5. Test Results
 
-Each test returns one of: **PASS**, **FAIL**, **NOT APPLICABLE**, **ERROR**.
+Each test execution returns one of: **PASS**, **FAIL**, **PARTIAL**, **NOT APPLICABLE**, **ERROR**.
+
+Repository planning and traceability work may also classify a test as **OPEN**, **BLOCKED**, **READY**, or **NOT VERIFIED** before or between executions. These are readiness states, not PASS-equivalent outcomes.
 
 Assignment of a CONF identifier does not constitute a PASS result.
 
@@ -100,7 +126,7 @@ Template: [../templates/CONFORMANCE_REPORT_TEMPLATE.md](../templates/CONFORMANCE
 
 ## 7. Certification Rules
 
-An implementation MAY be marked Aura Protocol Conformant if all mandatory tests return PASS, no Critical violations exist, a valid Evidence Pack has been generated, and the applicable APS version is current.
+An implementation MAY be marked Aura Protocol Conformant only if all mandatory tests return PASS, no mandatory test remains OPEN / BLOCKED / READY / NOT VERIFIED, a valid Evidence Pack has been generated, and the applicable APS version is current.
 
 ## 8. Traceability Matrix
 
@@ -111,7 +137,11 @@ Protocol Invariant
       ↓
 Conformance Test (CONF-xxx)
       ↓
+Reference Fixture (FIX-xxx)
+      ↓
 Evidence (EVID-xxx)
+      ↓
+Reference Implementation
       ↓
 Release (REL-xxx)
 ```
