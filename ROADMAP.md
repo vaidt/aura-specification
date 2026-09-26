@@ -84,6 +84,20 @@ Priority: **Medium**.
 
 ---
 
+## Production Readiness Gates
+
+Aura is **not production-ready** until all of the following are evidenced:
+
+- [ ] APS-001 completes Architecture Review and becomes the stable root normative reference
+- [ ] APS-200 and APS-300 publish exact machine-verifiable schemas
+- [ ] APS-400 and APS-500 move from draft definitions to executable conformance coverage with canonical fixtures
+- [ ] APS-900 traceability is complete from requirement to fixture, evidence, implementation, and release
+- [ ] Repository-native CI enforces structural and conformance gates
+- [ ] RI-PY and RI-RS complete objective certification against the same canonical fixture corpus
+- [ ] Release evidence for `v1.0.0` is published without unresolved critical blockers
+
+---
+
 ## Future Considerations
 
 - Binary evidence envelope format
@@ -98,6 +112,10 @@ Priority: **Medium**.
 
 ## Deprecation Schedule
 
-No documents are currently deprecated.
+Historical material already exists and must remain clearly separated from active authority:
+
+- Root `*.pdf` / `*.txt` source imports are provenance copies, not active canonical documents
+- `releases/v0.1.0/` is a historical release snapshot and does not define current draft status
+- Superseded or archived working records must stay out of active indexes unless explicitly restored through review
 
 See [VERSIONING.md](VERSIONING.md) for the deprecation policy.

@@ -43,6 +43,16 @@ aura-specification/
 
 ---
 
+## Current Repository State
+
+- **Canonical / active**: `constitution/`, `specification/`, `aps/`, `invariants/`, `conformance/`, `fixtures/`, `evidence/`, `compliance/`, `reference/`, `adrs/`, `rfcs/`, `arc/`
+- **Working / closure support**: `ck003/`, `closures/`, `docs/completion/` — these track remediation, evidence, and planning work; they are not authoritative protocol status by themselves
+- **Historical / provenance-only**: root `*.pdf` / `*.txt` source imports and historical release snapshots under `releases/`; they are retained for provenance and audit, not as the current canonical state
+
+When current status conflicts with a historical snapshot, use the canonical Markdown corpus and the current completion/roadmap documents.
+
+---
+
 ## Specification Documents
 
 | Document | Title | Status |
