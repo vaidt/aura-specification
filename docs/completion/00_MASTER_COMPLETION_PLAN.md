@@ -219,6 +219,24 @@ This first WP-2 pass covers the highest-priority normative dependencies reviewed
    - align APS-100 traceability wording with APS-001 / APS-900
    - decide whether APS-100 itself or the registry is the authoritative home for invariant verification/evidence detail
 
+#### WP-2 deliverable — second correction wave for APS-400 / APS-500 / APS-900
+
+This second WP-2 pass aligns the downstream execution, fixture, and compliance documents with the current repository state after the APS-100 / APS-200 / APS-300 corrections and the WP-4 / WP-5 / WP-6 planning work.
+
+| Document | Main correction applied | Resolved inconsistency | Remaining open dependency |
+|---|---|---|---|
+| APS-400 | corrected `CONF-009` to `INV-010`, added readiness posture, and restored `CONF → FIX → EVID → RI → REL` traceability order | removes the stale mapping where `CONF-009` was described as an evidence test for `INV-004 / INV-005` instead of the invariant-completeness gate for `INV-010` | executable evidence is still broadly absent; readiness states are not PASS |
+| APS-500 | distinguished normative APS-500 fixtures from working corpus artifacts and recorded the promotion register | removes the false implication that all current fixture files are already canonical certification fixtures | APS-200 schemas, APS-300 pack contract, DQ-004, corpus versioning, and identity closure still block broader promotion |
+| APS-900 | expanded the compliance-status model and replaced stale examples with current mappings | removes example rows that referenced nonexistent or obsolete fixture/evidence identifiers | complete machine-readable requirement mapping and release-ready evidence still remain open |
+
+#### WP-2 — next correction priority after this wave
+
+After APS-400 / APS-500 / APS-900 alignment, the active WP-2 stream should focus on:
+
+1. targeted correction of the underlying `conformance/CONF-008`, `CONF-009`, `CONF-014`, and `CONF-015` definitions where their detailed procedures still lag the APS-level contract
+2. promotion or binding work for `FIX-INV-007`, `FIX-INV-013`, and the first discriminating `CONF-003` vector
+3. completion of the remaining APS-001-dependent normative closures (`DQ-003`, `DQ-004`, identity binding, APS-500 corpus freeze)
+
 ### WP-3 — CK-003 blocker register
 
 **Status:** CLOSED

@@ -5,7 +5,7 @@ Version: 1.0-DRAFT
 Status: DRAFT  
 Classification: Normative Test Specification  
 Authority: APS-100 · APS-200 · APS-300 · APS-400  
-Last Review: 2026-07-23
+Last Review: 2026-09-26
 
 ---
 
@@ -13,7 +13,9 @@ Last Review: 2026-07-23
 
 APS-500 defines the canonical set of Reference Fixtures used to validate Aura Protocol implementations.
 
-Every conformant implementation MUST pass tests using these fixtures unchanged.
+Every conformant implementation MUST pass the **normative APS-500 fixture corpus** unchanged.
+
+Working fixtures and closure artifacts may exist elsewhere in the repository before they are promoted into the normative APS-500 corpus. Their presence alone does not make them certification-ready fixtures.
 
 ---
 
@@ -29,7 +31,7 @@ Reference Fixtures provide:
 
 ## 3. Fixture Structure
 
-Each fixture MUST contain:
+Each **normative APS-500 fixture** MUST contain:
 
 | Field | Type | Requirement | Description |
 |-------|------|-------------|-------------|
@@ -42,6 +44,8 @@ Each fixture MUST contain:
 | `expected_evidence` | object | MUST | Expected Evidence Pack (APS-300) structure |
 | `related_invariants` | array | MUST | List of INV-xxx identifiers |
 | `related_conformance_tests` | array | MUST | List of CONF-xxx identifiers |
+
+Working corpus artifacts used during closure work MAY be structurally incomplete while the underlying APS-200 / APS-300 contracts are still open. Such artifacts are non-normative until explicitly promoted.
 
 ---
 
@@ -58,16 +62,47 @@ Each fixture MUST contain:
 
 ---
 
-## 5. Canonical Fixtures
+## 5. Current Corpus Posture
 
-> **TODO**: Canonical fixture data requires APS-200 entity schemas and APS-300 Evidence Pack format to be finalized before fixtures can be specified. See ROADMAP.md Milestone 2.
+The repository currently contains three distinct kinds of fixture artifacts:
 
-### FIX-001 — Basic Evaluation (Placeholder)
-**Category**: FIX-CORE  
-**Related Test**: CONF-001  
-**Related Invariants**: INV-001, INV-014  
-**Status**: TODO — input and output schemas pending APS-200 finalization  
-See [../fixtures/FIX-001_BASIC_EVALUATION.json](../fixtures/FIX-001_BASIC_EVALUATION.json)
+1. **PLACEHOLDER**
+   - file exists, but canonical test content is still TODO-bound
+2. **WORKING**
+   - useful closure or development artifact, but not yet fit for normative APS-500 promotion
+3. **CANDIDATE NORMATIVE**
+   - concrete fixture content exists and can be promoted once the remaining explicit gate closes
+
+### 5.1 Fixture Promotion Register
+
+| Artifact | Class | Related CONF | Current posture | Explicit promotion gate |
+|---|---|---|---|---|
+| `fixtures/core/FIX-001_BASIC_EVALUATION.json` | PLACEHOLDER | `CONF-001` | schema and evidence content still TODO-bound | APS-200 entity schemas + APS-300 Evidence Pack contract |
+| `fixtures/corpus/FIX-INV-007_zero_float.json` | CANDIDATE NORMATIVE | `CONF-011` | concrete fixture content exists | controlled execution evidence + explicit APS-500 promotion |
+| `fixtures/corpus/FIX-INV-012_event_type.json` | WORKING | `CONF-012` | fixture exists, but event vocabulary is unresolved | DQ-004 closure + approved registry entries |
+| `fixtures/corpus/FIX-INV-013_policy_determinism.json` | WORKING | `CONF-013` | fixture intent is clear, but policy/input pair remains unbound | concrete policy/input binding |
+| `fixtures/corpus/FIX-INV-014_aps500_compatibility.json` | WORKING | `CONF-014` | structurally present but blocked on corpus versioning | finalized normative APS-500 corpus version |
+| `fixtures/corpus/FIX-INV-015_canonical_identity.json` | WORKING | `CONF-015` | identity semantics not yet finally bound | APS-000 / APS-200 identity closure |
+| `fixtures/corpus/CANONICAL-001_jcs_evidence.json` | WORKING | `CONF-003` | strong evidence vector exists | discriminating RFC 8785 vector for final CONF-003 PASS |
+| `fixtures/ck003/manifest.json` | WORKING | working corpus index | orchestration/support artifact only | promote referenced fixtures individually |
+| `fixtures/ck003/expected_digests.json` | WORKING | serialization support | unresolved digest slots intentionally preserved | freeze canonical-byte / registry / identity dependencies |
+
+### 5.2 Minimum early execution package
+
+Before the full APS-500 corpus is frozen, the first meaningful conformance wave should focus on:
+
+1. `FIX-INV-007` with `CONF-011`
+2. `FIX-INV-013` with `CONF-013` once a concrete policy/input pair is bound
+3. `CANONICAL-001` with `CONF-003` plus the DQ-002 hash-domain vectors as supporting serialization evidence
+
+### 5.3 Placeholder baseline fixture
+
+**FIX-001 — Basic Evaluation**
+**Category:** FIX-CORE
+**Related Test:** CONF-001
+**Related Invariants:** INV-001, INV-014
+**Status:** PLACEHOLDER — input and output schemas pending APS-200 finalization
+See [../fixtures/core/FIX-001_BASIC_EVALUATION.json](../fixtures/core/FIX-001_BASIC_EVALUATION.json)
 
 ---
 
@@ -85,10 +120,12 @@ A fixture whose Expected Output changes becomes a new fixture with a new ID. Old
 ## 7. Validation Rules
 
 An implementation MUST:
-- Use fixtures unmodified
+- Use **normative APS-500 fixtures** unmodified
 - Produce the expected output
 - Produce the expected Evidence Pack
 - Pass all related Conformance Tests
+
+Working corpus artifacts may be used during closure work, but they MUST NOT be reported as normative PASS evidence until they are promoted into the APS-500 corpus.
 
 ---
 
@@ -110,7 +147,7 @@ Evidence Pack
 
 ## 9. Certification
 
-Reference Fixtures are the mandatory basis of the certification process. Failure on a required fixture = failure of the related Conformance Test.
+Reference Fixtures are the mandatory basis of the certification process. Failure on a required **normative** fixture = failure of the related Conformance Test.
 
 ---
 
@@ -121,6 +158,8 @@ Fixtures are stored in [`../fixtures/`](../fixtures/):
 ```
 fixtures/
 ├── README.md
+├── ck003/                working manifests and expected digests for closure work
+├── corpus/               working fixture corpus for open closure items
 ├── schemas/              JSON Schema definitions for APS-200 entities
 ├── core/                 FIX-CORE fixtures
 ├── boundary/             FIX-BOUNDARY fixtures
@@ -129,6 +168,8 @@ fixtures/
 ├── evidence/             FIX-EVIDENCE fixtures
 └── compatibility/        FIX-COMPAT fixtures
 ```
+
+Only fixtures explicitly promoted into the normative APS-500 corpus are certification-grade fixtures.
 
 ---
 
