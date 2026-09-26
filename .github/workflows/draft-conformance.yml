@@ -19,7 +19,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install validator dependency
-        run: python -m pip install jsonschema
+        run: python -m pip install "jcs==0.2.1" "jsonschema==4.10.3"
 
       - name: Run draft conformance runner
         run: python scripts/run-draft-conformance.py --json-out artifacts/draft-conformance-report.json

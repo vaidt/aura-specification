@@ -24,10 +24,11 @@ import sys
 from pathlib import Path
 
 try:
+    import jcs
     from jsonschema import Draft202012Validator
 except ImportError as exc:  # pragma: no cover - dependency guard
     raise SystemExit(
-        "Missing dependency: jsonschema. Install with `python -m pip install jsonschema`."
+        "Missing dependency: jcs and/or jsonschema. Install with `python -m pip install jcs jsonschema`."
     ) from exc
 
 
@@ -50,30 +51,7 @@ def load_json(path: Path) -> dict:
 
 
 def canonical_json(value: object) -> str:
-    if value is None:
-        return "null"
-    if value is True:
-        return "true"
-    if value is False:
-        return "false"
-    if isinstance(value, int):
-        return str(value)
-    if isinstance(value, float):
-        raise TypeError("Floating-point values are not supported in the FIX-001 draft path")
-    if isinstance(value, str):
-        return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
-    if isinstance(value, list):
-        return "[" + ",".join(canonical_json(item) for item in value) + "]"
-    if isinstance(value, dict):
-        items = []
-        for key in sorted(value):
-            items.append(
-                json.dumps(key, ensure_ascii=False, separators=(",", ":"))
-                + ":"
-                + canonical_json(value[key])
-            )
-        return "{" + ",".join(items) + "}"
-    raise TypeError(f"Unsupported JSON value type: {type(value)!r}")
+    return jcs.canonicalize(value).decode("utf-8")
 
 
 def canonical_sha256(obj: object) -> str:

@@ -218,7 +218,10 @@ def run_conf008_result() -> dict:
 
 def build_report() -> dict:
     results = run_fix001_results()
-    results.append(run_conf008_result())
+    try:
+        results.append(run_conf008_result())
+    except Exception as exc:  # pragma: no cover - top-level reporting path
+        results.append(make_result("CONF-008", "FAIL", f"CONF-008 draft gate failed: {exc}"))
     results.extend(make_result(*entry) for entry in NON_EXECUTED_RESULTS)
     results.sort(key=lambda item: item["id"])
 

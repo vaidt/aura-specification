@@ -48,6 +48,7 @@ The following remain intentionally deferred until APS-200 / APS-300 schemas and 
 
 It requires Python 3 plus:
 
+- `jcs`
 - `jsonschema`
 
 Run:
