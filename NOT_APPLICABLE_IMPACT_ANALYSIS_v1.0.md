@@ -9,6 +9,8 @@
 **Date:** 2026-09-24  
 **Effect:** NON-CONSTITUTIVE
 
+> Navigation: this is a non-constitutive analysis artifact; see [`GOVERNANCE_STATUS_INDEX.md`](GOVERNANCE_STATUS_INDEX.md) for the current routing of governance/status records.
+
 ## 1. Formal Disposition
 
 This artifact records an unresolved contract decision gap. It does not select an option or authorize implementation.

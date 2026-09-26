@@ -25,6 +25,7 @@ Versioning follows the model defined in [VERSIONING.md](VERSIONING.md).
 ### Changed
 - README.md restructured as canonical repository index
 - README.md now links to `GOVERNANCE_STATUS_INDEX.md` as the short routing index for governance/status artifacts
+- Selected unsigned root-level governance/status records now link back to `GOVERNANCE_STATUS_INDEX.md` so readers can recover the current routing context from inside analysis and conflict documents
 - README.md now points readers to the current authority-binding artifact (`AUTHORITY_BINDING_RECORD_v1.1.md`) and the current DQ-006 status record (`closures/DQ-006_CLOSURE_PACKAGE.md`)
 - Added `closures/README.md` as the closure-record index, explicitly separating authoritative closure records from superseded historical copies
 - evidence/README.md now marks `evidence/DQ-006_CLOSURE_PACKAGE.md` as a historical copy and redirects readers to `/closures/`
