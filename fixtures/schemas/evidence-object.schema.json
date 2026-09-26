@@ -69,8 +69,15 @@
       "pattern": "^[a-f0-9]{64}$"
     },
     "previous_evidence_hash": {
-      "type": ["string", "null"],
-      "pattern": "^[a-f0-9]{64}$"
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
     },
     "attestation_reference": {
       "type": "string",

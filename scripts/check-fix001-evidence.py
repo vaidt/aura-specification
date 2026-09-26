@@ -91,7 +91,9 @@ def expand_local_refs(node: object, cache: dict[str, object] | None = None) -> o
 
 def validate_schema(schema_name: str, instance: object) -> None:
     schema = expand_local_refs(load_json(SCHEMA_DIR / schema_name))
-    Draft202012Validator(schema).validate(instance)
+    Draft202012Validator(
+        schema, format_checker=Draft202012Validator.FORMAT_CHECKER
+    ).validate(instance)
 
 
 def assert_equal(actual: object, expected: object, label: str) -> None:
