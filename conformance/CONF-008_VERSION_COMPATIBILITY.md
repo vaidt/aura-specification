@@ -1,78 +1,43 @@
-# CONF-008 VERSION COMPATIBILITY
+# CONF-008 — Version Compatibility
 
-Document ID: CONF-008
-Version: 1.0-DRAFT
-Status: DRAFT
-Classification: Normative Conformance Test
-Authority: APS-400
-Related Invariant: INV-009
-Last Review: 2026-07-23
+**Related Invariant:** INV-009
+**Category:** Compatibility
+**Status:** DRAFT
 
----
+## Purpose
+Verify that protocol, schema, fixture, and evidence version references are mutually compatible under the approved version-compatibility contract.
 
-## 1. Purpose
+## Preconditions
+- A version-compatibility matrix exists and is approved for the target protocol release.
+- The applicable compatibility fixture is bound to that matrix.
+- The implementation can emit the version-bearing artifacts required by APS-200 and APS-300.
 
-Verify that version fields in Evidence Pack are mutually consistent.
+## Procedure
+1. Resolve the governing compatibility matrix for the protocol version under test.
+2. Load the applicable compatibility fixture set for that matrix.
+3. Execute the implementation and collect the resulting version-bearing artifacts.
+4. Inspect all required version references, including protocol version, schema version, fixture corpus version, and evidence/document bindings.
+5. Compare the observed combination against the approved compatibility matrix.
+6. Record any missing, ambiguous, or incompatible version references.
 
----
+## Expected Result
+All required version references are present and the observed combination is explicitly permitted by the approved compatibility matrix.
 
-## 2. Related APS
+## PASS / FAIL
+- **PASS:** every required version reference is present and the observed combination is permitted by the approved matrix.
+- **FAIL:** any required version reference is missing, contradictory, or outside the approved compatibility matrix.
+- **ERROR:** the governing compatibility matrix or bound compatibility fixture is unresolved, unavailable, or cannot be applied deterministically.
 
-- APS-100: INV-009
-- APS-400 §4: CONF-008
-- APS-300: Evidence requirements
-- APS-500: Reference Fixtures
+## Evidence
+EVID-CORE containing the observed version fields, the resolved compatibility matrix identifier, the fixture identifier, and the evaluation result.
 
----
-
-## 3. Preconditions
-
-- A conformant implementation is available and running
-- Reference fixture FIX-001 (or applicable fixture) is loaded
-- No prior state from a different test run exists
-
-> **TODO**: Specify exact preconditions once APS-200 schemas and APS-500 fixtures are finalized.
-
----
-
-## 4. Test Procedure
-
-Generate an Evidence Pack. Inspect all version fields: protocol_version, schema_version, aps_version.
-
----
-
-## 5. Expected Result
-
-All version fields MUST reference a compatible combination per the version compatibility matrix.
-
----
-
-## 6. Evidence Required
-
-EVID-CORE
-
----
-
-## 7. PASS / FAIL Criteria
-
-| Outcome | Condition |
-|---------|-----------|
-| PASS | Expected result achieved with no deviations |
-| FAIL | Any required field missing, any hash mismatch, or any deviation from expected result |
-| NOT APPLICABLE | Implementation does not support this feature (requires justification) |
-| ERROR | Test infrastructure failure — result not recorded |
-
----
-
-## 8. Traceability
-
+## Traceability
 | Field | Value |
 |-------|-------|
 | Test ID | CONF-008 |
 | Invariant | INV-009 |
-| Related Fixture | FIX-001 (TODO: assign specific fixture) |
+| Related Fixture | FIX-COMPAT / compatibility fixture set bound to the approved matrix |
 | Evidence Type | EVID-CORE |
 
----
-
-> **TODO**: Link to specific fixture file once FIX-xxx canonical fixtures are authored.
+## Current readiness note
+CONF-008 is currently **BLOCKED** in repository planning because DQ-003 version semantics and the bound compatibility fixture are not yet normatively closed.

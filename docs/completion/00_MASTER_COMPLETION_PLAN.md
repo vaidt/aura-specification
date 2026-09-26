@@ -237,6 +237,16 @@ After APS-400 / APS-500 / APS-900 alignment, the active WP-2 stream should focus
 2. promotion or binding work for `FIX-INV-007`, `FIX-INV-013`, and the first discriminating `CONF-003` vector
 3. completion of the remaining APS-001-dependent normative closures (`DQ-003`, `DQ-004`, identity binding, APS-500 corpus freeze)
 
+#### WP-2 deliverable — execution-document correction wave for CONF-008 / CONF-009 / CONF-014 / CONF-015
+
+This follow-up pass corrected the lower-level execution documents so they no longer contradict the APS-level reconciliation:
+
+- `CONF-008` now depends on an approved compatibility matrix and bound compatibility fixtures instead of the stale `FIX-001` placeholder path
+- `CONF-009` now correctly defines **Conformance Completeness** for `INV-010` and records it as structural traceability validation
+- `CONF-014` now distinguishes normative APS-500 fixtures from working-corpus artifacts before PASS accounting
+- `CONF-015` now records explicit identity-contract prerequisites and current blocked posture
+- coupled indexes/templates were updated so the conformance corpus and reporting template use the corrected `CONF-009` title and full `CONF-011…CONF-015` list
+
 ### WP-3 — CK-003 blocker register
 
 **Status:** CLOSED
