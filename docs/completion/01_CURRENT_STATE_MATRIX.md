@@ -43,7 +43,7 @@
 |---|---|---|
 | WP-1 APS-001 gap list | CLOSED | Per-section `READY FOR REVIEW / OPEN / BLOCKED` list for APS-001 recorded in `docs/completion/00_MASTER_COMPLETION_PLAN.md` |
 | WP-2 APS reconciliation | OPEN | Initial reconciliation recorded for APS-100 / APS-200 / APS-300; correction queue now starts with APS-200, then APS-300, then APS-100 |
-| WP-3 CK-003 blocker register | OPEN | DQ-003 / DQ-004 / DQ-006 residual blocker list |
+| WP-3 CK-003 blocker register | CLOSED | CK-003 register recorded with explicit states for DQ-002 / DQ-003 / DQ-004 / DQ-006 and a minimal active DQ set |
 | WP-4 Traceability gap pass | OPEN | One explicit state per `INV-001…INV-015` |
 | WP-5 Fixture promotion plan | OPEN | Placeholder / working / candidate normative classification |
 | WP-6 Minimum automation plan | OPEN | Safe-now tools vs schema-dependent deferred tools |

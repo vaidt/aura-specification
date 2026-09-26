@@ -221,7 +221,7 @@ This first WP-2 pass covers the highest-priority normative dependencies reviewed
 
 ### WP-3 — CK-003 blocker register
 
-**Status:** OPEN
+**Status:** CLOSED
 **Goal:** separate normative decisions from working evidence and unresolved closure gates.
 
 Tasks:
@@ -233,6 +233,20 @@ Tasks:
 Expected output:
 - one CK-003 blocker register using only `OPEN / BLOCKED / READY / CLOSED`
 - explicit minimum DQ set required before schema + conformance promotion
+
+#### WP-3 deliverable — CK-003 blocker register
+
+Recorded in:
+
+- `/home/runner/work/aura-specification/aura-specification/ck003/CK003_BLOCKER_REGISTER.md`
+
+Current minimal set controlling further specification stabilization:
+
+1. DQ-003 — version semantics
+2. DQ-004 — event-type semantics
+3. DQ-006 residuals — R1 through R4
+
+DQ-002 remains closed and is not part of the minimum active workset for continued specification stabilization.
 
 ### WP-4 — Traceability gap pass
 
