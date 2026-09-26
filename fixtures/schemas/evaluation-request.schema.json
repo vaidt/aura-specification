@@ -2,8 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/AuraIDToken/aura-specification/fixtures/schemas/evaluation-request.schema.json",
   "title": "APS-200 ENT-002 Evaluation Request",
-  "_status": "DRAFT TOP-LEVEL STRUCTURAL CONTRACT — semantic/profile closure remains governed by APS text and open decision records.",
-  "description": "Draft machine-readable top-level contract for an Evaluation Request. The inner request_fields payload remains execution-profile-specific.",
+  "_status": "DRAFT CONTRACT — top-level structure is closed and the current working profile AURA-DRAFT-CORE-001 payload is closed; other future profiles remain version-bound.",
+  "description": "Draft machine-readable contract for an Evaluation Request, including the current working-profile payload.",
   "type": "object",
   "allOf": [
     { "$ref": "common-object-contract.schema.json" }
@@ -16,12 +16,39 @@
       "pattern": "^[a-f0-9]{64}$"
     },
     "input_schema": {
-      "type": "string",
-      "minLength": 1
+      "const": "AURA-DRAFT-CORE-001"
     },
     "request_fields": {
+      "$ref": "#/$defs/current_profile_request_fields"
+    }
+  },
+  "$defs": {
+    "current_profile_request_fields": {
       "type": "object",
-      "description": "Profile-specific validated request payload."
+      "description": "Closed request payload for the current working profile AURA-DRAFT-CORE-001.",
+      "required": [
+        "profile_id",
+        "subject_id",
+        "measurement_value",
+        "actor_tier"
+      ],
+      "properties": {
+        "profile_id": {
+          "const": "AURA-DRAFT-CORE-001"
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "measurement_value": {
+          "type": "integer"
+        },
+        "actor_tier": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
     }
   },
   "unevaluatedProperties": false

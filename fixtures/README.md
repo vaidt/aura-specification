@@ -16,7 +16,7 @@ fixtures/
 
 ## Status
 
-> **Current state**: The canonical APS-500 fixture corpus is not yet finalized. Draft machine-readable APS-200/APS-300 schemas now exist under `/fixtures/schemas/`, but `FIX-001` remains structurally incomplete at the profile/result/evidence level, while `/fixtures/corpus/` and `/fixtures/ck003/` contain working fixtures and manifests for closure work that do not by themselves constitute release-ready APS-500 coverage.
+> **Current state**: The canonical APS-500 fixture corpus is not yet finalized. Draft machine-readable APS-200/APS-300 schemas now exist under `/fixtures/schemas/`; `FIX-001` now binds the current draft ENT-002/ENT-003 working-profile payload, but its digest/evidence publication values remain draft-only placeholders, while `/fixtures/corpus/` and `/fixtures/ck003/` contain working fixtures and manifests for closure work that do not by themselves constitute release-ready APS-500 coverage.
 
 ## Fixture Index
 
@@ -43,7 +43,7 @@ Use the following promotion classes when deciding whether an artifact belongs in
 
 | Artifact | Class | Reason | Explicit promotion gate |
 |----------|-------|--------|-------------------------|
-| `core/FIX-001_BASIC_EVALUATION.json` | `PLACEHOLDER` | Top-level schemas now exist, but the fixture still lacks approved request payload, result semantics, and canonical evidence content | profile-specific APS-200 payload contract + APS-300 evidence-content closure |
+| `core/FIX-001_BASIC_EVALUATION.json` | `WORKING` | Current draft request/result payload is now bound to `AURA-DRAFT-CORE-001`, but digest/evidence publication values are still placeholders | APS-300 evidence-content closure + release-grade expected digests |
 | `corpus/FIX-INV-007_zero_float.json` | `CANDIDATE NORMATIVE` | Fixture is now explicitly bound to `CONF-011` and marked ready for controlled execution | controlled execution evidence + APS-500 promotion |
 | `corpus/FIX-INV-012_event_type.json` | `WORKING` | Useful closure fixture, but depends on unresolved registry semantics | DQ-004 closure + approved event tokens |
 | `corpus/FIX-INV-013_policy_determinism.json` | `CANDIDATE NORMATIVE` | Fixture now binds one concrete policy/input pair for `CONF-013` | controlled execution evidence + APS-500 promotion |

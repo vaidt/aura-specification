@@ -93,7 +93,18 @@ Every entity MUST contain the following fields:
 | `input_schema` | string | MUST | Identifier of the input schema version |
 | `request_fields` | object | MUST | Validated, schema-conformant input payload |
 
-The base APS-200 schema requires `request_fields` to be a JSON object. The exact payload members, constraints, and closed vocabularies for `request_fields` remain bound to the applicable execution profile and its approved schema contract.
+The base APS-200 schema requires `request_fields` to be a JSON object.
+
+For the current repository working profile `AURA-DRAFT-CORE-001`, `input_schema` MUST equal `AURA-DRAFT-CORE-001` and `request_fields` MUST contain exactly:
+
+| Field | Type | Requirement | Description |
+|-------|------|-------------|-------------|
+| `profile_id` | string | MUST | MUST equal `AURA-DRAFT-CORE-001` |
+| `subject_id` | string | MUST | Canonical subject identifier under the active draft identity rules |
+| `measurement_value` | integer | MUST | Deterministic integer/fixed-point input value bound to the current working profile |
+| `actor_tier` | string | MUST | Profile-scoped actor tier token carried as input, not inferred implicitly |
+
+Additional request payload members require a version-bound profile/schema update. Other future execution profiles MAY define a different `input_schema` and payload contract, but they are not closed by this draft.
 
 ---
 
@@ -105,11 +116,30 @@ The base APS-200 schema requires `request_fields` to be a JSON object. The exact
 |-------|------|-------------|-------------|
 | Common Object Contract fields | — | MUST | See §4 |
 | `execution_id` | string | MUST | References ENT-001 `execution_id` |
-| `decision` | string | MUST | Canonical decision value (e.g., `ALLOW`, `DENY`, `MEASURE`) |
+| `decision` | string | MUST | Canonical decision value |
 | `output_hash` | string | MUST | SHA-256 hash of the canonical output payload |
 | `policy_reference` | ENT-004 | MUST | Policy used to produce this result |
+| `result_fields` | object | MUST | Validated, schema-conformant result payload |
 
-The exact decision vocabulary is defined by the applicable execution profile and schema. In strict conformance mode, an implementation MUST reject an unknown decision token rather than silently coerce it into another semantic value.
+For the current repository working profile `AURA-DRAFT-CORE-001`, a successful `decision` MUST be one of:
+
+- `ALLOW`
+- `DENY`
+- `MEASURE`
+- `NOT_APPLICABLE`
+
+Invalid, ambiguous, blocked, or fail-closed executions MUST NOT emit `ENT-003`; they MUST halt per APS-001 §8 instead of inventing an out-of-band decision token.
+
+For the same current working profile, `result_fields` MUST contain exactly:
+
+| Field | Type | Requirement | Description |
+|-------|------|-------------|-------------|
+| `profile_id` | string | MUST | MUST equal `AURA-DRAFT-CORE-001` |
+| `subject_id` | string | MUST | Echoes the canonical subject identifier used in the request |
+| `measurement_value` | integer | MUST | Deterministic integer/fixed-point value used by the current working profile |
+| `matched_policy_rule` | string | MUST | Human-readable identifier or text for the rule branch that produced the decision |
+
+In strict conformance mode, an implementation MUST reject an unknown decision token or malformed `result_fields` payload rather than silently coerce it into another semantic value.
 
 ---
 
@@ -331,14 +361,13 @@ Current draft schemas published from this APS:
 - `fixtures/schemas/audit-record.schema.json`
 - `fixtures/schemas/implementation-metadata.schema.json`
 
-These schemas close the **top-level structural contract** for the APS-200 entities: required fields, top-level types, hash-field encoding, and object identity/version envelope.
+These schemas close the **top-level structural contract** for the APS-200 entities: required fields, top-level types, hash-field encoding, object identity/version envelope, and the current repository working-profile payloads for `ENT-002` / `ENT-003`.
 
 They do **not** yet close every profile-specific semantic dependency. The following remain explicitly open and version-bound:
 
-1. the exact `request_fields` payload schema(s) for each execution profile;
-2. the approved decision vocabulary/profile for `ENT-003.decision`;
-3. the final identity syntax/uniqueness rules needed for full `INV-015` closure;
-4. the approved `ENT-007.event_type` registry tokens and machine-readable registry closure required by DQ-004.
+1. additional execution-profile payload schemas beyond `AURA-DRAFT-CORE-001`;
+2. the final identity syntax/uniqueness rules needed for full `INV-015` closure;
+3. the approved `ENT-007.event_type` registry tokens and machine-readable registry closure required by DQ-004.
 
 The event-type vocabulary and validation contract are governed by `aps/EVENT_TYPE_REGISTRY.md`. That registry MUST be incorporated into the approved APS-200 profile before DQ-004 can be closed.
 

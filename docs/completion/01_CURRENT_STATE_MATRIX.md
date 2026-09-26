@@ -10,7 +10,7 @@
 | APS-000 | **DRAFT** | `aps/APS-000_FOUNDATION_AND_TERMINOLOGY.md` | Complete review + approval |
 | APS-001 | **DRAFT / CRITICAL** | `specification/APS-001_PROTOCOL_SPECIFICATION.md` exists as `0.2-DRAFT — ARCHITECTURE REVIEW REQUIRED` | Reconcile dependent APS documents + complete Architecture Review / approval path |
 | APS-100 | **DRAFT / OPEN** | 15 invariants defined and mapped to CONF-001…015 | Align authority, verification language and execution evidence with APS-001 |
-| APS-200 | **DRAFT / OPEN** | Canonical entities + common object contract; draft machine-readable top-level schemas now published under `fixtures/schemas/` | Profile-specific payload schemas, identity closure, approved event-type registry tokens, compatibility matrix |
+| APS-200 | **DRAFT / OPEN** | Canonical entities + common object contract; draft machine-readable schemas now close the current working-profile ENT-002/ENT-003 payloads under `fixtures/schemas/` | Additional profile schemas, identity closure, approved event-type registry tokens, compatibility matrix |
 | APS-300 | **DRAFT / OPEN** | Evidence model exists; draft machine-readable Evidence Object / Evidence Pack schemas now published under `fixtures/schemas/` | Attestation lifecycle closure, integrity-metadata vocabulary, executable fixture/evidence path |
 | APS-400 | **DRAFT / INCOMPLETE** | CONF-001…015 documents exist | Execute the matrix through a runner and gather objective PASS/FAIL evidence |
 | APS-500 | **DRAFT / INCOMPLETE** | Fixture contract exists | Publish canonical machine-readable fixture set and expected outputs |
@@ -28,7 +28,7 @@
 
 1. **APS-001** is the root normative blocker.
 2. **INV-010** is mapped structurally, but CONF-011…CONF-015 still require executable evidence before they can support PASS claims.
-3. APS-200/300 now expose draft top-level machine-readable schemas, but the profile-specific payload and evidence-content contracts remain incomplete.
+3. APS-200/300 now expose draft machine-readable schemas, but APS-300 evidence-content closure and additional APS-200 profile contracts remain incomplete.
 4. APS-500 does not yet provide the complete canonical fixture corpus required by APS-400/950.
 5. The repository lacks an executable GitHub Actions conformance gate.
 6. CK-003 evidence exists, but unresolved DQ-003/DQ-004 and release-gate promotion still block closure.

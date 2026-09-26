@@ -77,7 +77,7 @@ The repository currently contains three distinct kinds of fixture artifacts:
 
 | Artifact | Class | Related CONF | Current posture | Explicit promotion gate |
 |---|---|---|---|---|
-| `fixtures/core/FIX-001_BASIC_EVALUATION.json` | PLACEHOLDER | `CONF-001` | schema and evidence content still TODO-bound | APS-200 entity schemas + APS-300 Evidence Pack contract |
+| `fixtures/core/FIX-001_BASIC_EVALUATION.json` | WORKING | `CONF-001` | request/result payload is now bound to the current draft working profile, but digest/evidence publication values remain placeholders | APS-300 Evidence Pack contract + release-grade expected digests |
 | `fixtures/corpus/FIX-INV-007_zero_float.json` | CANDIDATE NORMATIVE | `CONF-011` | concrete fixture content exists and is explicitly bound to `CONF-011` | controlled execution evidence + explicit APS-500 promotion |
 | `fixtures/corpus/FIX-INV-012_event_type.json` | WORKING | `CONF-012` | fixture exists, but event vocabulary is unresolved | DQ-004 closure + approved registry entries |
 | `fixtures/corpus/FIX-INV-013_policy_determinism.json` | CANDIDATE NORMATIVE | `CONF-013` | fixture now binds one concrete policy/input pair | controlled execution evidence + explicit APS-500 promotion |
@@ -102,7 +102,7 @@ Before the full APS-500 corpus is frozen, the first meaningful conformance wave 
 **Category:** FIX-CORE
 **Related Test:** CONF-001
 **Related Invariants:** INV-001, INV-014
-**Status:** PLACEHOLDER — input and output schemas pending APS-200 finalization
+**Status:** WORKING — current draft input/output payload is bound, but release-grade evidence content is still pending
 See [../fixtures/core/FIX-001_BASIC_EVALUATION.json](../fixtures/core/FIX-001_BASIC_EVALUATION.json)
 
 ---

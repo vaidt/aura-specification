@@ -80,8 +80,8 @@ Current known traceability gaps:
 |-----|----------|----------|
 | APS-001 remains DRAFT and requires Architecture Review before approval | Yes — root normative authority remains open | Critical |
 | CONF-011 through CONF-015 are assigned but not yet evidenced through an executable conformance gate | Yes — prevents objective PASS claims for INV-007 and INV-012…INV-015 | High |
-| FIX-001 content is TODO | Yes — blocks CONF-001 | High |
-| APS-200 entity schemas are now published only at the top-level structural contract; profile-specific payload and registry-bound semantics remain incomplete | Yes — still blocks CONF-003, CONF-008, CONF-009 from full objective closure | High |
+| FIX-001 evidence publication content is still TODO | Yes — blocks CONF-001 from release-grade closure even though the draft request/result payload is now bound | High |
+| APS-200 entity schemas now close the current working-profile ENT-002/ENT-003 payloads, but additional profile contracts, identity closure, and registry-bound semantics remain incomplete | Yes — still blocks CONF-003, CONF-008, CONF-009 from full objective closure | High |
 | APS-300 Evidence Pack schema is now published at the envelope level, but integrity-metadata and attestation-lifecycle closure remain incomplete | Yes — still blocks CONF-004, CONF-005, CONF-009, CONF-010 from full objective closure | High |
 | No Attestation (ENT-006) implementation | Yes — blocks CONF-005, CONF-009 | High |
 | No repository-native CI conformance gate | Yes — blocks release-ready automated verification | High |

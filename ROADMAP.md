@@ -52,7 +52,7 @@ Scope for the first execution increment:
 
 Priority: **High** — blocking conformance testing.
 
-- [ ] Define APS-200 entity schemas with precise field types and constraints
+- [ ] Define additional APS-200 entity/profile schemas beyond the current draft working profile
 - [ ] Define APS-300 canonical Evidence Pack schema with exact field names and cryptographic algorithm
 - [x] Publish JSON Schema for all APS-200 entities
 - [x] Publish JSON Schema for APS-300 Evidence Pack
@@ -89,7 +89,7 @@ Priority: **Medium**.
 Aura is **not production-ready** until all of the following are evidenced:
 
 - [ ] APS-001 completes Architecture Review and becomes the stable root normative reference
-- [ ] APS-200 and APS-300 publish exact machine-verifiable schemas
+- [ ] APS-200 and APS-300 publish exact machine-verifiable schemas and release-grade expected digests/evidence values
 - [ ] APS-400 and APS-500 move from draft definitions to executable conformance coverage with canonical fixtures
 - [ ] APS-900 traceability is complete from requirement to fixture, evidence, implementation, and release
 - [ ] Repository-native CI enforces structural and conformance gates

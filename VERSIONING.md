@@ -42,6 +42,8 @@ DRAFT → REVIEW → APPROVED → FROZEN
 | DEPRECATED | Superseded; retained for reference | No |
 | ARCHIVED | No longer active; historical record only | No |
 
+Draft-stage authoring MAY use explicit draft-only placeholder digest/checksum values inside working fixtures or unpublished contracts when the final publication boundary is not yet approved. Such placeholders MUST be replaced or superseded before approval, freeze, or release evidence publication.
+
 ### Transition Rules
 
 - `DRAFT → REVIEW`: Author submits document for review via pull request
