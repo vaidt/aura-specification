@@ -80,7 +80,17 @@ def expand_local_refs(node: object, cache: dict[str, object] | None = None) -> o
         if isinstance(ref, str) and not ref.startswith("#"):
             if ref not in cache:
                 cache[ref] = expand_local_refs(load_json(SCHEMA_DIR / ref), cache)
-            return cache[ref]
+            resolved = copy.deepcopy(cache[ref])
+            siblings = {
+                key: expand_local_refs(value, cache)
+                for key, value in node.items()
+                if key != "$ref"
+            }
+            if siblings:
+                if not isinstance(resolved, dict):
+                    raise TypeError(f"Referenced schema {ref} did not resolve to an object")
+                resolved.update(siblings)
+            return resolved
         return {key: expand_local_refs(value, cache) for key, value in node.items()}
 
     if isinstance(node, list):
