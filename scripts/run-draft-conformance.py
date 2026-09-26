@@ -108,10 +108,15 @@ def run_fix001_results() -> list[dict]:
     module = load_fix001_gate_module()
     try:
         messages = module.run_fix001_gate()
+        missing = [conf_id for conf_id in FIX001_CONF_IDS if conf_id not in messages]
+        if missing:
+            raise AssertionError(
+                f"FIX-001 draft gate did not return results for: {', '.join(missing)}"
+            )
+        return [make_result(conf_id, "PASS", messages[conf_id]) for conf_id in FIX001_CONF_IDS]
     except Exception as exc:  # pragma: no cover - top-level reporting path
         note = f"FIX-001 draft gate failed: {exc}"
         return [make_result(conf_id, "FAIL", note) for conf_id in FIX001_CONF_IDS]
-    return [make_result(conf_id, "PASS", messages[conf_id]) for conf_id in FIX001_CONF_IDS]
 
 
 def extract_fix001_versions(fixture: dict) -> dict:

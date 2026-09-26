@@ -3,7 +3,7 @@
   "$id": "https://github.com/AuraIDToken/aura-specification/fixtures/schemas/common-object-contract.schema.json",
   "title": "APS-200 Common Object Contract",
   "_status": "DRAFT TOP-LEVEL STRUCTURAL CONTRACT — semantic/profile closure remains governed by APS text and open decision records.",
-  "description": "Draft machine-readable contract for the common APS-200 object envelope required on every entity.",
+  "description": "Draft machine-readable contract for the common APS-200 object envelope required on every entity. Concrete entity schemas are responsible for closing unknown top-level fields explicitly.",
   "type": "object",
   "required": [
     "object_id",

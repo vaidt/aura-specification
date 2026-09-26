@@ -124,6 +124,8 @@ def make_integrity_hash(obj: dict) -> str:
 
 
 def reorder_mapping(source: dict, ordered_keys: list[str]) -> dict:
+    if set(source) != set(ordered_keys):
+        raise AssertionError("request_field_order must preserve exactly the request_fields key set")
     reordered: dict = {}
     for key in ordered_keys:
         reordered[key] = source[key]
