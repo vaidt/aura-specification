@@ -1,0 +1,174 @@
+artifact_id: "AURA-IDR-PVER-001-v0.1"
+document_type: "IMPLEMENTATION_DECISION_RECORD"
+title: "Establishment of Initial Protocol Version Baseline (M0/v0.1-DRAFT)"
+status: "EFFECTIVE"
+normative_effect: "EFFECTIVE"
+execution_status: "EFFECTIVE"
+date: "2026-10-05"
+
+provenance:
+  purpose: "Resolve C-003 without performing an unauthorized implementation mutation"
+  conflict_id: "C-003"
+  prerequisite:
+    - "C-001 reconciliation recorded as a separate historical/non-destructive act"
+  non_effective_rule: >-
+    This IDR has no normative or implementation effect until it is approved,
+    validly signed by the competent authority, registered in the designated
+    authoritative governance location, and explicitly marked effective.
+
+current_state_before_effectiveness:
+  protocol_version: "unspecified"
+  statement: >-
+    The repository evidence does not permit this draft to relabel the current
+    protocol version before the decision becomes effective.
+
+decision:
+  decision_id: "AURA-IDR-PVER-001"
+  decision_type: "PROTOCOL_VERSION_BASELINE"
+  proposed_protocol_version: "0.1.0-DRAFT"
+  profile_name: "AURA-M0-BASELINE"
+  release_class: "PRE_RELEASE"
+  proposed_state: "DRAFT_BASELINE"
+  version_1_0_claimed: false
+  rationale: >-
+    AURA requires an explicit protocol_version as part of its normative object
+    contract, while the currently deployed implementation evidence includes
+    `unspecified` values. The existing Wave 1 implementation authorization
+    expressly prohibits mutation of `protocol_version`; therefore this record
+    is a governance decision proposal, not a migration instruction. The value
+    `0.1.0-DRAFT` is proposed as an initial pre-release baseline only. It is not
+    inferred from implementation behavior, numeric ordering, or Git state.
+  production_release_gate: >-
+    AURA Protocol version 1.0 MUST NOT be claimed by this act. A 1.0 release
+    remains subject to the applicable specification approval, compatibility,
+    conformance, and release-control gates.
+
+authority:
+  issuer_role: "Chief Architect"
+  issuer_identity: "Kamil Krasiński"
+  competence_basis:
+    - repository: "vaidt/Authority"
+      artifact: "Authority Kamil Krasiński Aura-IDToken.md"
+      role_basis: "Chief Architect / authority over AURA structure, architecture, and specification"
+    - repository: "vaidt/aura-specification"
+      artifact: "AUTHORITY_BINDING_RECORD_v1.1.md"
+      blob_sha: "f9dbbcc138a2e0d1bdb34aea2a238394a28ed2cd"
+    - repository: "vaidt/aura-specification"
+      artifact: "AURA_M1_CLOSURE_RECORD_v1.0.md"
+      blob_sha: "2a729379f8d306a1f371db26d0ec4577cf8701b6"
+  cryptographic_binding:
+    key_type: "ssh-ed25519"
+    fingerprint: "SHA256:u9HaNYWZGQYvGET5ZaX2c/V56MzL0Xo7Ilg9M1pZRwU"
+  effective_date: "2026-10-05"
+  signature_status: "SIGNED"
+
+scope:
+  specification:
+    repository: "vaidt/aura-specification"
+    ref: "refs/heads/main"
+    observed_commit_sha: "5ba3567b79c7ac7ff37e0508219c12dab349ca2d"
+  affected_implementations:
+    - repository: "vaidt/Aura-vNEXT"
+      ref: "refs/heads/claude/aura-vnext-genesis-xerti8"
+      observed_commit_sha: "bdec831c165b3a5465bc25f325ed801558cbf81a"
+      protocol_version_state: "NOT_VERIFIED_AS_CURRENT_VALUE_IN_THIS_IDR"
+    - repository: "vaidt/Aura-Guard"
+      ref: "refs/heads/main"
+      observed_commit_sha: "7d2f5746ae61a66edcd11d75bff0787bed854363"
+      protocol_version_state: "UNSPECIFIED_IN_CURRENT_VERIFIER_EVIDENCE"
+    - repository: "vaidt/Aura-Conformance-Kit"
+      ref: "refs/heads/main"
+      observed_commit_sha: "2982c5c0060cfba2b7229c23acb5530014d02125"
+      protocol_version_state: "DECISION_PREPARATION_SCOPE"
+
+constraints:
+  wave_1_authorization:
+    repository: "vaidt/aura-specification"
+    artifact: "AURA_IMPLEMENTATION_AUTHORIZATION_WAVE1_v1.2.md"
+    blob_sha: "b8707980aac7f3d40e5ba0ef2953c238a0da86b5"
+    status: "EXECUTED"
+    key_restriction: "protocol_version mutation is prohibited by the existing implementation authorization"
+  interpretation: >-
+    This IDR does not bypass the Wave 1 prohibition. The act must become an
+    effective governance decision before any implementation migration based on
+    its value is considered. Any repository outside the Wave 1 allowed paths
+    requires separate authorization.
+
+compatibility:
+  breaking: "PROPOSED_NO"
+  migration_required: "YES_AFTER_EFFECTIVENESS"
+  migration_trigger: "Only after this IDR is effective and the relevant implementation authorization exists"
+  migration_notes:
+    - >-
+      Implementations currently using `unspecified` MUST NOT be changed merely
+      because this draft exists.
+    - >-
+      The JS/Python Binding Matrix drift (`1.3` versus `1.2`) MUST be treated
+      separately from protocol_version and MUST NOT be silently conflated with
+      this decision.
+    - >-
+      Cross-repository implementation changes require repository-specific
+      authorization; this IDR does not grant that authorization.
+
+versioning_contract:
+  protocol_version_role: >-
+    `protocol_version` identifies the normative protocol contract.
+  schema_version_role: >-
+    `schema_version` identifies the representation/schema contract for the
+    relevant entity.
+  compatibility_rule: >-
+    Compatibility MUST be governed by an explicit compatibility matrix and
+    MUST NOT be inferred solely from numeric ordering or string similarity.
+  source_basis:
+    - repository: "vaidt/aura-specification"
+      artifact: "ck003/decisions/DQ-003/current_versioning_snapshot.md"
+      blob_sha: "e79f14d576d68889620ae75c516e3d8a26e0a33d"
+    - repository: "vaidt/aura-specification"
+      artifact: "aps/APS-200_CANONICAL_DATA_MODEL.md"
+      blob_sha: "198eee23f12e1db7b3417d3b359c4f912142e984"
+
+implementation_effects_if_ratified:
+  phase_1:
+    status: "GOVERNANCE_ONLY"
+    action: "Record effective protocol_version baseline and update the authoritative versioning record"
+  phase_2:
+    status: "SEPARATE_AUTHORIZATION_REQUIRED"
+    action: "Prepare implementation migrations for each repository under its applicable authorization"
+  phase_3:
+    status: "CONFORMANCE_REQUIRED"
+    action: "Execute cross-implementation verification and version-bound fixture impact analysis"
+  phase_4:
+    status: "RELEASE_CONTROL"
+    action: "Construct the release baseline and satisfy RM-0 prerequisites"
+
+preconditions_for_effectiveness:
+  - "Valid authority signature is present and verifiable"
+  - "The signer is operating within the competent authority scope"
+  - "The decision is registered in the designated authoritative governance record"
+  - "The effective date is explicit"
+  - "The decision's relation to the existing Wave 1 authorization is recorded"
+  - "Any required compatibility/fixture impact analysis is recorded"
+  - "No implementation mutation is represented as already authorized merely by this draft"
+
+post_conditions_after_effectiveness:
+  current_protocol_version: "0.1.0-DRAFT"
+  protocol_profile: "AURA-M0-BASELINE"
+  previous_value: "unspecified"
+  historical_traceability: "REQUIRED"
+  release_tag_eligibility: "REQUIRES_SEPARATE_RELEASE_GATE"
+  full_conformance: "NOT_ESTABLISHED_BY_THIS_IDR"
+
+explicit_non_authorizations:
+  - "No protocol 1.0 declaration"
+  - "No direct implementation mutation"
+  - "No automatic cross-repository migration"
+  - "No TCK certification"
+  - "No full Aura Protocol conformance claim"
+  - "No M0 baseline tag creation"
+  - "No change to historical governance artifacts"
+
+closure:
+  draft_disposition: "PENDING_AUTHORITY_REVIEW"
+  effective_status_until_signature: "NOT_EFFECTIVE"
+  next_gate: "AUTHORITY_SIGNATURE_AND_REGISTRATION"
+  subsequent_gate: "M0_BASELINE_TAG_DECISION"
