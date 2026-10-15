@@ -8,8 +8,8 @@
   "input_fixture": {
     "path": "CANONICAL-003_jcs_full_discriminator.json",
     "encoding": "UTF-8",
-    "sha256": "5a3659f4f3d389eee44a946235c9336040595b78d7926d5fc9c274639b463c60",
-    "byte_length": 4238,
+    "sha256": "1cde8282d6df99defc16b8652cb0f43a8f327c35b8f356a8612b835ed996ec73",
+    "byte_length": 4230,
     "final_newline": true
   },
   "protocol_object": {

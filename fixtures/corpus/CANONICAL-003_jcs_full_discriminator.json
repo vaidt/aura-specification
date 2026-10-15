@@ -6,13 +6,13 @@
   "protocol_object": {
     "numbers": {
       "ten_float": 10.0,
-      "scientific_positive": 100000.0,
-      "micro_threshold": 1e-06,
-      "sub_micro_threshold": 1e-07,
-      "large_fixed_boundary": 1e+20,
-      "large_exponent_boundary": 1e+21,
+      "scientific_positive": 1e5,
+      "micro_threshold": 1e-6,
+      "sub_micro_threshold": 1e-7,
+      "large_fixed_boundary": 1e20,
+      "large_exponent_boundary": 1e21,
       "negative_zero": -0.0,
-      "shortest_rounding": 333333333.3333333
+      "shortest_rounding": 333333333.33333329
     },
     "unicode_keys": {
       "Z": "ASCII uppercase",

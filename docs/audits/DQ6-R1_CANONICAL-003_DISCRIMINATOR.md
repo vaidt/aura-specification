@@ -15,7 +15,7 @@ Status: candidate / experimental / non-normative. RI-PY and RI-RS have not execu
 - UTF-8 byte length: 577
 - Canonical SHA-256: 9fb648c388c4485575d25c1d6171ba691fec51c1b433b11f4d61197bbe2a5509
 - RFC 6962 leaf SHA-256: 38672ea2bd0ea87b2446efce8d4ba4adeb822e0baaecee4a54b73179198d2b3e
-- Full fixture SHA-256: 5a3659f4f3d389eee44a946235c9336040595b78d7926d5fc9c274639b463c60
+- Full fixture SHA-256: 1cde8282d6df99defc16b8652cb0f43a8f327c35b8f356a8612b835ed996ec73
 - Naive Python baseline SHA-256: dcecce9fd0514104b6afb85d5e07abbcca7d68fbf3b062d12766cc70f3d07d68
 
 Canonical hashes cover only exact JCS bytes of /protocol_object. No BOM, token whitespace or trailing LF is included.
