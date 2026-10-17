@@ -16,7 +16,7 @@
 |---|---|---|
 | Genesis preimage bytes match the repository object | **PASS** | Exact Git blob identity and SHA-256 reproduced |
 | SSHSIG envelope structure | **PASS BY TWO LOCAL PARSERS** | Version 1, expected field lengths, supported algorithm names, no trailing bytes |
-| Ed25519 signature mathematics | **PASS** | Python `cryptography`, OpenSSL and Node.js verify the reconstructed SSHSIG signed payload |
+| Ed25519 signature mathematics | **PASS** | Python `cryptography`, OpenSSL CLI and Node.js verify the reconstructed SSHSIG signed payload; see backend-independence caveat in §4 |
 | Key used by Genesis signature matches the key in Authority Binding v1.1 | **PASS** | Same SSH public-key blob / SHA-256 fingerprint |
 | Canonical OpenSSH `ssh-keygen -Y verify` end-to-end invocation | **NOT RUN** | `ssh-keygen` is not installed in the audit environment |
 | Signature creation time of 2026-09-24 | **NOT ESTABLISHED BY THE SIGNATURE** | SSHSIG contains no signing-time field |
@@ -86,9 +86,9 @@ Observed results for `AUTHORITY_BINDING_RECORD_v1.1.md`:
 - OpenSSL `pkeyutl -verify -pubin -inkey genesis_pubkey.pem -rawin -in signed_payload.bin -sigfile raw_signature.bin`: **Signature Verified Successfully**, exit code 0
 - Node.js `crypto.verify(null, signedPayload, publicKey, signature)`: **PASS**
 
-The Node.js verifier independently parsed the SSHSIG envelope, rejected unsupported/malformed fields and trailing bytes, reconstructed the signed payload, and then verified the Ed25519 signature. OpenSSL verified the same reconstructed signed payload using a separately implemented crypto stack. These results support the cryptographic relation between the exact preimage and the embedded public key.
+The Node.js verifier independently parsed the SSHSIG envelope, rejected unsupported/malformed fields and trailing bytes, reconstructed the signed payload, and then verified the Ed25519 signature. OpenSSL CLI verified the same reconstructed signed payload. These are three distinct tool invocation paths, but they MUST NOT be described as three independent machines or three fully independent cryptographic implementations: Python `cryptography` documents that it depends on OpenSSL for cryptographic operations, and Node.js documents that its `crypto` module wraps OpenSSL functions. The exact build linkage used by each local binary was not independently attested here. Therefore this test provides cross-interface agreement, not full cryptographic implementation diversity. The documented basis is [cryptography OpenSSL usage](https://cryptography.io/en/stable/openssl/) and [Node.js crypto documentation](https://nodejs.org/en/docs). These results support the cryptographic relation between the exact preimage and embedded public key, while leaving canonical SSHSIG CLI interoperability and a further independently implemented Ed25519 oracle as additional assurance steps.
 
-**Limitation:** the standard `ssh-keygen -Y verify` command was not available, so this record does not claim that the canonical OpenSSH CLI completed an end-to-end run. The result is stronger than a bare raw-signature check, but the final CI-style interoperability check should still be run in an environment with OpenSSH installed and the appropriate allowed-signers configuration.
+**Limitations:** the standard `ssh-keygen -Y verify` command was not available, so this record does not claim that the canonical OpenSSH CLI completed an end-to-end run. Python `cryptography`, the OpenSSL CLI, and Node.js `crypto` are not three independent machines or necessarily three independent cryptographic primitives; at least the former two documented paths use OpenSSL, and Node.js `crypto` is also an OpenSSL wrapper. The exact build linkage was not independently attested. The result demonstrates agreement across tool interfaces, not three-way independent implementation diversity. Complete assurance should add an OpenSSH `ssh-keygen -Y verify` run and, where required, another Ed25519 implementation with independently documented cryptographic backend.
 
 ## 5. Time, revocation, and identity are separate questions
 
