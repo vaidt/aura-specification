@@ -3,7 +3,7 @@
 
 **Act ID:** AURA-ACT-001  
 **Short name:** ACRA-001  
-**Version:** 0.1-DRAFT  
+**Version:** 0.2-DRAFT  
 **Status:** PROPOSED · NON-CONSTITUTIVE · NOT RATIFIED  
 **Normative effect:** NONE UNTIL COMPETENT RATIFICATION, SIGNATURE VERIFICATION AND REGISTRATION  
 **Effective date:** PENDING  
@@ -58,9 +58,24 @@ It does not:
 
 ### 1.4 Related draft with a distinct identifier
 
-As of the preparation snapshot, vaidt/aura-specification PR #33 contains a separate non-constitutive draft titled AURA Crisis Resolution Act and identified as AURA-CRA-001.
+The earlier proposal is [vaidt/aura-specification PR #33](https://github.com/vaidt/aura-specification/pull/33), which introduced `AURA-CRA-001` in `governance/AURA_CRISIS_RESOLUTION_ACT_v0.1-DRAFT.md`. This proposal is [PR #34](https://github.com/vaidt/aura-specification/pull/34), which introduced `AURA-ACT-001 / ACRA-001` in this file.
 
-AURA-ACT-001 / ACRA-001 is a distinct identifier. This document must not silently replace or supersede AURA-CRA-001. Before either draft is ratified, an authorized reviewer must record whether the drafts are to be consolidated, one withdrawn, or maintained as distinct proposals. Two conflicting crisis-act identifiers must not be represented as concurrent effective authority.
+The identifiers are distinct. Their relationship must be resolved by an explicit, reviewed governance disposition; a comment or merge event alone does not make one act the authoritative successor to the other.
+
+### 1.5 Subsequent repository-state reconciliation — read-only observation
+
+A subsequent read-only check of GitHub metadata produced the following state:
+
+| Item | Observed state |
+|---|---|
+| PR #33 (`AURA-CRA-001`) | CLOSED, `merged=true`; merged at `2026-10-17T19:24:41Z`; merge commit `b43ae9073344c936baa6d8b4bb60ff9fc9b268b7` |
+| PR #34 (`AURA-ACT-001 / ACRA-001`) | CLOSED, `merged=true`; merged at `2026-10-17T19:24:59Z`; merge commit `16b1ba1f18a37f9cfeba6bf777bd7439d71b8b48` |
+| PR #33 administrative comment | At `2026-10-17T19:20:37Z`, the comment says the work is `SUPERSEDED` and describes closure without merge |
+| Current `main` content | Both draft documents are present; ACRA-001 still declares `PROPOSED · NON-CONSTITUTIVE · NOT RATIFIED`, and AURA-CRA-001 still declares `PROPOSED · NON-CONSTITUTIVE · NOT RATIFIED` |
+
+**Audit finding:** the administrative `SUPERSEDED` comment on PR #33 conflicts with the observed GitHub merge metadata for PR #33. The observed state is not “PR #33 closed without merge.” Both proposals were merged into `main`, and the comment does not reverse that repository event.
+
+This is a status-reconciliation finding only. It does not determine which draft should be canonical, deprecate either draft, or confer normative effect. Both documents' non-constitutive status declarations remain unchanged. A competent, independently reviewed decision is required before one identifier can be treated as the canonical successor or the other as formally superseded.
 
 ---
 
@@ -264,7 +279,7 @@ A Git commit signature, Sigstore attestation, CI result, PR approval, repository
 - Ratification registration commit and location: PENDING
 - Effective date and conditions: PENDING
 - Independent registration verification: PENDING
-- Disposition of AURA-CRA-001 draft PR #33: PENDING
+- Canonical relationship / successor disposition for AURA-CRA-001 PR #33 vs AURA-ACT-001 PR #34: PENDING — both PRs are observed as merged; the administrative SUPERSEDED comment on #33 conflicts with its merge metadata
 
 ### 5.3 Current determination
 
