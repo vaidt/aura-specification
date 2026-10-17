@@ -16,7 +16,7 @@
 |---|---|---|
 | Genesis preimage bytes match the repository object | **PASS** | Exact Git blob identity and SHA-256 reproduced |
 | SSHSIG envelope structure | **PASS BY TWO LOCAL PARSERS** | Version 1, expected field lengths, supported algorithm names, no trailing bytes |
-| Ed25519 signature mathematics | **PASS** | Python `cryptography`, OpenSSL CLI and Node.js verify the reconstructed SSHSIG signed payload; see backend-independence caveat in §4 |
+| Ed25519 signature mathematics | **PASS** | Three reported tool paths agree on the reconstructed SSHSIG signed payload; shared OpenSSL dependencies mean independent cryptographic implementation diversity is not established; see §4 |
 | Key used by Genesis signature matches the key in Authority Binding v1.1 | **PASS** | Same SSH public-key blob / SHA-256 fingerprint |
 | Canonical OpenSSH `ssh-keygen -Y verify` end-to-end invocation | **NOT RUN** | `ssh-keygen` is not installed in the audit environment |
 | Signature creation time of 2026-09-24 | **NOT ESTABLISHED BY THE SIGNATURE** | SSHSIG contains no signing-time field |
@@ -66,7 +66,7 @@ OpenSSH's `PROTOCOL.sshsig` describes the SSHSIG envelope and signed-data constr
 - https://github.com/openssh/openssh-portable/blob/master/PROTOCOL.sshsig
 - https://www.rfc-editor.org/rfc/rfc8709.html
 
-## 4. Independent mathematical verification
+## 4. Cross-tool mathematical verification and backend-dependence limits
 
 The signed payload was reconstructed from the SSHSIG fields using the documented construction: the SSHSIG preamble, namespace, reserved field, hash algorithm, and the specified digest of the exact preimage.
 
@@ -105,7 +105,7 @@ This correction is narrow. It does not resolve the separate findings about ident
 
 ## 7. Final result
 
-- **Genesis detached-signature cryptographic check:** PASS (exact bytes; independent crypto engines).
+- **Genesis detached-signature cryptographic check:** PASS on the exact bytes across three reported tool paths; independent cryptographic backends are **NOT ESTABLISHED**.
 - **SSHSIG structure check:** PASS by local parsers; canonical OpenSSH CLI interoperability: NOT RUN.
 - **Signature creation time / non-revocation / real-world identity:** NOT ESTABLISHED.
 - **Constitutional competence and Article XIII procedural effectiveness:** NOT ESTABLISHED.
