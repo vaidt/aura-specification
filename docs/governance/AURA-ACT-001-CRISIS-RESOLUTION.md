@@ -3,7 +3,7 @@
 
 **Act ID:** AURA-ACT-001  
 **Short name:** ACRA-001  
-**Version:** 0.2-DRAFT  
+**Version:** 0.3-DRAFT  
 **Status:** PROPOSED · NON-CONSTITUTIVE · NOT RATIFIED  
 **Normative effect:** NONE UNTIL COMPETENT RATIFICATION, SIGNATURE VERIFICATION AND REGISTRATION  
 **Effective date:** PENDING  
@@ -58,9 +58,9 @@ It does not:
 
 ### 1.4 Related draft with a distinct identifier
 
-The earlier proposal is [vaidt/aura-specification PR #33](https://github.com/vaidt/aura-specification/pull/33), which introduced `AURA-CRA-001` in `governance/AURA_CRISIS_RESOLUTION_ACT_v0.1-DRAFT.md`. This proposal is [PR #34](https://github.com/vaidt/aura-specification/pull/34), which introduced `AURA-ACT-001 / ACRA-001` in this file.
+PR #33 introduced a separate non-constitutive proposal identified as `AURA-CRA-001` in `governance/AURA_CRISIS_RESOLUTION_ACT_v0.1-DRAFT.md`. PR #34 introduced this distinct proposal, `AURA-ACT-001 / ACRA-001`.
 
-The identifiers are distinct. Their relationship must be resolved by an explicit, reviewed governance disposition; a comment or merge event alone does not make one act the authoritative successor to the other.
+The identifiers and repository events remain separate historical facts. The proposed removal of the AURA-CRA-001 file from the current working tree, described in section 1.6, is an editorial/tree-consolidation proposal only. It is not a constitutional finding, a ratification, a determination of historical validity, or a declaration that AURA-CRA-001 has been normatively superseded.
 
 ### 1.5 Subsequent repository-state reconciliation — read-only observation
 
@@ -75,7 +75,20 @@ A subsequent read-only check of GitHub metadata produced the following state:
 
 **Audit finding:** the administrative `SUPERSEDED` comment on PR #33 conflicts with the observed GitHub merge metadata for PR #33. The observed state is not “PR #33 closed without merge.” Both proposals were merged into `main`, and the comment does not reverse that repository event.
 
-This is a status-reconciliation finding only. It does not determine which draft should be canonical, deprecate either draft, or confer normative effect. Both documents' non-constitutive status declarations remain unchanged. A competent, independently reviewed decision is required before one identifier can be treated as the canonical successor or the other as formally superseded.
+This is a status-reconciliation finding only. It does not determine which draft should be canonical, formally deprecate either act, or confer normative effect. Both documents' non-constitutive status declarations were unchanged at the observed snapshot.
+
+### 1.6 Proposed repository-tree consolidation — non-constitutive
+
+PR #35 proposes removing `governance/AURA_CRISIS_RESOLUTION_ACT_v0.1-DRAFT.md` (the `AURA-CRA-001` draft introduced by PR #33) from the current tree, while retaining this ACRA-001 document as the single current working draft for review.
+
+If accepted and merged, the deletion would be a repository-tree cleanup only:
+- PR #33 and merge commit `b43ae9073344c936baa6d8b4bb60ff9fc9b268b7` remain part of Git history and must remain available as evidence.
+- The deletion would not reverse, erase, or reclassify PR #33's merge event.
+- The deletion would not constitute formal normative supersession, ratification, or deprecation under AURA governance.
+- This ACRA-001 text remains `PROPOSED · NON-CONSTITUTIVE · NOT RATIFIED`; its authority basis and competent ratifier remain unestablished.
+- The repository cleanup must not be treated as evidence that identity continuity, authority continuity, or G1 has been proven.
+
+The proposed consolidation is made to avoid maintaining two parallel mutable working drafts in the current tree. Any formal normative disposition remains pending a competent, independently reviewed decision.
 
 ---
 
@@ -271,7 +284,7 @@ A Git commit signature, Sigstore attestation, CI result, PR approval, repository
 - Primary authority source: PENDING
 - Independent authority reviewer and report: PENDING
 - Decision and ratification mechanism: PENDING
-- Approved Act version: 0.1-DRAFT — NOT RATIFIED
+- Approved Act version: 0.3-DRAFT — NOT RATIFIED
 - Approved content SHA-256: PENDING
 - Signature type and key fingerprint: PENDING
 - Signature verification result: PENDING
@@ -279,7 +292,7 @@ A Git commit signature, Sigstore attestation, CI result, PR approval, repository
 - Ratification registration commit and location: PENDING
 - Effective date and conditions: PENDING
 - Independent registration verification: PENDING
-- Canonical relationship / successor disposition for AURA-CRA-001 PR #33 vs AURA-ACT-001 PR #34: PENDING — both PRs are observed as merged; the administrative SUPERSEDED comment on #33 conflicts with its merge metadata
+- Repository-tree disposition: PR #35 proposes removing the AURA-CRA-001 draft from the current tree; formal normative supersession/disposition remains PENDING. PR #33 remains in history as a merged event, and its administrative SUPERSEDED comment conflicts with merge metadata.
 
 ### 5.3 Current determination
 
