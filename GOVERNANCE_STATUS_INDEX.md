@@ -42,3 +42,8 @@ These artifacts are useful context, but they do not by themselves create approva
 | [`AURA-DOCUMENTATION-NORMALIZATION-AUDIT-v1.md`](AURA-DOCUMENTATION-NORMALIZATION-AUDIT-v1.md) | Diagnostic audit only |
 | [`AURA-DOCUMENTATION-NORMALIZATION-CONTROL-REVIEW-v1.md`](AURA-DOCUMENTATION-NORMALIZATION-CONTROL-REVIEW-v1.md) | Controlled analysis only |
 | [`governance/AURA-AFI-AEP-001_FOUNDING_INSTRUMENT_AND_AUTHORITY_EVIDENCE_PROCEDURE_v0.1-DRAFT.md`](governance/AURA-AFI-AEP-001_FOUNDING_INSTRUMENT_AND_AUTHORITY_EVIDENCE_PROCEDURE_v0.1-DRAFT.md) | Proposed authority-evidence procedure; non-constitutive and not ratified |
+| [`docs/governance/GENESIS_SIGNATURE_VERIFICATION_RECORD.md`](docs/governance/GENESIS_SIGNATURE_VERIFICATION_RECORD.md) | Technical SSHSIG verification; non-constitutive; cryptographic sub-check PASS, G1 remains BLOCKED |
+| [`docs/governance/ARTICLE_XIII_CONSTITUTIONAL_AUDIT_OPINION.md`](docs/governance/ARTICLE_XIII_CONSTITUTIONAL_AUDIT_OPINION.md) | Source-based constitutional procedure audit; non-constitutive; procedural effect NOT ESTABLISHED |
+| [`docs/governance/AUTHORITY_BINDING_RECORD_v1.2_ANNEX_DRAFT.md`](docs/governance/AUTHORITY_BINDING_RECORD_v1.2_ANNEX_DRAFT.md) | Proposed digest annex; not a replacement for v1.1; no authority effect |
+| [`docs/governance/scripts/verify_sshsig.py`](docs/governance/scripts/verify_sshsig.py) | Reproducible local SSHSIG structure and Python Ed25519 diagnostic |
+| [`docs/governance/scripts/verify_sshsig.mjs`](docs/governance/scripts/verify_sshsig.mjs) | Independent Node.js SSHSIG structure and Ed25519 diagnostic |
