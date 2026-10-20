@@ -1,6 +1,14 @@
-# Aura Protocol Specification
+# Aura Protocol Specification — `vaidt` fork
 
-> **The single canonical source of truth for the Aura Protocol.**
+> **Repository role:** fork-specific specification and governance workspace.
+
+This repository is a GitHub fork of [`Aura-IDToken/aura-specification`](https://github.com/Aura-IDToken/aura-specification). Its branch history and contents must be evaluated at the exact revision under review; a fork may diverge from its parent.
+
+This repository can hold proposals, working records, and specification material. Its fork status, README labels, commit recency, signatures, releases, and CI results do **not** by themselves establish exclusive normative authority, ratification, or effective status.
+
+For every normative-status claim, link the exact document revision and the separately verifiable authority and ratification record. If that evidence is not established, report the status as **NOT ESTABLISHED**.
+
+> **Scope boundary:** this README does not select the authoritative copy of the protocol, transfer authority from the parent, or change the status of any document.
 
 [![Status: Active](https://img.shields.io/badge/status-active-green.svg)](CHANGELOG.md)
 [![Constitution: FROZEN](https://img.shields.io/badge/constitution-FROZEN-blue.svg)](constitution/AURA_CONSTITUTION.md)
@@ -10,13 +18,11 @@
 
 ## What Is This Repository?
 
-`aura-specification` is the normative documentation repository for the **Aura Protocol** — an open, deterministic trust layer for AI systems. It contains no implementation code.
+This fork contains specification and governance material for the **AURA Protocol**. Statements in this README about intended normative role or precedence are repository declarations; the effect of any specific document must be assessed at its exact revision against the applicable authority, ratification, and effective-date evidence.
 
-It is designed in the tradition of IETF RFCs, W3C specifications, and Kubernetes Enhancement Proposals: every protocol behavior is fully specified, versioned, and traceable before any implementation is written or changed.
+It is designed in the tradition of IETF RFCs, W3C specifications, and Kubernetes Enhancement Proposals: every protocol behavior is intended to be specified, versioned, and traceable before an implementation is written or changed.
 
-**If documentation and implementation disagree, documentation wins.**
-
----
+**If documentation and implementation disagree, documentation wins.** This is a published precedence statement; this README change does not independently establish its authority or effective normative effect.
 
 ## Repository Map
 
