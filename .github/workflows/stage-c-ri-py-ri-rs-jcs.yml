@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: vaidt/aura-guard-v1.3
-          ref: 0bee5d9ca35c90d013509b52808917a6cdce9c30
+          ref: 31a7eeab861094fbecc82e8a61351fac49dffe43
           path: aura-guard
 
       - name: Set up Python
@@ -96,7 +96,7 @@ jobs:
           import json
           from pathlib import Path
           request = json.loads(Path("artifacts/stage-c/production-path/python-jcs/request.json").read_bytes())
-          request["source_commit"] = "0bee5d9ca35c90d013509b52808917a6cdce9c30"
+          request["source_commit"] = "31a7eeab861094fbecc82e8a61351fac49dffe43"
           target = Path("artifacts/stage-c/production-path/rust-jcs")
           target.mkdir(parents=True, exist_ok=True)
           (target / "request.json").write_text(
@@ -137,7 +137,7 @@ jobs:
           from pathlib import Path
           spec_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
           core_commit = subprocess.check_output(["git", "-C", "aura-core", "rev-parse", "HEAD"], text=True).strip()
-          rs_commit = "0bee5d9ca35c90d013509b52808917a6cdce9c30"
+          rs_commit = "31a7eeab861094fbecc82e8a61351fac49dffe43"
           py_env = json.loads(Path("artifacts/stage-c/production-path/python-jcs/response.json").read_bytes())
           rs_env = json.loads(Path("artifacts/stage-c/production-path/rust-jcs/response.json").read_bytes())
           py_shim = Path("artifacts/stage-c/production-path/python-jcs/canonical.bin").read_bytes()
