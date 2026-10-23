@@ -1,0 +1,107 @@
+{
+  "schema": "AURA-STAGE-C-JCS-MULTIVECTOR-MANIFEST/0.1",
+  "status": "DRAFT_NON_NORMATIVE",
+  "created_for": "Stage C C4 isolated JCS multi-vector expansion",
+  "canonicalization_profile": "RFC8785-JCS",
+  "oracle_method": "Committed expected octets are compared byte-for-byte against separate Python and Rust adapter processes. Expected outputs are based on RFC 8785 examples or explicit profile rules, with an ECMAScript-compatible serialization cross-check; the Python/Rust equality result is not itself normative authority.",
+  "vectors": [
+    {
+      "fixture_id": "JCS-VECTOR-001",
+      "input_path": "fixtures/corpus/JCS-VECTOR-001_rfc8785-primitives.json",
+      "expected_path": "fixtures/corpus/JCS-VECTOR-001_rfc8785-primitives.expected.jcs",
+      "input_sha256": "99bc8e523331343ecae50dfeb897f3cfef14b8c6f8884bae18e9136ed9d13875",
+      "expected_sha256": "2d5e01a318d0f0879ab568c4be289c8b1f64ef8921a53c6277d5e069978baacb",
+      "expected_octet_length": 118,
+      "oracle_basis": "RFC 8785 Section 3.2.2 canonicalization example",
+      "coverage": [
+        "ECMAScript number rendering",
+        "literal serialization",
+        "string escaping"
+      ]
+    },
+    {
+      "fixture_id": "JCS-VECTOR-002",
+      "input_path": "fixtures/corpus/JCS-VECTOR-002_utf16-property-order.json",
+      "expected_path": "fixtures/corpus/JCS-VECTOR-002_utf16-property-order.expected.jcs",
+      "input_sha256": "496f39f795463b8efc0e823f368380b7c4c9be23ec170d4f4f753a12199c224f",
+      "expected_sha256": "658c82659e8417348322bed0a8d81df0272a1a37b2a4861df650c7cbb934bf59",
+      "expected_octet_length": 79,
+      "oracle_basis": "RFC 8785 Section 3.2.3 UTF-16 property sorting",
+      "coverage": [
+        "recursive property sorting",
+        "UTF-16 order across U+10000 and U+E000"
+      ]
+    },
+    {
+      "fixture_id": "JCS-VECTOR-003",
+      "input_path": "fixtures/corpus/JCS-VECTOR-003_string-escaping.json",
+      "expected_path": "fixtures/corpus/JCS-VECTOR-003_string-escaping.expected.jcs",
+      "input_sha256": "bf14583ce673e766433a5f43c14c23cca4bc702cb50753fae72d0f80bc4ac781",
+      "expected_sha256": "dbf45e784499bb4355b6c5dc4e45dfe5f41b518e72957fbd5080170a112e75b6",
+      "expected_octet_length": 129,
+      "oracle_basis": "RFC 8785 Section 3.2.2.2 string serialization and escaping",
+      "coverage": [
+        "control characters",
+        "quote and backslash",
+        "U+2028/U+2029",
+        "unmodified Unicode",
+        "solidus remains unescaped"
+      ]
+    },
+    {
+      "fixture_id": "JCS-VECTOR-004",
+      "input_path": "fixtures/corpus/JCS-VECTOR-004_recursive-structure.json",
+      "expected_path": "fixtures/corpus/JCS-VECTOR-004_recursive-structure.expected.jcs",
+      "input_sha256": "01990dacc7931792127f00f8447c363fe65d7f412c9437995b2eefb1e5d50cfb",
+      "expected_sha256": "7b632b449b1e91425540f0d3f72fbaee94c20667e98587aba8def888e73e7dbb",
+      "expected_octet_length": 102,
+      "oracle_basis": "RFC 8785 Section 3.2.3 recursive property sorting",
+      "coverage": [
+        "nested objects",
+        "objects inside arrays",
+        "array order preservation",
+        "empty object and array"
+      ]
+    },
+    {
+      "fixture_id": "JCS-VECTOR-005",
+      "input_path": "fixtures/corpus/JCS-VECTOR-005_number-boundaries.json",
+      "expected_path": "fixtures/corpus/JCS-VECTOR-005_number-boundaries.expected.jcs",
+      "input_sha256": "6e45246d0685f66f6ea8dfde9b6496649da37973fd25873f6f737893e4247758",
+      "expected_sha256": "491bc354048d2336e1752a01209957423b4acf8026bde2b353a4e4d3a1ea81d8",
+      "expected_octet_length": 235,
+      "oracle_basis": "RFC 8785 Appendix B number serialization samples",
+      "coverage": [
+        "subnormal extremes",
+        "maximum finite doubles",
+        "integer precision boundary",
+        "scientific notation thresholds"
+      ]
+    },
+    {
+      "fixture_id": "CANONICAL-003",
+      "input_path": "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json",
+      "expected_path": "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.expected.jcs",
+      "input_sha256": "1cde8282d6df99defc16b8652cb0f43a8f327c35b8f356a8612b835ed996ec73",
+      "expected_sha256": "9fb648c388c4485575d25c1d6171ba691fec51c1b433b11f4d61197bbe2a5509",
+      "expected_octet_length": 577,
+      "oracle_basis": "Existing CANONICAL-003 discriminator; frozen unchanged regression baseline",
+      "coverage": [
+        "ECMAScript number rendering",
+        "UTF-16 sort discriminator",
+        "string escaping",
+        "regression baseline"
+      ]
+    }
+  ],
+  "scope_limits": [
+    "Six vectors total: five additional vectors plus the existing CANONICAL-003 baseline.",
+    "This is a bounded engineering corpus, not full RFC 8785 coverage.",
+    "The multi-vector run exercises isolated Python and Rust adapters only; it does not imply RI-PY production-path execution for each new vector.",
+    "No Merkle internal-node, proof-shape, chain, or negative-test coverage is claimed.",
+    "No normative, governance, ratification, acceptance, or release effect."
+  ],
+  "normative_effect": "NONE",
+  "governance_effect": "NONE",
+  "release_effect": "NONE"
+}
