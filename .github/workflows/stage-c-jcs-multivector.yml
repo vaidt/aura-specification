@@ -1,0 +1,77 @@
+name: Stage C JCS multi-vector adapter comparison
+
+on:
+  push:
+    branches:
+      - "experiment/stage-c-jcs-multivector-20261023"
+    paths:
+      - "scripts/stage_c/**"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.expected.jcs"
+      - "fixtures/corpus/JCS-MULTIVECTOR-MANIFEST-v0.1-DRAFT.json"
+      - "fixtures/corpus/JCS-VECTOR-*.json"
+      - "fixtures/corpus/JCS-VECTOR-*.expected.jcs"
+      - ".github/workflows/stage-c-jcs-multivector.yml"
+  pull_request:
+    branches: [main, "experiment/stage-c-adapter-contract-20261023"]
+    paths:
+      - "scripts/stage_c/**"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.expected.jcs"
+      - "fixtures/corpus/JCS-MULTIVECTOR-MANIFEST-v0.1-DRAFT.json"
+      - "fixtures/corpus/JCS-VECTOR-*.json"
+      - "fixtures/corpus/JCS-VECTOR-*.expected.jcs"
+      - ".github/workflows/stage-c-jcs-multivector.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  jcs-multivector:
+    name: Six-vector isolated JCS adapter byte comparison (non-normative)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout specification experiment
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned Rust JCS adapter
+        uses: actions/checkout@v4
+        with:
+          repository: vaidt/aura-guard-v1.3
+          ref: 31a7eeab861094fbecc82e8a61351fac49dffe43
+          path: aura-guard
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@1.86.0
+
+      - name: Install pinned isolated Python JCS dependency
+        run: python -m pip install --disable-pip-version-check -r scripts/stage_c/requirements.txt
+
+      - name: Run Stage C JCS unit and corpus tests
+        run: python -m unittest discover -s scripts/stage_c -p 'test_*.py' -v
+
+      - name: Run isolated Python/Rust JCS adapters on every committed vector
+        env:
+          AURA_SPECIFICATION_ROOT: ${{ github.workspace }}
+        run: |
+          python scripts/stage_c/run_jcs_multivector.py \
+            --manifest fixtures/corpus/JCS-MULTIVECTOR-MANIFEST-v0.1-DRAFT.json \
+            --rust-manifest "$GITHUB_WORKSPACE/aura-guard/Cargo.toml" \
+            --python-source-commit "$(git rev-parse HEAD)" \
+            --rust-source-commit "31a7eeab861094fbecc82e8a61351fac49dffe43" \
+            --run-id "${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+      - name: Upload multi-vector execution evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-c-jcs-multivector
+          path: artifacts/stage-c/multivector/
+          if-no-files-found: warn
+          retention-days: 14
