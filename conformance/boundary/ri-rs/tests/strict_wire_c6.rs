@@ -38,5 +38,6 @@ fn rejected(bytes: &[u8]) -> bool { parse_receipt_json(bytes).is_err() }
     let base = String::from_utf8(valid()).unwrap();
     assert!(rejected(base.replace(&B64.encode([0x43, 0x36, 0, 0xfe, 0xff]), "!!!").as_bytes());
     assert!(rejected(base.replace(r#""octet_length":5"#, r#""octet_length":4"#).as_bytes());
-    assert!(rejected(base.replace(&"".to_string(), "").as_bytes()) == false); // positive corpus stable
+    let wrong_digest = base.replace(&Sha256::digest([0x43, 0x36, 0, 0xfe, 0xff]).iter().map(|b| format!("{b:02x}")).collect::<String>(), &"0".repeat(64));
+    assert!(rejected(wrong_digest.as_bytes()));
 }
