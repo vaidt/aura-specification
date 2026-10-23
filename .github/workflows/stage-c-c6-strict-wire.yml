@@ -1,0 +1,65 @@
+name: Stage C C6 strict wire consumer experiment (not gate promotion)
+
+on:
+  push:
+    branches:
+      - "experiment/stage-c-c6-strict-wire-consumer-20261024"
+    paths:
+      - "conformance/boundary/strict_wire.py"
+      - "conformance/boundary/strict_wire.rs"
+      - "conformance/boundary/ri_rs_receiver.rs"
+      - "scripts/stage_c/test_c6_strict_wire.py"
+      - "conformance/boundary/ri-rs/tests/strict_wire_c6.rs"
+      - ".github/workflows/stage-c-c6-strict-wire.yml"
+  pull_request:
+    branches:
+      - "experiment/stage-c-merkle-c5-20261023"
+    paths:
+      - "conformance/boundary/strict_wire.py"
+      - "conformance/boundary/strict_wire.rs"
+      - "conformance/boundary/ri_rs_receiver.rs"
+      - "scripts/stage_c/test_c6_strict_wire.py"
+      - "conformance/boundary/ri-rs/tests/strict_wire_c6.rs"
+      - ".github/workflows/stage-c-c6-strict-wire.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  strict-wire-experiment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout specification experiment
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run strict RI-PY wire parser mutation tests
+        run: python -m unittest discover -s scripts/stage_c -p 'test_c6_strict_wire.py' -v
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@1.86.0
+      - name: Run strict RI-RS wire parser mutation tests
+        run: cargo test --manifest-path conformance/boundary/ri-rs/Cargo.toml --test strict_wire_c6 -- --nocapture
+      - name: Emit fail-closed status
+        if: always()
+        run: |
+          mkdir -p artifacts/c6-strict-wire
+          cat > artifacts/c6-strict-wire/status.txt <<'EOF'
+          stage=C6_STRICT_WIRE_EXPERIMENT
+          c6_gate_status=BLOCKED_NOT_EXECUTED
+          authority=NONE
+          governance_effect=NONE
+          authorization_effect=NONE
+          release_effect=NONE
+          EOF
+      - name: Upload experimental evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: c6-strict-wire-experiment
+          path: artifacts/c6-strict-wire/status.txt
+          if-no-files-found: error
+          retention-days: 14
