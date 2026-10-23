@@ -9,35 +9,34 @@ fn valid() -> Vec<u8> {
 }
 fn rejected(bytes: &[u8]) -> bool { parse_receipt_json(bytes).is_err() }
 
-#[test] fn accepts_valid_base64_wire_and_preserves_octets() {
-    let input = valid(); let parsed = parse_receipt_json(&input).expect("valid");
+#[test]
+fn accepts_valid_base64_wire_and_preserves_octets() {
+    let parsed = parse_receipt_json(&valid()).expect("valid receipt");
     assert_eq!(parsed.raw_octets, vec![0x43, 0x36, 0, 0xfe, 0xff]);
 }
-#[test] fn rejects_authority_and_unknown_fields() {
+#[test]
+fn rejects_authority_unknown_and_duplicate_fields() {
     let base = String::from_utf8(valid()).unwrap();
-    assert!(rejected(base.replace(r#""schema_id":"BC-02.1-COMMON-RECEIPT""#, r#""conformance_result":"PASS","schema_id":"BC-02.1-COMMON-RECEIPT""#).as_bytes());
-    assert!(rejected(base.replace(r#""adapter_id":"adapter-x""#, r#""unknown":"x","adapter_id":"adapter-x""#).as_bytes());
+    assert!(rejected(base.replace("\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"", "\"conformance_result\":\"PASS\",\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"").as_bytes());
+    assert!(rejected(base.replace("\"adapter_id\":\"adapter-x\"", "\"unknown\":\"x\",\"adapter_id\":\"adapter-x\"").as_bytes());
+    assert!(rejected(base.replace("\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"", "\"schema_id\":\"BAD\",\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"").as_bytes());
+    assert!(rejected(base.replace("\"method\":\"local\"", "\"method\":\"local\",\"method\":\"other\"").as_bytes());
 }
-#[test] fn rejects_duplicate_keys_at_every_level() {
-    let base = String::from_utf8(valid()).unwrap();
-    assert!(rejected(base.replace(r#""schema_id":"BC-02.1-COMMON-RECEIPT""#, r#""schema_id":"BAD","schema_id":"BC-02.1-COMMON-RECEIPT""#).as_bytes());
-    assert!(rejected(base.replace(r#""method":"local""#, r#""method":"local","method":"other""#).as_bytes());
-}
-#[test] fn rejects_bad_utf8_json_and_malformed_json() {
+#[test]
+fn rejects_bad_utf8_json_null_types_and_negative_lengths() {
     assert!(rejected(&[0xff, 0xfe]));
     assert!(rejected(b"{"));
-}
-#[test] fn rejects_null_wrong_types_and_negative_length() {
     let base = String::from_utf8(valid()).unwrap();
-    assert!(rejected(base.replace(r#""runtime":"rust""#, r#""runtime":null"#).as_bytes());
-    assert!(rejected(base.replace(r#""octet_length":5"#, r#""octet_length":-1"#).as_bytes());
-    assert!(rejected(base.replace(r#""octet_length":5"#, r#""octet_length":5.0"#).as_bytes());
-    assert!(rejected(base.replace(r#""octet_length":5"#, r#""octet_length":true"#).as_bytes());
+    assert!(rejected(base.replace("\"runtime\":\"rust\"", "\"runtime\":null").as_bytes());
+    assert!(rejected(base.replace("\"octet_length\":5", "\"octet_length\":-1").as_bytes());
+    assert!(rejected(base.replace("\"octet_length\":5", "\"octet_length\":5.0").as_bytes());
+    assert!(rejected(base.replace("\"octet_length\":5", "\"octet_length\":true").as_bytes());
 }
-#[test] fn rejects_malformed_base64_length_and_digest() {
+#[test]
+fn rejects_bad_base64_length_and_digest() {
     let base = String::from_utf8(valid()).unwrap();
     assert!(rejected(base.replace(&B64.encode([0x43, 0x36, 0, 0xfe, 0xff]), "!!!").as_bytes());
-    assert!(rejected(base.replace(r#""octet_length":5"#, r#""octet_length":4"#).as_bytes());
-    let wrong_digest = base.replace(&Sha256::digest([0x43, 0x36, 0, 0xfe, 0xff]).iter().map(|b| format!("{b:02x}")).collect::<String>(), &"0".repeat(64));
-    assert!(rejected(wrong_digest.as_bytes()));
+    assert!(rejected(base.replace("\"octet_length\":5", "\"octet_length\":4").as_bytes());
+    let digest = Sha256::digest([0x43, 0x36, 0, 0xfe, 0xff]).iter().map(|b| format!("{b:02x}")).collect::<String>();
+    assert!(rejected(base.replace(&digest, &"0".repeat(64)).as_bytes());
 }
