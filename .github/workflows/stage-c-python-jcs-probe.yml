@@ -1,0 +1,92 @@
+name: Stage C Python JCS isolated probe
+
+on:
+  push:
+    branches:
+      - "experiment/stage-c-adapter-contract-20261023"
+    paths:
+      - "scripts/stage_c/**"
+      - "scripts/stage_c/test_python_jcs_probe.py"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.expected.jcs"
+      - ".github/workflows/stage-c-python-jcs-probe.yml"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "scripts/stage_c/**"
+      - "scripts/stage_c/test_python_jcs_probe.py"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.expected.jcs"
+      - ".github/workflows/stage-c-python-jcs-probe.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  python-jcs-probe:
+    name: Python JCS bytes-only probe (non-normative)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout isolated experiment
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install isolated pinned JCS dependency
+        run: python -m pip install --disable-pip-version-check -r scripts/stage_c/requirements.txt
+
+      - name: Run probe unit tests
+        run: python -m unittest discover -s scripts/stage_c -p 'test_python_jcs_probe.py' -v
+
+      - name: Create invocation request
+        shell: bash
+        run: |
+          mkdir -p artifacts/stage-c/python-jcs
+          cat > artifacts/stage-c/python-jcs/request.json <<EOF
+          {
+            "schema": "AURA-STAGE-C-ADAPTER-REQUEST/0.1",
+            "run_id": "${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}",
+            "operation": "jcs.canonicalize",
+            "fixture_id": "CANONICAL-003",
+            "input_path": "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json",
+            "json_pointer": "/protocol_object",
+            "source_commit": "${GITHUB_SHA}"
+          }
+          EOF
+
+      - name: Execute Python JCS shim
+        run: |
+          python scripts/stage_c/python_jcs_probe.py \
+            --request artifacts/stage-c/python-jcs/request.json \
+            --response artifacts/stage-c/python-jcs/response.json \
+            --output-octets artifacts/stage-c/python-jcs/canonical.bin \
+            --repo-root "$GITHUB_WORKSPACE"
+
+      - name: Independently verify exact bytes and digests
+        shell: bash
+        run: |
+          expected='fixtures/corpus/CANONICAL-003_jcs_full_discriminator.expected.jcs'
+          actual='artifacts/stage-c/python-jcs/canonical.bin'
+          cmp --silent "$expected" "$actual"
+          test "$(wc -c < "$actual" | tr -d ' ')" = "577"
+          output_sha="$(sha256sum "$actual" | awk '{print $1}')"
+          test "$output_sha" = "9fb648c388c4485575d25c1d6171ba691fec51c1b433b11f4d61197bbe2a5509"
+          leaf_sha="$(python -c 'import hashlib, pathlib; print(hashlib.sha256(bytes([0]) + pathlib.Path("artifacts/stage-c/python-jcs/canonical.bin").read_bytes()).hexdigest())')"
+          test "$leaf_sha" = "38672ea2bd0ea87b2446efce8d4ba4adeb822e0baaecee4a54b73179198d2b3e"
+          echo "Exact expected-byte comparison: matched"
+          echo "Canonical SHA-256: $output_sha"
+          echo "RFC 6962 leaf SHA-256 (probe only): $leaf_sha"
+
+      - name: Upload request, response and raw canonical bytes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-c-python-jcs-probe
+          path: artifacts/stage-c/python-jcs/
+          if-no-files-found: warn
+          retention-days: 14
