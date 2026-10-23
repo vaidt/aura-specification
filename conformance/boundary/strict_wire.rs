@@ -42,7 +42,7 @@ fn exact_keys(m: &Map<String, Value>, fields: &[&str]) -> bool {
     let wanted: BTreeSet<&str> = fields.iter().copied().collect();
     actual == wanted
 }
-fn nonempty_string(m: &Map<String, Value>, key: &str) -> Result<&str, WireError> {
+fn nonempty_string<'a>(m: &'a Map<String, Value>, key: &str) -> Result<&'a str, WireError> {
     match m.get(key).and_then(Value::as_str) { Some(s) if !s.is_empty() => Ok(s), _ => Err(WireError("required-nonempty-string")) }
 }
 fn no_nulls(v: &Value) -> bool {
