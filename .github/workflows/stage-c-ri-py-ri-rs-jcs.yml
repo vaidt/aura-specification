@@ -1,0 +1,192 @@
+name: Stage C RI-PY RI-RS production-path JCS comparison
+
+on:
+  push:
+    branches:
+      - "experiment/stage-c-adapter-contract-20261023"
+    paths:
+      - "scripts/stage_c/**"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.expected.jcs"
+      - ".github/workflows/stage-c-ri-py-ri-rs-jcs.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "scripts/stage_c/**"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json"
+      - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.expected.jcs"
+      - ".github/workflows/stage-c-ri-py-ri-rs-jcs.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  production-path-comparison:
+    name: RI-PY production leaf path + isolated RI-PY/RI-RS JCS shims
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout specification experiment
+        uses: actions/checkout@v4
+
+      - name: Checkout pinned RI-PY working implementation
+        uses: actions/checkout@v4
+        with:
+          repository: vaidt/aura-poc-a-core-v3.3
+          ref: 0a8a48cc4917c5d43ecad52de6b09abb53874684
+          path: aura-core
+
+      - name: Checkout pinned RI-RS JCS adapter
+        uses: actions/checkout@v4
+        with:
+          repository: vaidt/aura-guard-v1.3
+          ref: e5188f6438327ec89d9f8e36396ab8e011205475
+          path: aura-guard
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install isolated Python JCS and RI-PY dependencies
+        run: python -m pip install --disable-pip-version-check -r scripts/stage_c/requirements.txt -e aura-core
+
+      - name: Run RI-PY CANONICAL-003 implementation-boundary check
+        working-directory: aura-core
+        env:
+          AURA_SPECIFICATION_ROOT: ${{ github.workspace }}
+        run: python conformance/canonical_003_ri_py.py
+
+      - name: Create common Python shim request
+        shell: bash
+        run: |
+          mkdir -p artifacts/stage-c/production-path/python-jcs
+          cat > artifacts/stage-c/production-path/python-jcs/request.json <<EOF
+          {
+            "schema": "AURA-STAGE-C-ADAPTER-REQUEST/0.1",
+            "run_id": "${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}",
+            "operation": "jcs.canonicalize",
+            "fixture_id": "CANONICAL-003",
+            "input_path": "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json",
+            "json_pointer": "/protocol_object",
+            "source_commit": "${GITHUB_SHA}"
+          }
+          EOF
+
+      - name: Execute common Python JCS shim
+        run: |
+          python scripts/stage_c/python_jcs_probe.py \
+            --request artifacts/stage-c/production-path/python-jcs/request.json \
+            --response artifacts/stage-c/production-path/python-jcs/response.json \
+            --output-octets artifacts/stage-c/production-path/python-jcs/canonical.bin \
+            --repo-root "$GITHUB_WORKSPACE"
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@1.86.0
+
+      - name: Run Rust shim contract tests
+        env:
+          AURA_SPECIFICATION_ROOT: ${{ github.workspace }}
+        run: cargo test --locked --manifest-path aura-guard/Cargo.toml --example stage_c_jcs_probe -- --nocapture
+
+      - name: Create equivalent Rust shim request
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          request = json.loads(Path("artifacts/stage-c/production-path/python-jcs/request.json").read_bytes())
+          request["source_commit"] = "e5188f6438327ec89d9f8e36396ab8e011205475"
+          target = Path("artifacts/stage-c/production-path/rust-jcs")
+          target.mkdir(parents=True, exist_ok=True)
+          (target / "request.json").write_text(
+              json.dumps(request, ensure_ascii=False, sort_keys=True, separators=(",", ":")),
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Execute common Rust JCS shim
+        env:
+          AURA_SPECIFICATION_ROOT: ${{ github.workspace }}
+        run: |
+          cargo run --locked --manifest-path aura-guard/Cargo.toml --example stage_c_jcs_probe -- \
+            --request artifacts/stage-c/production-path/rust-jcs/request.json \
+            --response artifacts/stage-c/production-path/rust-jcs/response.json \
+            --output-octets artifacts/stage-c/production-path/rust-jcs/canonical.bin \
+            --repo-root "$GITHUB_WORKSPACE"
+
+      - name: Compare RI-PY production path, shared shims, and frozen oracle
+        shell: bash
+        run: |
+          expected='fixtures/corpus/CANONICAL-003_jcs_full_discriminator.expected.jcs'
+          python_shim='artifacts/stage-c/production-path/python-jcs/canonical.bin'
+          ri_py_production='aura-core/artifacts/canonical-003-ri-py/CANONICAL-003_ri_py_actual_serialization.bin'
+          rust_shim='artifacts/stage-c/production-path/rust-jcs/canonical.bin'
+          cmp --silent "$expected" "$python_shim"
+          cmp --silent "$expected" "$ri_py_production"
+          cmp --silent "$expected" "$rust_shim"
+          cmp --silent "$python_shim" "$ri_py_production"
+          cmp --silent "$python_shim" "$rust_shim"
+          test "$(wc -c < "$rust_shim" | tr -d ' ')" = "577"
+          output_sha="$(sha256sum "$rust_shim" | awk '{print $1}')"
+          test "$output_sha" = "9fb648c388c4485575d25c1d6171ba691fec51c1b433b11f4d61197bbe2a5509"
+          leaf_sha="$(python -c 'import hashlib, pathlib; print(hashlib.sha256(bytes([0]) + pathlib.Path("artifacts/stage-c/production-path/rust-jcs/canonical.bin").read_bytes()).hexdigest())')"
+          test "$leaf_sha" = "38672ea2bd0ea87b2446efce8d4ba4adeb822e0baaecee4a54b73179198d2b3e"
+          python - <<'PY'
+          import hashlib, json, subprocess
+          from pathlib import Path
+          spec_commit = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          core_commit = subprocess.check_output(["git", "-C", "aura-core", "rev-parse", "HEAD"], text=True).strip()
+          rs_commit = "e5188f6438327ec89d9f8e36396ab8e011205475"
+          py_env = json.loads(Path("artifacts/stage-c/production-path/python-jcs/response.json").read_bytes())
+          rs_env = json.loads(Path("artifacts/stage-c/production-path/rust-jcs/response.json").read_bytes())
+          py_shim = Path("artifacts/stage-c/production-path/python-jcs/canonical.bin").read_bytes()
+          py_core = Path("aura-core/artifacts/canonical-003-ri-py/CANONICAL-003_ri_py_actual_serialization.bin").read_bytes()
+          rs = Path("artifacts/stage-c/production-path/rust-jcs/canonical.bin").read_bytes()
+          core_report = json.loads(Path("aura-core/artifacts/canonical-003-ri-py/CANONICAL-003_ri_py_execution_report.json").read_bytes())
+          if not (py_shim == py_core == rs):
+              raise SystemExit("cross-implementation canonical bytes diverged")
+          if py_env["run_id"] != rs_env["run_id"] or py_env["operation"] != rs_env["operation"]:
+              raise SystemExit("common request/response contract mismatch")
+          report = {
+              "schema": "AURA-STAGE-C-RI-PY-RI-RS-JCS-COMPARISON/0.1",
+              "run_id": py_env["run_id"],
+              "specification_checkout_commit": spec_commit,
+              "ri_py_source_commit": core_commit,
+              "ri_rs_adapter_source_commit": rs_commit,
+              "fixture_id": "CANONICAL-003",
+              "fixture_sha256": "1cde8282d6df99defc16b8652cb0f43a8f327c35b8f356a8612b835ed996ec73",
+              "ri_py_core_method": "core/merkle.py::MerkleAttestor.generate_leaf (checked by RI-PY CANONICAL-003 test)",
+              "ri_py_jcs_shim": py_env["adapter"],
+              "ri_rs_jcs_shim": rs_env["adapter"],
+              "ri_py_core_canonical_sha256": hashlib.sha256(py_core).hexdigest(),
+              "ri_py_shim_canonical_sha256": hashlib.sha256(py_shim).hexdigest(),
+              "ri_rs_shim_canonical_sha256": hashlib.sha256(rs).hexdigest(),
+              "canonical_octet_length": len(rs),
+              "byte_for_byte_equal_all_three": True,
+              "matches_committed_expected_jcs": True,
+              "ri_py_core_method_binding": bool(core_report["observed"]["core_method_binding"]),
+              "scope": "single experimental discriminator; no full RFC corpus claim",
+              "normative_effect": "NONE",
+              "release_effect": "NONE",
+              "note": "Technical evidence only; does not ratify DQ-006/DQ-002 or close Stage C."
+          }
+          Path("artifacts/stage-c/production-path/comparison.json").write_text(
+              json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+          echo "RI-PY production output, Python shim, Rust shim, and expected oracle: byte-identical"
+          echo "Canonical SHA-256: $output_sha"
+          echo "RFC 6962 leaf SHA-256 (probe only): $leaf_sha"
+
+      - name: Upload all execution and comparison artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-c-ri-py-ri-rs-jcs
+          path: |
+            artifacts/stage-c/production-path/
+            aura-core/artifacts/canonical-003-ri-py/
+          if-no-files-found: warn
+          retention-days: 14
