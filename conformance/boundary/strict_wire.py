@@ -104,6 +104,8 @@ def parse_receipt_json(payload: bytes) -> ParsedReceipt:
         raise ReceiptWireError("null-prohibited")
     for parent, names in FIELDS.items():
         for name in names:
+            if parent == "received" and name == "octet_length":
+                continue
             if not isinstance(value[parent][name], str):
                 raise ReceiptWireError(f"type:{parent}.{name}:string-required")
             if not value[parent][name]:
