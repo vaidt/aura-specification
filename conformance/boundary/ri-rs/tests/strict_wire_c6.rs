@@ -1,42 +1,61 @@
-use base64::{engine::general_purpose::STANDARD as B64, Engine as _};
 use ri_rs_receiver::strict_wire::parse_receipt_json;
-use sha2::{Digest, Sha256};
+use serde::Deserialize;
+use std::{fs, path::PathBuf};
 
-fn valid() -> Vec<u8> {
-    let raw = [0x43, 0x36, 0x00, 0xfe, 0xff];
-    let digest = Sha256::digest(raw).iter().map(|b| format!("{b:02x}")).collect::<String>();
-    format!(r#"{{"adapter":{{"adapter_id":"adapter-x","adapter_version":"1"}},"environment":{{"environment_id":"env","platform":"linux","runtime":"rust"}},"fixture":{{"fixture_artifact_identity":"fixture.bin","fixture_id":"FIX-C6"}},"handoff":{{"method":"local","status":"TRANSFERRED"}},"received":{{"octet_length":5,"raw_octets":"{}","recomputed_sha256":"{}"}},"receiver":{{"implementation_id":"impl","implementation_version":"1","language":"Rust","receiver_id":"RI-RS","source_commit":"abc"}},"schema_id":"BC-02.1-COMMON-RECEIPT","schema_version":1}}"#, B64.encode(raw), digest).into_bytes()
+#[derive(Debug, Deserialize)]
+struct Corpus {
+    schema: String,
+    contract: String,
+    raw_octets_hex: String,
+    valid_receipt_json: String,
+    mutations: Vec<Mutation>,
 }
-fn rejected(bytes: &[u8]) -> bool { parse_receipt_json(bytes).is_err() }
-
-#[test]
-fn accepts_valid_base64_wire_and_preserves_octets() {
-    let parsed = parse_receipt_json(&valid()).expect("valid receipt");
-    assert_eq!(parsed.raw_octets, vec![0x43, 0x36, 0, 0xfe, 0xff]);
+#[derive(Debug, Deserialize)]
+struct Mutation {
+    id: String,
+    kind: String,
+    find: Option<String>,
+    replace: Option<String>,
+    wire: Option<String>,
+    wire_hex: Option<String>,
+    expected: String,
+}
+fn corpus() -> Corpus {
+    let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+        .join("../../../fixtures/corpus/STAGE-C-C6-BC02.1-WIRE-MUTATIONS-v0.1.json");
+    let bytes = fs::read(&path).expect("shared C6 corpus must be available");
+    let corpus: Corpus = serde_json::from_slice(&bytes).expect("shared C6 corpus must parse");
+    assert_eq!(corpus.schema, "AURA-STAGE-C6-BC02.1-WIRE-MUTATION-CORPUS/0.1");
+    assert_eq!(corpus.contract, "BC-02.1-COMMON-RECEIPT");
+    corpus
+}
+fn apply_mutation(base: &str, case: &Mutation) -> Vec<u8> {
+    match case.kind.as_str() {
+        "replace" => {
+            let find = case.find.as_ref().expect("replace case must define find");
+            let replace = case.replace.as_ref().expect("replace case must define replacement");
+            assert_eq!(base.matches(find).count(), 1, "{}: replacement target must occur once", case.id);
+            base.replacen(find, replace, 1).into_bytes()
+        }
+        "literal" => case.wire.as_ref().expect("literal case must define wire").as_bytes().to_vec(),
+        "hex" => hex::decode(case.wire_hex.as_ref().expect("hex case must define wire_hex"))
+            .expect("wire hex in shared corpus must be well-formed"),
+        other => panic!("{}: unsupported mutation kind {other}", case.id),
+    }
 }
 #[test]
-fn rejects_authority_unknown_and_duplicate_fields() {
-    let base = String::from_utf8(valid()).unwrap();
-    assert!(rejected(base.replace("\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"", "\"conformance_result\":\"PASS\",\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"").as_bytes()));
-    assert!(rejected(base.replace("\"adapter_id\":\"adapter-x\"", "\"unknown\":\"x\",\"adapter_id\":\"adapter-x\"").as_bytes()));
-    assert!(rejected(base.replace("\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"", "\"schema_id\":\"BAD\",\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"").as_bytes()));
-    assert!(rejected(base.replace("\"method\":\"local\"", "\"method\":\"local\",\"method\":\"other\"").as_bytes()));
+fn accepts_shared_valid_receipt_and_preserves_raw_octets() {
+    let corpus = corpus();
+    let parsed = parse_receipt_json(corpus.valid_receipt_json.as_bytes()).expect("shared valid receipt");
+    assert_eq!(hex::encode(parsed.raw_octets), corpus.raw_octets_hex);
 }
 #[test]
-fn rejects_bad_utf8_json_null_types_and_negative_lengths() {
-    assert!(rejected(&[0xff, 0xfe]));
-    assert!(rejected(b"{"));
-    let base = String::from_utf8(valid()).unwrap();
-    assert!(rejected(base.replace("\"runtime\":\"rust\"", "\"runtime\":null").as_bytes()));
-    assert!(rejected(base.replace("\"octet_length\":5", "\"octet_length\":-1").as_bytes()));
-    assert!(rejected(base.replace("\"octet_length\":5", "\"octet_length\":5.0").as_bytes()));
-    assert!(rejected(base.replace("\"octet_length\":5", "\"octet_length\":true").as_bytes()));
-}
-#[test]
-fn rejects_bad_base64_length_and_digest() {
-    let base = String::from_utf8(valid()).unwrap();
-    assert!(rejected(base.replace(&B64.encode([0x43, 0x36, 0, 0xfe, 0xff]), "!!!").as_bytes()));
-    assert!(rejected(base.replace("\"octet_length\":5", "\"octet_length\":4").as_bytes()));
-    let digest = Sha256::digest([0x43, 0x36, 0, 0xfe, 0xff]).iter().map(|b| format!("{b:02x}")).collect::<String>();
-    assert!(rejected(base.replace(&digest, &"0".repeat(64)).as_bytes()));
+fn rejects_every_mutation_in_the_shared_corpus() {
+    let corpus = corpus();
+    assert_eq!(corpus.mutations.len(), 18);
+    for case in &corpus.mutations {
+        assert_eq!(case.expected, "REJECT", "{}: unexpected positive disposition", case.id);
+        let candidate = apply_mutation(&corpus.valid_receipt_json, case);
+        assert!(parse_receipt_json(&candidate).is_err(), "{}: malformed receipt was accepted", case.id);
+    }
 }
