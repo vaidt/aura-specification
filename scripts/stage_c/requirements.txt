@@ -1,0 +1,2 @@
+# Experimental JCS probe dependency only; not a production/runtime dependency.
+rfc8785==0.1.4
