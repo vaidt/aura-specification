@@ -1,7 +1,7 @@
 # Stage C — Adapter Invocation Contract v0.1 (Draft)
 
 **Status:** DRAFT · NON-NORMATIVE · NOT RATIFIED  
-**Execution status:** CONTRACT REVIEW ONLY — NO STAGE C RUN CLAIMED  
+**Execution status:** Isolated Python JCS probe implemented; complete Stage C remains unexecuted  
 **Protocol effect:** NONE  
 **Governance effect:** NONE  
 **Target:** Isolated Stage C engineering branch only
@@ -69,7 +69,7 @@ Provenance and fixture metadata are supplied through environment variables, some
 
 RI-RS has a dedicated JCS function with the narrow transformation `serde_json::Value -> Vec<u8>`, exercised by `cargo test --test canonical_001`. It is a library/test surface, not a common standalone adapter CLI, and is explicitly outside the production runtime.
 
-The reviewed RI-PY default-branch tree does not expose an equivalent RFC 8785 JCS function/CLI. Its `ri_py_adapter.py` is the BC-02 receiver adapter, not a JCS canonicalizer; its default-branch `pyproject.toml` does not pin or declare a JCS runtime dependency. Consequently, **the existing RI-PY receiver must not be presented as an executable JCS adapter**. A separate, pinned experimental JCS adapter is required before a genuine Stage C cross-language JCS run can be claimed.
+The original `Aura-IDToken/aura-poc-a-core-v3.3` default-branch snapshot inspected above has the BC-02 receiver adapter but not an equivalent JCS-only CLI. A separate working successor fork, `vaidt/aura-poc-a-core-v3.3`, does contain `conformance/canonical_003_ri_py.py` and `.github/workflows/canonical-003-ri-py.yml`; its probe uses `rfc8785==0.1.4` and also binds the output to `core/merkle.py::MerkleAttestor.generate_leaf`. That is useful execution evidence, but it is not a standalone JCS-only outer adapter.\n\nThis PR now adds `scripts/stage_c/python_jcs_probe.py`, pinned to the same `rfc8785==0.1.4` engine. It runs as a separate process, reads only `/protocol_object` from the committed CANONICAL-003 fixture, emits raw canonical bytes to a binary file, and writes a provenance response envelope. It imports neither `conformance.boundary.ri_py_adapter` nor `ri_py_receiver`, and it does not invoke `MerkleAttestor` or any production runtime path. The workflow independently compares the bytes and recomputes digests. This is an **isolated Python JCS probe**, not a claim that the BC-02.2 receiver is a JCS adapter or that the probe alone is authoritative RI-PY conformance.
 
 ### 3.4 Previous handoff evidence
 
@@ -96,7 +96,7 @@ Each operation receives one UTF-8 JSON request file conforming to `AURA-STAGE-C-
 }
 ```
 
-The example illustrates field shape only. The runner MUST compute the actual expected-file digest at runtime; it MUST NOT copy the placeholder text above into a real request.
+The request does not include expected bytes or expected digests. The adapter only produces output bytes and metadata; the separate evaluator reads the expected oracle from the committed corpus and independently computes comparison results.
 
 ### 4.2 Common output boundary
 
@@ -110,7 +110,7 @@ The response envelope is `AURA-STAGE-C-ADAPTER-RESPONSE/0.1` and includes:
 - output path, output octet length and SHA-256;
 - `execution_status` from the closed operational set `COMPLETED | INPUT_ERROR | EXECUTION_ERROR | OUTPUT_ERROR`.
 
-The envelope MUST NOT include protocol `PASS/FAIL`, `CONFORMANT/NON_CONFORMANT), acceptance state, or a ratification claim. Only the independent Stage C evaluator can compare output bytes against the expected corpus and produce a technical test report. Its report still has no normative or release authority.
+The envelope MUST NOT include protocol `PASS/FAIL`, `CONFORMANT/NON_CONFORMANT`, acceptance state, or a ratification claim. Only the independent Stage C evaluator can compare output bytes against the expected corpus and produce a technical test report. Its report still has no normative or release authority.
 
 ### 4.3 Standard shim command
 
@@ -143,7 +143,7 @@ A zero exit code MUST NOT be interpreted as a conformance result.
 - Compare raw output bytes with the committed discriminator file; semantic JSON equality is insufficient.
 - Compute SHA-256 from the emitted output bytes independently in the runner.
 - Do not mutate the fixture, expected JCS bytes, production serializer, or Merkle runtime.
-- The Python JCS engine and Rust JCS engine must be pinned and identified separately. The selected Python engine is still unresolved in this proposal; do not label it RI-PY-native until source/reachability and ownership are evidenced.
+- The isolated Python probe currently pins `rfc8785==0.1.4`; the Rust probe uses the pinned Rust-side canonicalizer. The engine, exact version, source commit, input hash, output byte length, and output hash are recorded. Do not describe the Python probe itself as the canonical serializer inside the frozen RI-PY product runtime.
 
 ### 5.2 `receiver.receive_octets`
 
@@ -178,8 +178,8 @@ No real Stage C gate is considered wired by completing this interface audit.
 
 - The invocation difference between the two existing BC-02 receiver adapters is explicitly mapped rather than hidden.
 - The JCS and receiver-adapter responsibilities are kept distinct.
-- The missing default-branch RI-PY JCS execution surface is recorded as a blocking dependency.
+- The separate working-fork RI-PY JCS evidence is distinguished from its BC-02 receiver; the new Stage C probe is independently invocable and does not enter production paths. Source-of-record alignment and complete Stage C integration remain open.
 - Request/response contracts carry actual provenance and bind outputs to bytes.
 - The proposal remains visibly draft, non-normative and unexecuted.
 
-**Disposition:** Interface audit documented. The proposed outer contract is not implemented or ratified. No complete Stage C execution is claimed.
+**Disposition:** The outer invocation contract remains a draft. A standalone Python JCS probe, unit tests, pinned dependency file, and read-only workflow are now implemented in this experimental branch. This is a JCS-only probe; it neither executes RI-PY/RI-RS receipt handoff nor completes the ten-stage Stage C pipeline. It has no normative or release authority.
