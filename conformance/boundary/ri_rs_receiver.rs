@@ -9,6 +9,9 @@ use serde::{Deserialize, Serialize};
 #[path = "strict_wire.rs"]
 pub mod strict_wire;
 
+#[path = "strict_wire.rs"]
+pub mod strict_wire;
+
 pub const SCHEMA_ID: &str = "BC-02.1-COMMON-RECEIPT";
 pub const SCHEMA_VERSION: u32 = 1;
 
