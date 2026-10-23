@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: vaidt/aura-guard-v1.3
-          ref: f65b45510a819e900a6328c8a420ddb6425715da
+          ref: fd5f6e90940225e9f8ffe23707382669bdfaba82
           path: aura-guard
 
       - name: Set up Rust toolchain
