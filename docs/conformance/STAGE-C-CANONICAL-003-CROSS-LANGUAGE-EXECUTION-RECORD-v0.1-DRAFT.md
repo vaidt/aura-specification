@@ -78,16 +78,21 @@ This record is a technical observation, not a normative decision.
 - AURA release remains `NO-GO`.
 
 
-## 7. Follow-up revision after the recorded successful run
+## 7. Follow-up revision and broader repository CI
 
-After run #40010101982, the Rust probe source was changed in commit `0bee5d9ca35c90d013509b52808917a6cdce9c30` to apply `rustfmt` formatting only. The earlier successful run above is still bound to the tested pre-format Rust revision `e5188f6438327ec89d9f8e36396ab8e011205475`. The format-only follow-up triggers another dedicated Rust probe. Do not interpret the earlier run as having executed the new formatting-only commit.
+After the first successful run, two formatting-only commits were made to the Rust shim. The first follow-up (`0bee5d9ca35c90d013509b52808917a6cdce9c30`) exposed remaining `rustfmt` differences; the final formatting-only revision is `31a7eeab861094fbecc82e8a61351fac49dffe43`.
 
-The full Aura-Guard repository CI at the pre-format revision also reported:
-- `rustfmt` formatting differences in the new probe source; addressed by the format-only follow-up.
-- `cargo-deny` / `cargo-audit` failures on the existing locked dependency graph, including RustSec advisories `RUSTSEC-2026-0381` (`webpki-roots 1.0.7`), `RUSTSEC-2026-0382` (`rustls-webpki 0.103.15`), and `RUSTSEC-2026-0386` (`tokio 1.52.3`). Those broad dependency risks are not caused by the Stage C example target and have not been suppressed or fixed by this scoped change.
+The final revision passed:
+- dedicated JCS probe [run #40011027689](https://github.com/vaidt/aura-guard-v1.3/actions/runs/40011027689): SUCCESS;
+- `rustfmt`, `clippy`, Semgrep and the Rust-specific/hash-domain checks in the wider CI for this branch;
+- the repeated production-path and common-contract comparison recorded in Section 8 below.
 
-These wider repository checks remain separate from the successful single-vector JCS comparison. They must be resolved through the repository's normal dependency/security review process before the broader PR could be considered ready.
+The broad Aura-Guard CI continues to fail `cargo-deny` and `cargo-audit` on the existing locked dependency graph. It flags:
+- `RUSTSEC-2026-0381`: `webpki-roots 1.0.7`;
+- `RUSTSEC-2026-0382`: `rustls-webpki 0.103.15`;
+- `RUSTSEC-2026-0386`: `tokio 1.52.3`.
 
+These dependency findings were not suppressed or fixed as part of the Stage C probe work. They remain a separate repository security-review blocker before the wider Aura-Guard PR can be considered fully green. The JCS probe's success must not be read as a pass of those dependency/security gates.
 
 ## 8. Repeat comparison on the rustfmt-clean Rust revision
 
