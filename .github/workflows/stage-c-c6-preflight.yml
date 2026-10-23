@@ -60,12 +60,16 @@ jobs:
             --output artifacts/stage-c/c6-preparation/inventory-report.json
           python -m unittest discover -s scripts/stage_c -p 'test_c6_contract_inventory.py' -v
 
+      - name: Install the pinned RI-PY test dependency
+        run: python -m pip install --disable-pip-version-check rfc8785==0.1.4
+
       - name: Execute C6 probes against the pinned RI-PY typed API
         env:
           AURA_RI_PY_ROOT: ${{ github.workspace }}/aura-core
-        run: |
-          python -m unittest discover -s scripts/stage_c -p 'test_c6_ri_py_contract.py' -v
-          python -m unittest conformance.boundary.test_ri_py_receiver -v
+        run: python -m unittest discover -s scripts/stage_c -p 'test_c6_ri_py_contract.py' -v
+
+      - name: Run the pinned RI-PY receiver regression suite
+        run: python -m unittest conformance.boundary.test_ri_py_receiver -v
         working-directory: aura-core
 
       - name: Set up Rust toolchain
