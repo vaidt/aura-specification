@@ -87,3 +87,27 @@ The full Aura-Guard repository CI at the pre-format revision also reported:
 - `cargo-deny` / `cargo-audit` failures on the existing locked dependency graph, including RustSec advisories `RUSTSEC-2026-0381` (`webpki-roots 1.0.7`), `RUSTSEC-2026-0382` (`rustls-webpki 0.103.15`), and `RUSTSEC-2026-0386` (`tokio 1.52.3`). Those broad dependency risks are not caused by the Stage C example target and have not been suppressed or fixed by this scoped change.
 
 These wider repository checks remain separate from the successful single-vector JCS comparison. They must be resolved through the repository's normal dependency/security review process before the broader PR could be considered ready.
+
+
+## 8. Repeat comparison on the rustfmt-clean Rust revision
+
+A repeat of the production-path comparison executed against the latest formatted Rust shim revision:
+
+- Workflow: [run #40011246139](https://github.com/vaidt/aura-specification/actions/runs/40011246139) — **SUCCESS**.
+- Workflow commit containing the updated pin and orchestrator: `vaidt/aura-specification@d8b03a80eb1bcae2ffab99136eae3c571cc8fa30`.
+- Rust shim source: `vaidt/aura-guard-v1.3@31a7eeab861094fbecc82e8a61351fac49dffe43`.
+- The Rust adapter contract/oracle suite again passed **6/6** tests; the Python contract suite passed **8/8** tests.
+- RI-PY CANONICAL-003 implementation-boundary report again returned `result=PASS` with `core_method_binding=true`.
+- The actual RI-PY implementation checkout was `vaidt/aura-poc-a-core-v3.3@0a8a48cc4917c5d43ecad52de6b09abb53874684`.
+- RI-PY production output, Python shim output, Rust shim output, and the committed expected JCS oracle were byte-identical: **577 octets**, no final LF.
+- Canonical SHA-256 remained `9fb648c388c4485575d25c1d6171ba691fec51c1b433b11f4d61197bbe2a5509`.
+- Probe-only leaf digest remained `38672ea2bd0ea87b2446efce8d4ba4adeb822e0baaecee4a54b73179198d2b3e`.
+
+New combined evidence: [artifact 12525867966 — stage-c-ri-py-ri-rs-jcs](https://github.com/vaidt/aura-specification/actions/runs/40011246139/artifacts/12525867966).
+
+- ZIP size: 7,903 bytes.
+- ZIP SHA-256: `49e8716ea91a567f42cbb4c6915eabd4f745b427fb22cf0c52e79106b6b21940`.
+
+The inherited `core_source_commit` metadata note in Section 4 still applies: the separately checked-out RI-PY commit identity in the combined report is more reliable than the raw script's inherited `GITHUB_SHA` field.
+
+This repeat addresses only the Rust source formatting revision and confirms no change to the CANONICAL-003 technical result. It still covers one vector, not a complete RFC 8785 corpus or full Merkle-tree/proof/negative-test suite.
