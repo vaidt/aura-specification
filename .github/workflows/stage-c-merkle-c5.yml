@@ -1,0 +1,102 @@
+name: Stage C C5 Merkle domain, tree and proof comparison
+
+on:
+  push:
+    branches:
+      - "experiment/stage-c-merkle-c5-20261023"
+    paths:
+      - "scripts/stage_c/**"
+      - "fixtures/corpus/STAGE-C-MERKLE-C5-v0.1-DRAFT.json"
+      - "docs/conformance/STAGE-C-MERKLE-C5-DRAFT.md"
+      - ".github/workflows/stage-c-merkle-c5.yml"
+  pull_request:
+    branches:
+      - "experiment/stage-c-jcs-multivector-20261023"
+      - "experiment/stage-c-adapter-contract-20261023"
+    paths:
+      - "scripts/stage_c/**"
+      - "fixtures/corpus/STAGE-C-MERKLE-C5-v0.1-DRAFT.json"
+      - "docs/conformance/STAGE-C-MERKLE-C5-DRAFT.md"
+      - ".github/workflows/stage-c-merkle-c5.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  merkle-c5:
+    name: C5 fixed vectors, independent oracle, and RI-RS integration (non-normative)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout Stage C specification experiment
+        uses: actions/checkout@v4
+
+      - name: Record specification source identity
+        id: spec-source
+        shell: bash
+        run: |
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "Specification checked-out SHA: $(git rev-parse HEAD)"
+          echo "Pull-request head SHA: ${{ github.event.pull_request.head.sha || github.sha }}"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned Stage C Python dependencies
+        run: python -m pip install --disable-pip-version-check -r scripts/stage_c/requirements.txt
+
+      - name: Run Stage C Python unit tests
+        run: python -m unittest discover -s scripts/stage_c -p 'test_*.py' -v
+
+      - name: Generate independent Merkle oracle and proof report
+        run: |
+          python scripts/stage_c/merkle_c5_reference.py \
+            --corpus fixtures/corpus/STAGE-C-MERKLE-C5-v0.1-DRAFT.json \
+            --output artifacts/stage-c/merkle-c5/reference-report.json \
+            --source-commit "${{ steps.spec-source.outputs.sha }}" \
+            --run-id "${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
+      - name: Check out pinned RI-RS C5 test source
+        uses: actions/checkout@v4
+        with:
+          repository: vaidt/aura-guard-v1.3
+          ref: fd5f6e90940225e9f8ffe23707382669bdfaba82
+          path: aura-guard
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@1.86.0
+
+      - name: Execute RI-RS C5 integration checks against the same corpus and oracle report
+        env:
+          AURA_C5_MERKLE_CORPUS: ${{ github.workspace }}/fixtures/corpus/STAGE-C-MERKLE-C5-v0.1-DRAFT.json
+          AURA_C5_MERKLE_ORACLE: ${{ github.workspace }}/artifacts/stage-c/merkle-c5/reference-report.json
+        run: |
+          echo "RI-RS source SHA: $(git -C aura-guard rev-parse HEAD)"
+          cargo test --locked --manifest-path aura-guard/Cargo.toml --test stage_c_merkle_c5 -- --ignored --nocapture
+
+      - name: Write run provenance
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p artifacts/stage-c/merkle-c5
+          {
+            echo "run_id=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            echo "spec_source_sha=${{ steps.spec-source.outputs.sha }}"
+            echo "rust_source_sha=$(git -C aura-guard rev-parse HEAD 2>/dev/null || echo unavailable)"
+            echo "corpus_sha256=$(sha256sum fixtures/corpus/STAGE-C-MERKLE-C5-v0.1-DRAFT.json | awk '{print $1}')"
+            echo "authority=NONE"
+            echo "governance_effect=NONE"
+            echo "release_effect=NONE"
+          } > artifacts/stage-c/merkle-c5/provenance.txt
+
+      - name: Upload technical evidence (not a governance record)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-c-merkle-c5-evidence
+          path: artifacts/stage-c/merkle-c5/
+          if-no-files-found: warn
+          retention-days: 14
