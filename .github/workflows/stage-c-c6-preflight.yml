@@ -65,6 +65,15 @@ jobs:
           ref: 9896d577e50263b39eefc894c09130c1030df739
           path: aura-core
 
+      - name: Enforce immutable RI-PY source pins
+        shell: bash
+        run: |
+          test "$(git -C aura-core rev-parse HEAD)" = "9896d577e50263b39eefc894c09130c1030df739"
+          test "$(git -C aura-core rev-parse HEAD:conformance/boundary/ri_py_receiver.py)" = "c850afcd450fc3fdbd79230bd23c98a9c34a0ba3"
+          test "$(git -C aura-core rev-parse HEAD:conformance/boundary/test_ri_py_receiver.py)" = "4194a29f7aff3c7c286ae5d1244cbda2e1a73e6e"
+          test "$(git -C aura-core rev-parse HEAD:conformance/boundary/test_ri_py_receipt_json_consumer.py)" = "bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42"
+          echo "RI-PY source commit and three source/test blobs match pinned inventory"
+
       - name: Materialize the byte-identical C6 wire corpus once
         run: |
           python scripts/stage_c/materialize_c6_wire_corpus.py \
@@ -106,6 +115,13 @@ jobs:
 
       - name: Set up Rust toolchain
         uses: dtolnay/rust-toolchain@1.86.0
+
+      - name: Enforce immutable RI-RS source pins
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD:conformance/boundary/ri_rs_receiver.rs)" = "c6a1dbe1c937e562618e252ce783f5cbd6b54596"
+          test "$(git rev-parse HEAD:conformance/boundary/ri-rs/tests/c6_contract_negative.rs)" = "dc0bb4d1eeebe4174da13c0449ece06d5672d7d9"
+          echo "RI-RS receiver and test blobs match pinned inventory"
 
       - name: Execute strict RI-RS consumer and shared byte-identical wire corpus
         env:
