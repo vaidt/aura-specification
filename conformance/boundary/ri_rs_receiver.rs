@@ -3,8 +3,14 @@
 //! Construction-only receiver for the common BC-02.1 receipt schema.
 //! This module MUST NOT execute conformance, B-VAL-014, or §4.5.
 
+use base64::{engine::general_purpose::STANDARD as BASE64, Engine as _};
 use sha2::{Digest, Sha256};
 use serde::{Deserialize, Serialize};
+
+#[path = "strict_wire.rs"]
+pub mod strict_wire;
+
+
 
 pub const SCHEMA_ID: &str = "BC-02.1-COMMON-RECEIPT";
 pub const SCHEMA_VERSION: u32 = 1;
@@ -109,6 +115,47 @@ pub fn receive(
         adapter: Adapter { adapter_id, adapter_version },
         environment: Environment { environment_id, platform, runtime },
     }
+}
+
+/// Serialize a receiver-created receipt as the BC-02.1 JSON wire envelope.
+///
+/// This maps opaque received octets to canonical padded Base64 and emits a
+/// compact JSON object. It does not evaluate conformance or add result authority.
+pub fn serialize_receipt_json(receipt: &BoundaryReceipt) -> Result<Vec<u8>, serde_json::Error> {
+    let wire = serde_json::json!({
+        "schema_id": &receipt.schema_id,
+        "schema_version": receipt.schema_version,
+        "fixture": {
+            "fixture_id": &receipt.fixture.fixture_id,
+            "fixture_artifact_identity": &receipt.fixture.fixture_artifact_identity,
+        },
+        "handoff": {
+            "status": &receipt.handoff.status,
+            "method": &receipt.handoff.method,
+        },
+        "received": {
+            "octet_length": receipt.received.octet_length,
+            "raw_octets": BASE64.encode(&receipt.received.raw_octets),
+            "recomputed_sha256": &receipt.received.recomputed_sha256,
+        },
+        "receiver": {
+            "receiver_id": &receipt.receiver.receiver_id,
+            "implementation_id": &receipt.receiver.implementation_id,
+            "language": &receipt.receiver.language,
+            "implementation_version": &receipt.receiver.implementation_version,
+            "source_commit": &receipt.receiver.source_commit,
+        },
+        "adapter": {
+            "adapter_id": &receipt.adapter.adapter_id,
+            "adapter_version": &receipt.adapter.adapter_version,
+        },
+        "environment": {
+            "environment_id": &receipt.environment.environment_id,
+            "platform": &receipt.environment.platform,
+            "runtime": &receipt.environment.runtime,
+        },
+    });
+    serde_json::to_vec(&wire)
 }
 
 /// Schema-level validation only. This is NOT a conformance result.

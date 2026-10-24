@@ -1,0 +1,108 @@
+name: Stage C C6 protocol-negative preflight (draft only)
+
+on:
+  push:
+    branches:
+      - "experiment/stage-c-c6-contract-negative-20261024"
+    paths:
+      - "scripts/stage_c/c6_*.py"
+      - "scripts/stage_c/test_c6_*.py"
+      - "fixtures/corpus/STAGE-C-C6-CONTRACT-NEGATIVES-v0.1-DRAFT.json"
+      - "docs/conformance/STAGE-C-C6-PROTOCOL-NEGATIVE-TEST-DRAFT.md"
+      - "conformance/boundary/ri-rs/tests/c6_contract_negative.rs"
+      - ".github/workflows/stage-c-c6-preflight.yml"
+  pull_request:
+    branches:
+      - "experiment/stage-c-merkle-c5-20261023"
+    paths:
+      - "scripts/stage_c/c6_*.py"
+      - "scripts/stage_c/test_c6_*.py"
+      - "fixtures/corpus/STAGE-C-C6-CONTRACT-NEGATIVES-v0.1-DRAFT.json"
+      - "docs/conformance/STAGE-C-C6-PROTOCOL-NEGATIVE-TEST-DRAFT.md"
+      - "conformance/boundary/ri-rs/tests/c6_contract_negative.rs"
+      - ".github/workflows/stage-c-c6-preflight.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  c6-preflight:
+    name: C6 contract inventory and native API probes (not C6 gate execution)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout C6 specification experiment
+        uses: actions/checkout@v4
+
+      - name: Record specification source identity
+        id: spec-source
+        run: |
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "spec_checkout_sha=$(git rev-parse HEAD)"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check out the pinned RI-PY implementation
+        uses: actions/checkout@v4
+        with:
+          repository: vaidt/aura-poc-a-core-v3.3
+          ref: 0a8a48cc4917c5d43ecad52de6b09abb53874684
+          path: aura-core
+
+      - name: Validate the C6 negative-case inventory
+        run: |
+          python scripts/stage_c/c6_contract_inventory.py \
+            --manifest fixtures/corpus/STAGE-C-C6-CONTRACT-NEGATIVES-v0.1-DRAFT.json \
+            --output artifacts/stage-c/c6-preparation/inventory-report.json
+          python -m unittest discover -s scripts/stage_c -p 'test_c6_contract_inventory.py' -v
+
+      - name: Install the pinned RI-PY test dependency
+        run: python -m pip install --disable-pip-version-check rfc8785==0.1.4
+
+      - name: Execute C6 probes against the pinned RI-PY typed API
+        env:
+          AURA_RI_PY_ROOT: ${{ github.workspace }}/aura-core
+        run: python -m unittest discover -s scripts/stage_c -p 'test_c6_ri_py_contract.py' -v
+
+      - name: Run the pinned RI-PY receiver regression suite
+        run: python -m unittest conformance.boundary.test_ri_py_receiver -v
+        working-directory: aura-core
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@1.86.0
+
+      - name: Execute C6 preflight against the current RI-RS typed API
+        run: |
+          cargo test --manifest-path conformance/boundary/ri-rs/Cargo.toml --test c6_contract_negative -- --nocapture
+
+      - name: Preserve preparation status and source pins
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p artifacts/stage-c/c6-preparation
+          {
+            echo "run_id=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            echo "spec_source_sha=${{ steps.spec-source.outputs.sha }}"
+            echo "ri_py_source_sha=0a8a48cc4917c5d43ecad52de6b09abb53874684"
+            echo "ri_py_receiver_blob=708cc01b1f74080f3cf0f95e1b402851cdd77178"
+            echo "ri_rs_receiver_blob=b2117f295902ae966e27ef99da8c574f057a7338"
+            echo "c6_gate_status=BLOCKED_NOT_EXECUTED"
+            echo "wire_consumer_parity=NOT_ESTABLISHED"
+            echo "authority=NONE"
+            echo "governance_effect=NONE"
+            echo "authorization_effect=NONE"
+            echo "release_effect=NONE"
+          } > artifacts/stage-c/c6-preparation/provenance.txt
+
+      - name: Upload C6 preparation evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-c-c6-preparation-evidence
+          path: artifacts/stage-c/c6-preparation/
+          if-no-files-found: warn
+          retention-days: 14
