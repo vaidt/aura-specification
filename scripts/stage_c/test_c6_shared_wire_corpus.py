@@ -42,4 +42,5 @@ class SharedC6WireCorpusTests(unittest.TestCase):
                     with self.assertRaises(ReceiptParseError) as context:
                         parse_receipt_json(raw)
                     self.assertEqual(context.exception.code, case["expected_code"])
-                print(f"C6_SHARED_WIRE_CASE id={case['id']} input_sha256={digest} result={case['expected_result']} code={case['expected_code']}")
+                expected_code_text = "null" if case["expected_code"] is None else case["expected_code"]
+                print(f"C6_SHARED_WIRE_CASE id={case['id']} input_sha256={digest} result={case['expected_result']} code={expected_code_text}")
