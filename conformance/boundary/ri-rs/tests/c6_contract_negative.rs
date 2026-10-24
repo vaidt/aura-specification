@@ -1,8 +1,8 @@
-//! C6 contract-negative preflight against the current RI-RS typed receipt surface.
+//! C6 strict receipt-consumer and shared-corpus tests (Draft only).
 //!
-//! This file distinguishes native typed-object validation from the missing
-//! strict BC-02.1 JSON consumer. Tests reproducing the missing behavior are
-//! labelled KNOWN_GAP and do not imply that C6 has passed.
+//! The derived DTO below is not the BC-02.1 wire entry point. Direct Serde
+//! behavior is documented separately; wire-envelope consumers must use
+//! parse_receipt_json. This test binary does not itself declare C6 PASS.
 
 use base64::{engine::general_purpose::STANDARD as B64, Engine as _};
 use ri_rs_receiver::{receive, validate_schema, BoundaryReceipt, HandoffStatus};
@@ -129,7 +129,7 @@ fn missing_required_struct_field_and_null_field_are_rejected_by_serde() {
 }
 
 #[test]
-fn known_gap_serde_ignores_an_extra_authority_bearing_field() {
+fn direct_dto_deserialization_is_not_the_strict_wire_api_for_extra_fields() {
     let mut value = serde_json::to_value(receipt()).expect("receipt JSON value");
     value.as_object_mut()
         .expect("top-level object")
@@ -139,20 +139,20 @@ fn known_gap_serde_ignores_an_extra_authority_bearing_field() {
     // Record the observed limitation rather than allowing preparation CI to
     // infer that this typed DTO is already a strict wire schema.
     assert!(parsed.is_ok(), "baseline behavior changed: review the strict field gate");
-    println!("C6_KNOWN_GAP: RI-RS derived DTO ignored conformance_result");
+    println!("RI_RS_LOW_LEVEL_DTO_ONLY: derived DTO ignores conformance_result; use parse_receipt_json for wire input");
 }
 
 #[test]
-fn known_gap_serde_ignores_unknown_nested_field() {
+fn direct_dto_deserialization_is_not_the_strict_wire_api_for_nested_fields() {
     let mut value = serde_json::to_value(receipt()).expect("receipt JSON value");
     value["received"]["unrecognized_contract_extension"] = json!("unexpected");
     let parsed = serde_json::from_value::<BoundaryReceipt>(value);
     assert!(parsed.is_ok(), "baseline behavior changed: review the strict field gate");
-    println!("C6_KNOWN_GAP: RI-RS derived DTO ignored nested unknown field");
+    println!("RI_RS_LOW_LEVEL_DTO_ONLY: derived DTO ignores nested unknown field; use parse_receipt_json for wire input");
 }
 
 #[test]
-fn known_gap_base64_wire_string_is_not_consumed_by_native_vec_u8_dto() {
+fn direct_dto_deserialization_is_not_the_base64_wire_api() {
     let mut value = serde_json::to_value(receipt()).expect("receipt JSON value");
     let wire_bytes = [0x43, 0x36, 0x00, 0xfe, 0xff];
     value["received"]["raw_octets"] = Value::String(B64.encode(wire_bytes));
@@ -162,7 +162,7 @@ fn known_gap_base64_wire_string_is_not_consumed_by_native_vec_u8_dto() {
     // expects an array under generic Serde. A dedicated reciprocal parser is
     // required before C6 can pass.
     assert!(serde_json::from_value::<BoundaryReceipt>(value).is_err());
-    println!("C6_KNOWN_GAP: no reciprocal BC-02.1 Base64 receipt consumer in RI-RS DTO");
+    println!("RI_RS_LOW_LEVEL_DTO_ONLY: native Vec<u8> DTO is not the Base64 wire consumer");
 }
 
 #[test]
