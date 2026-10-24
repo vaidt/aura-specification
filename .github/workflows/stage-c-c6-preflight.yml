@@ -119,7 +119,7 @@ jobs:
               echo "ri_py_receiver_blob=66863387fb238427c7e8f4031742c31d1094acfe"
             echo "ri_py_strict_consumer_test_blob=bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42"
             echo "ri_rs_receiver_blob=5054bb81ddf7a1f62be4e9d82fc1d2be1f947d3e"
-            echo "ri_rs_preflight_test_blob=3158e0788fcc2e34190be379a0a492b671bb47ec"
+            echo "ri_rs_preflight_test_blob=2d90fd3106f2289dfee6d476189cd146303f7d84"
             echo "c6_gate_status=BLOCKED_NOT_EXECUTED"
             echo "wire_consumer_parity=NOT_ESTABLISHED"
             echo "authority=NONE"
