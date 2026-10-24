@@ -242,7 +242,7 @@ fn strict_wire_consumer_rejects_missing_null_and_bad_field_types() {
     for bad in [json!(true), json!(1.5), json!(-1)] {
         let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
         value["received"]["octet_length"] = bad;
-        let expected = if value["received"]["octet_length"] == json!(-1) { "TYPE_MISMATCH" } else { "TYPE_MISMATCH" };
+        let expected = if value["received"]["octet_length"] == json!(-1) { "INVALID_VALUE" } else { "TYPE_MISMATCH" };
         assert_parse_code(&serde_json::to_vec(&value).unwrap(), expected);
     }
 
@@ -271,4 +271,16 @@ fn strict_wire_parser_does_not_confuse_artifact_octets_with_json_utf8() {
     // The JSON envelope itself is UTF-8, while raw_octets contains non-UTF-8.
     let parsed = ri_rs_receiver::parse_receipt_json(&wire_receipt()).unwrap();
     assert_eq!(parsed.received.raw_octets, vec![0x43, 0x36, 0x00, 0xfe, 0xff]);
+}
+
+
+#[test]
+fn strict_wire_consumer_accepts_empty_raw_octets() {
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["received"]["raw_octets"] = json!("");
+    value["received"]["octet_length"] = json!(0);
+    value["received"]["recomputed_sha256"] = json!("e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
+    let parsed = ri_rs_receiver::parse_receipt_json(&serde_json::to_vec(&value).unwrap()).unwrap();
+    assert!(parsed.received.raw_octets.is_empty());
+    assert_eq!(parsed.received.octet_length, 0);
 }
