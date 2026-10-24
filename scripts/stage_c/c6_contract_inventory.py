@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 REQUIRED_CASE_FIELDS = {"id","kind","area","mutation","expected","ri_py","ri_rs","disposition"}
-ALLOWED_DISPOSITIONS = {"READY_FOR_NATIVE_TESTS","PARTIAL_NATIVE_BOUNDARY","KNOWN_WIRE_CONSUMER_GAP","NOT_WIRED","IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"}
+ALLOWED_DISPOSITIONS = {"READY_FOR_NATIVE_TESTS","PARTIAL_NATIVE_BOUNDARY","KNOWN_WIRE_CONSUMER_GAP","NOT_WIRED","IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS","IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"}
 REQUIRED_AREAS = {
  "raw-octet-intake","handoff-status","fixture-identity","handoff-method","octet-type",
  "octet-length","digest-integrity","schema-version","provenance","adapter-provenance",
@@ -53,6 +53,7 @@ def load_and_validate(path: Path) -> dict[str, Any]:
     gaps = [case["id"] for case in cases if case["disposition"] in {"KNOWN_WIRE_CONSUMER_GAP","NOT_WIRED"}]
     partial = [case["id"] for case in cases if case["disposition"] == "PARTIAL_NATIVE_BOUNDARY"]
     pending = [case["id"] for case in cases if case["disposition"] == "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"]
+    tested = [case["id"] for case in cases if case["disposition"] == "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"]
     return {
         "schema": "AURA-STAGE-C6-PREPARATION-REPORT/0.1",
         "status": "PREPARATION_ONLY",
@@ -65,8 +66,10 @@ def load_and_validate(path: Path) -> dict[str, Any]:
         "partial_native_boundary_case_ids": partial,
         "pending_shared_corpus_case_ids": pending,
         "pending_shared_corpus_count": len(pending),
+        "tested_pending_review_case_ids": tested,
+        "tested_pending_review_count": len(tested),
         "required_areas_covered": sorted(areas),
-        "native_cross_language_wire_consumer_parity": "NOT_ESTABLISHED",
+        "native_cross_language_wire_consumer_parity": manifest.get("execution_boundary", {}).get("native_cross_language_wire_consumer_parity", "NOT_ESTABLISHED"),
         "c6_execution": "NOT_CLAIMED",
         "authority": "NONE",
         "governance_effect": "NONE",
@@ -88,6 +91,8 @@ def main() -> int:
     print(f"manifest_case_count={report['manifest_case_count']}")
     print(f"known_or_unwired_gap_count={len(report['known_or_unwired_gap_case_ids'])}")
     print(f"pending_shared_corpus_count={report['pending_shared_corpus_count']}")
+    print(f"tested_pending_review_count={report['tested_pending_review_count']}")
+    print(f"native_cross_language_wire_consumer_parity={report['native_cross_language_wire_consumer_parity']}")
     print("authority=NONE")
     return 0
 
