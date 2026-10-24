@@ -12,7 +12,7 @@
     "bc021_schema_blob": "f40f7a2ea246f382d12490a6489159f9e226fd17",
     "source_note": "These immutable pins identify the proposed experimental consumer implementations and inspected schema/test baselines; they are not normative authority. The C6 run must use these exact source identities and will remain blocked on any mismatch.",
     "ri_py_strict_consumer_test_blob": "bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42",
-    "ri_rs_preflight_test_blob": "2d90fd3106f2289dfee6d476189cd146303f7d84"
+    "ri_rs_preflight_test_blob": "dc0bb4d1eeebe4174da13c0449ece06d5672d7d9"
   },
   "execution_boundary": {
     "raw_artifact_octets": "Receiver input is an opaque byte sequence; invalid UTF-8 in the artifact itself is not automatically an input rejection.",
