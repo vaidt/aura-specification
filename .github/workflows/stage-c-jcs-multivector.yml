@@ -22,6 +22,7 @@ on:
       - "fixtures/corpus/JCS-VECTOR-*.json"
       - "fixtures/corpus/JCS-VECTOR-*.expected.jcs"
       - ".github/workflows/stage-c-jcs-multivector.yml"
+      - "docs/conformance/evidence/C6-REAL-FLOW-GAP-AND-EXECUTION-PLAN-v0.1.md"
 
 permissions:
   contents: read
