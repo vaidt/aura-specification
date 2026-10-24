@@ -289,6 +289,54 @@
       "hex": "7b22ff227d",
       "expected_code": "INVALID_UTF8",
       "description": "Reject malformed UTF-8 at receipt-envelope boundary."
+    },
+    {
+      "id": "C6-N-012B",
+      "source_case": "C6-N-012",
+      "operation": "set",
+      "path": [
+        "fixture",
+        "fixture_id"
+      ],
+      "value": "PASS",
+      "expected_code": "INVALID_VALUE",
+      "description": "Reject a prohibited conformance-result value in a semantic string field."
+    },
+    {
+      "id": "C6-N-012C",
+      "source_case": "C6-N-012",
+      "operation": "set",
+      "path": [
+        "environment",
+        "platform"
+      ],
+      "value": "CONFORMANT",
+      "expected_code": "INVALID_VALUE",
+      "description": "Reject a prohibited result-authority value in environment provenance."
+    },
+    {
+      "id": "C6-N-008A",
+      "source_case": "C6-N-008",
+      "operation": "set",
+      "path": [
+        "receiver",
+        "implementation_id"
+      ],
+      "value": "RI-RS",
+      "expected_code": "INVALID_VALUE",
+      "description": "Reject implementation identity aliased to receiver identity."
+    },
+    {
+      "id": "C6-N-008B",
+      "source_case": "C6-N-008",
+      "operation": "set",
+      "path": [
+        "adapter",
+        "adapter_id"
+      ],
+      "value": "aura-ri-rs",
+      "expected_code": "INVALID_VALUE",
+      "description": "Reject adapter identity aliased to implementation identity."
     }
   ],
   "authority": "NONE",
