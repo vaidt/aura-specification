@@ -328,3 +328,26 @@ fn executes_the_same_materialized_c6_wire_corpus_as_ri_py() {
         }
     }
 }
+
+
+#[test]
+fn strict_wire_consumer_rejects_prohibited_result_values_in_semantic_fields() {
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["fixture"]["fixture_id"] = json!("PASS");
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_VALUE");
+
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["environment"]["platform"] = json!("CONFORMANT");
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_VALUE");
+}
+
+#[test]
+fn strict_wire_consumer_rejects_aliased_identity_fields() {
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["receiver"]["implementation_id"] = value["receiver"]["receiver_id"].clone();
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_VALUE");
+
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["adapter"]["adapter_id"] = value["receiver"]["implementation_id"].clone();
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_VALUE");
+}
