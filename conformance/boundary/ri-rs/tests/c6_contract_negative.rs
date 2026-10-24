@@ -363,7 +363,7 @@ fn executes_the_same_materialized_c6_wire_corpus_as_ri_py() {
         "index_sha256": Sha256::digest(&index_raw).iter().map(|b| format!("{b:02x}")).collect::<String>(),
         "case_count": result_rows.len(),
         "cases": result_rows,
-        "mismatches": mismatches,
+        "mismatches": mismatches.clone(),
         "authority": "NONE",
         "governance_effect": "NONE",
         "authorization_effect": "NONE",
