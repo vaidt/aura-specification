@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: vaidt/aura-poc-a-core-v3.3
-          ref: 1710d0972ef12a0325f68c0fb29b3d3290f3ec79
+          ref: 7c273514957de039cdad6c7a4fc921684a93c9f5
           path: aura-core
 
       - name: Materialize the byte-identical C6 wire corpus once
@@ -115,11 +115,11 @@ jobs:
           {
             echo "run_id=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
             echo "spec_source_sha=${{ steps.spec-source.outputs.sha }}"
-            echo "ri_py_source_sha=1710d0972ef12a0325f68c0fb29b3d3290f3ec79"
-              echo "ri_py_receiver_blob=97a97927bc6857838253f568e7904f644962ea1f"
-            echo "ri_py_strict_consumer_test_blob=025a91312b624e4563d9cb31dbec7cfe2d7e6e98"
-            echo "ri_rs_receiver_blob=db06483bfb4ffa6ed427a39a84b58f70e09930fa"
-            echo "ri_rs_preflight_test_blob=9cfed9baaa50afbf6caffc4421b88df42daa4328"
+            echo "ri_py_source_sha=7c273514957de039cdad6c7a4fc921684a93c9f5"
+              echo "ri_py_receiver_blob=66863387fb238427c7e8f4031742c31d1094acfe"
+            echo "ri_py_strict_consumer_test_blob=bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42"
+            echo "ri_rs_receiver_blob=5054bb81ddf7a1f62be4e9d82fc1d2be1f947d3e"
+            echo "ri_rs_preflight_test_blob=3158e0788fcc2e34190be379a0a492b671bb47ec"
             echo "c6_gate_status=BLOCKED_NOT_EXECUTED"
             echo "wire_consumer_parity=NOT_ESTABLISHED"
             echo "authority=NONE"
