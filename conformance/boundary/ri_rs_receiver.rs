@@ -381,7 +381,7 @@ pub fn parse_receipt_json(raw_json: &[u8]) -> Result<BoundaryReceipt, ReceiptPar
     if matches!(document, StrictJsonValue::Null) {
         return Err(ReceiptParseError::new("NULL_NOT_ALLOWED", "receipt must not be null"));
     }
-    bc021_reject_forbidden_values(&document, "receipt")?;
+    let document_for_value_check = document.clone();
 
     let mut top = bc021_take_object(document,
         &["schema_id", "schema_version", "fixture", "handoff", "received", "receiver", "adapter", "environment"],
@@ -458,6 +458,7 @@ pub fn parse_receipt_json(raw_json: &[u8]) -> Result<BoundaryReceipt, ReceiptPar
         platform: bc021_string(bc021_take(&mut environment, "platform"), "environment.platform")?,
         runtime: bc021_string(bc021_take(&mut environment, "runtime"), "environment.runtime")?,
     };
+    bc021_reject_forbidden_values(&document_for_value_check, "receipt")?;
 
     let receipt = BoundaryReceipt { schema_id: SCHEMA_ID.to_owned(), schema_version, fixture, handoff, received, receiver, adapter, environment };
     if receipt.receiver.implementation_id == receipt.receiver.receiver_id {
