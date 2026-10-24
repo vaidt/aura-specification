@@ -68,17 +68,22 @@ Prior run [#40048516275](https://github.com/vaidt/aura-guard-v1.3/actions/runs/4
 
 This proves a discrepancy between the old run's preservation error and the subsequently uploaded report contents, **but it does not prove the exact root cause** (the runtime file may have differed from the later uploaded artifact). Candidate PR [#21](https://github.com/vaidt/aura-guard-v1.3/pull/21) logs path, byte count, SHA-256 and parses the same raw byte buffers, then checks schema, index digest, cases and report status without rewriting the report.
 
-Exact head `d34f561261aa987144ea6d285355180fdfd1b9c7`; run [#40106587300](https://github.com/vaidt/aura-guard-v1.3/actions/runs/40106587300) remains in progress at last read:
+Exact head `d34f561261aa987144ea6d285355180fdfd1b9c7`; CI run [#40106587300](https://github.com/vaidt/aura-guard-v1.3/actions/runs/40106587300) completed its `build + test` job successfully:
 - PASS: `cargo build --locked --release --all-targets`;
-- PASS: `CANONICAL-003` evidence step;
+- PASS: `CANONICAL-003` byte/hash evidence step;
+- PASS: `cargo test --locked --all-targets`;
 - PASS: `clippy`, Gate 3 Core integration, Gate 4 external E2E and D-3 chain evidence export;
 - FAIL: `cargo-audit` due to `crypto-bigint 0.5.5` (RUSTSEC-2026-0387), `rustls-webpki 0.103.15` (RUSTSEC-2026-0382), `webpki-roots 1.0.7` (RUSTSEC-2026-0381), and Tokio 1.52.3 warning RUSTSEC-2026-0386;
 - FAIL: `cargo-deny` advisory policy; bans, licenses and sources pass;
-- FAIL: `rustfmt` due to existing formatting differences in `conformance/strict_wire_c6.rs`, not the new YAML-only preservation step;
-- `cargo test --locked --all-targets` was still running when last checked;
-- no `preservation-diagnostics.json` artifact is available yet; only D-3 and Gate 4 artifacts are listed.
+- FAIL: `rustfmt` due to existing formatting differences in `conformance/strict_wire_c6.rs`, not the new YAML-only preservation step.
 
-**Disposition:** the new exact-byte preservation path is not yet validated by a complete run, and the old failure's exact root cause remains unproven. Keep PR #21 Draft and do not promote C6. No audit/deny policy was relaxed.
+### Corrected finding: why the preservation diagnostics artifact is absent
+
+The absent `preservation-diagnostics.json` from run #40106587300 is explained by a workflow-trigger defect, not by a parser rejection in that run. The run was the general `.github/workflows/ci.yml` workflow. The intended `.github/workflows/stage-c-c6-wire-consumer.yml` workflow has `pull_request.branches: [experiment/stage-c-merkle-c5-20261023]`, while PR #21 targets `experiment/stage-c-c6-wire-consumer-20261024`. Therefore its `strict-wire` preservation step did not run for PR #21.
+
+A separate candidate branch `ops/c6-ri-rs-workflow-trigger-20261024` was created with the additional target branch in the filter. GitHub rejected creating a separate Draft PR against the experimental base, so the trigger fix remains an unreviewed branch change; the existing PR #21 was not modified by that trigger attempt. A dedicated `strict-wire` run on the exact head is still required after applying the trigger through an accepted review path.
+
+**Disposition:** PR #21 has passing build, CANONICAL-003 and test jobs but is not fully green. The old `Extra data` root cause is still not proven; a missing prerequisite (workflow never ran) is now confirmed. Keep PR #21 Draft and C6 blocked. No audit/deny policy was relaxed.
 
 ## 6. Effective branch protection and Issue #8 provenance
 
