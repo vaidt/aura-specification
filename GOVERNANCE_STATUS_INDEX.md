@@ -42,3 +42,8 @@ These artifacts are useful context, but they do not by themselves create approva
 | [`AURA-DOCUMENTATION-NORMALIZATION-AUDIT-v1.md`](AURA-DOCUMENTATION-NORMALIZATION-AUDIT-v1.md) | Diagnostic audit only |
 | [`AURA-DOCUMENTATION-NORMALIZATION-CONTROL-REVIEW-v1.md`](AURA-DOCUMENTATION-NORMALIZATION-CONTROL-REVIEW-v1.md) | Controlled analysis only |
 | [`governance/AURA-AFI-AEP-001_FOUNDING_INSTRUMENT_AND_AUTHORITY_EVIDENCE_PROCEDURE_v0.1-DRAFT.md`](governance/AURA-AFI-AEP-001_FOUNDING_INSTRUMENT_AND_AUTHORITY_EVIDENCE_PROCEDURE_v0.1-DRAFT.md) | Proposed authority-evidence procedure; non-constitutive and not ratified |
+| [`docs/governance/GENESIS_SIGNATURE_VERIFICATION_RECORD.md`](docs/governance/GENESIS_SIGNATURE_VERIFICATION_RECORD.md) | Draft; Git blob SHA-1 `c48445e12d15bdf237ad0be45ba764ae6d8a9f1c`; cryptographic sub-check PASS, G1 remains BLOCKED |
+| [`docs/governance/ARTICLE_XIII_CONSTITUTIONAL_AUDIT_OPINION.md`](docs/governance/ARTICLE_XIII_CONSTITUTIONAL_AUDIT_OPINION.md) | Draft; Git blob SHA-1 `7fe4e6a4b2420394b25f9d307b5bcc89cced90b1`; procedural effect NOT ESTABLISHED |
+| [`docs/governance/AUTHORITY_BINDING_RECORD_v1.2_ANNEX_DRAFT.md`](docs/governance/AUTHORITY_BINDING_RECORD_v1.2_ANNEX_DRAFT.md) | Draft; Git blob SHA-1 `1cf270df7d3474ab0d34414d9a510bce336466fe`; no authority effect |
+| [`docs/governance/scripts/verify_sshsig.py`](docs/governance/scripts/verify_sshsig.py) | Git blob SHA-1 `8f2e36635d4ccb9d3e7f46a0725a2f41736be4c0`; Python diagnostic |
+| [`docs/governance/scripts/verify_sshsig.mjs`](docs/governance/scripts/verify_sshsig.mjs) | Git blob SHA-1 `ddea7d37d3465b0d9fdc074d1ec25ef181652a79`; Node.js diagnostic |
