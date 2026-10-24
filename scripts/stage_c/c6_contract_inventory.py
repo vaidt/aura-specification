@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 REQUIRED_CASE_FIELDS = {"id","kind","area","mutation","expected","ri_py","ri_rs","disposition"}
-ALLOWED_DISPOSITIONS = {"READY_FOR_NATIVE_TESTS","PARTIAL_NATIVE_BOUNDARY","KNOWN_WIRE_CONSUMER_GAP","NOT_WIRED"}
+ALLOWED_DISPOSITIONS = {"READY_FOR_NATIVE_TESTS","PARTIAL_NATIVE_BOUNDARY","KNOWN_WIRE_CONSUMER_GAP","NOT_WIRED","IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"}
 REQUIRED_AREAS = {
  "raw-octet-intake","handoff-status","fixture-identity","handoff-method","octet-type",
  "octet-length","digest-integrity","schema-version","provenance","adapter-provenance",
@@ -52,6 +52,7 @@ def load_and_validate(path: Path) -> dict[str, Any]:
     counts = Counter(case["disposition"] for case in cases)
     gaps = [case["id"] for case in cases if case["disposition"] in {"KNOWN_WIRE_CONSUMER_GAP","NOT_WIRED"}]
     partial = [case["id"] for case in cases if case["disposition"] == "PARTIAL_NATIVE_BOUNDARY"]
+    pending = [case["id"] for case in cases if case["disposition"] == "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"]
     return {
         "schema": "AURA-STAGE-C6-PREPARATION-REPORT/0.1",
         "status": "PREPARATION_ONLY",
@@ -62,6 +63,8 @@ def load_and_validate(path: Path) -> dict[str, Any]:
         "disposition_counts": dict(sorted(counts.items())),
         "known_or_unwired_gap_case_ids": gaps,
         "partial_native_boundary_case_ids": partial,
+        "pending_shared_corpus_case_ids": pending,
+        "pending_shared_corpus_count": len(pending),
         "required_areas_covered": sorted(areas),
         "native_cross_language_wire_consumer_parity": "NOT_ESTABLISHED",
         "c6_execution": "NOT_CLAIMED",
@@ -84,6 +87,7 @@ def main() -> int:
     print(f"manifest_sha256={report['manifest_sha256']}")
     print(f"manifest_case_count={report['manifest_case_count']}")
     print(f"known_or_unwired_gap_count={len(report['known_or_unwired_gap_case_ids'])}")
+    print(f"pending_shared_corpus_count={report['pending_shared_corpus_count']}")
     print("authority=NONE")
     return 0
 
