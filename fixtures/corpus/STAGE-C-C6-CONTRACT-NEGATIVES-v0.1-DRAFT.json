@@ -1,0 +1,224 @@
+{
+  "schema": "AURA-STAGE-C6-CONTRACT-NEGATIVE-MANIFEST/0.1",
+  "status": "DRAFT_NON_NORMATIVE",
+  "stage": "C6_PREPARATION",
+  "protocol_contract": "BC-02.1-COMMON-RECEIPT v1",
+  "source_pins": {
+    "ri_py_repository": "vaidt/aura-poc-a-core-v3.3",
+    "ri_py_commit": "9896d577e50263b39eefc894c09130c1030df739",
+    "ri_py_receiver_blob": "c850afcd450fc3fdbd79230bd23c98a9c34a0ba3",
+    "ri_py_existing_tests_blob": "4194a29f7aff3c7c286ae5d1244cbda2e1a73e6e",
+    "ri_rs_specification_receiver_blob": "c6a1dbe1c937e562618e252ce783f5cbd6b54596",
+    "bc021_schema_blob": "f40f7a2ea246f382d12490a6489159f9e226fd17",
+    "source_note": "These immutable pins identify the proposed experimental consumer implementations and inspected schema/test baselines; they are not normative authority. The C6 run must use these exact source identities and will remain blocked on any mismatch.",
+    "ri_py_strict_consumer_test_blob": "bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42",
+    "ri_rs_preflight_test_blob": "dc0bb4d1eeebe4174da13c0449ece06d5672d7d9"
+  },
+  "execution_boundary": {
+    "raw_artifact_octets": "Receiver input is an opaque byte sequence; invalid UTF-8 in the artifact itself is not automatically an input rejection.",
+    "receipt_json": "Strict JSON receipt parsing is a separate boundary and must not be conflated with raw artifact intake.",
+    "authority": "NONE",
+    "governance_effect": "NONE",
+    "authorization_effect": "NONE",
+    "release_effect": "NONE",
+    "native_cross_language_wire_consumer_parity": "BOUNDED_PARITY_PASS_PENDING_EVIDENCE_REVIEW",
+    "latest_bounded_parity_run": "https://github.com/vaidt/aura-specification/actions/runs/40047572790",
+    "latest_bounded_parity_commit": "029225adcaef0c660098dc11210305204be0ab59",
+    "latest_parity_report_sha256": "d4b78d9fcccb714b3f7371846152700e53f8af8412e9ae0e76ea27b4d085d49e",
+    "c6_gate_status": "BLOCKED_PENDING_EVIDENCE_REVIEW"
+  },
+  "cases": [
+    {
+      "id": "C6-P-001",
+      "kind": "positive-control",
+      "area": "raw-octet-intake",
+      "mutation": "Synthetic bytes containing NUL and non-UTF-8 octets",
+      "expected": "Exact octets preserved; octet length equals byte count; digest equals SHA-256 of received bytes",
+      "ri_py": "native receiver API",
+      "ri_rs": "native receiver API",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-001",
+      "kind": "negative",
+      "area": "handoff-status",
+      "mutation": "Use PASS, FAIL, CONFORMANT, NON_CONFORMANT, null, or integer as handoff.status",
+      "expected": "Rejected at typed constructor or strict JSON enum boundary; no valid receipt emitted",
+      "ri_py": "Constructor rejection",
+      "ri_rs": "Enum deserialization rejection; production constructor has closed enum",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-002",
+      "kind": "negative",
+      "area": "fixture-identity",
+      "mutation": "Omit fixture object or set fixture_id / fixture_artifact_identity empty",
+      "expected": "Receipt construction or validation rejects incomplete fixture identity (R-VAL-002)",
+      "ri_py": "Constructor/type check and R-VAL-002",
+      "ri_rs": "validate_schema R-VAL-002",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-003",
+      "kind": "negative",
+      "area": "handoff-method",
+      "mutation": "Empty or missing handoff.method",
+      "expected": "Reject; no valid receipt (R-VAL-003)",
+      "ri_py": "Constructor rejects empty method",
+      "ri_rs": "validate_schema rejects empty method",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-004",
+      "kind": "negative",
+      "area": "octet-type",
+      "mutation": "Pass hex or Base64 text instead of octets to the raw-octet API",
+      "expected": "Reject text input; encoded text must not be hashed as if it were the raw artifact",
+      "ri_py": "Constructor rejects str",
+      "ri_rs": "Native API type is Vec<u8>; wire-consumer coverage is separate",
+      "disposition": "PARTIAL_NATIVE_BOUNDARY"
+    },
+    {
+      "id": "C6-N-005",
+      "kind": "negative",
+      "area": "octet-length",
+      "mutation": "Set received.octet_length to a value different from decoded raw-octet length",
+      "expected": "Reject (R-VAL-004)",
+      "ri_py": "validate_receipt reports R-VAL-004 false",
+      "ri_rs": "validate_schema rejects R-VAL-004",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-006",
+      "kind": "negative",
+      "area": "digest-integrity",
+      "mutation": "Change recomputed_sha256 without changing raw octets",
+      "expected": "Reject (R-VAL-005); expected digest must not be caller-supplied",
+      "ri_py": "validate_receipt reports R-VAL-005 false",
+      "ri_rs": "validate_schema rejects R-VAL-005",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-007",
+      "kind": "negative",
+      "area": "schema-version",
+      "mutation": "Wrong schema_id or unsupported schema_version",
+      "expected": "Reject (R-VAL-001)",
+      "ri_py": "validate_receipt reports R-VAL-001 false",
+      "ri_rs": "validate_schema rejects R-VAL-001",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-008",
+      "kind": "negative",
+      "area": "provenance",
+      "mutation": "Empty receiver_id, implementation_id, implementation_version, or source_commit",
+      "expected": "Reject incomplete receiver/implementation provenance (R-VAL-006/007)",
+      "ri_py": "validate_receipt R-VAL-006/007",
+      "ri_rs": "validate_schema R-VAL-006/007",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-009",
+      "kind": "negative",
+      "area": "adapter-provenance",
+      "mutation": "Empty adapter_id or adapter_version",
+      "expected": "Reject incomplete adapter identity (R-VAL-008)",
+      "ri_py": "validate_receipt R-VAL-008",
+      "ri_rs": "validate_schema R-VAL-008",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-010",
+      "kind": "negative",
+      "area": "environment-provenance",
+      "mutation": "Empty environment_id, platform, or runtime",
+      "expected": "Reject incomplete environment identity (R-VAL-009)",
+      "ri_py": "validate_receipt R-VAL-009",
+      "ri_rs": "validate_schema R-VAL-009",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    },
+    {
+      "id": "C6-N-011",
+      "kind": "negative",
+      "area": "forbidden-authority-field",
+      "mutation": "Add conformance_result, verdict, acceptance_state, or digest_output_state to wire receipt",
+      "expected": "Experimental strict BC-02.1 consumer must reject unknown/authority-bearing fields",
+      "ri_py": "Strict parser rejects extra/authority keys; shared corpus run pending",
+      "ri_rs": "Strict parser rejects extra/authority keys; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
+    },
+    {
+      "id": "C6-N-012",
+      "kind": "negative",
+      "area": "unknown-field",
+      "mutation": "Add an unrecognized field at top-level or nested object",
+      "expected": "Strict schema consumer rejects the extra field; no silent ignore",
+      "ri_py": "Strict parser enforces exact nested field sets; shared corpus run pending",
+      "ri_rs": "Strict parser enforces exact nested field sets; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
+    },
+    {
+      "id": "C6-N-013",
+      "kind": "negative",
+      "area": "base64-transport",
+      "mutation": "Supply valid Base64 string for received.raw_octets in BC-02.1 transport receipt",
+      "expected": "Consumer decodes Base64 to exact raw octets, checks decoded length and computes digest over decoded bytes",
+      "ri_py": "Strict parser decodes Base64 and validates digest; shared corpus run pending",
+      "ri_rs": "Strict parser decodes Base64 and validates digest; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
+    },
+    {
+      "id": "C6-N-014",
+      "kind": "negative",
+      "area": "malformed-base64",
+      "mutation": "Invalid Base64 alphabet, padding, or impossible decoded length",
+      "expected": "Reject receipt; do not substitute empty bytes or continue with a recomputed digest",
+      "ri_py": "Strict parser rejects malformed/non-canonical Base64; shared corpus run pending",
+      "ri_rs": "Strict parser rejects malformed/non-canonical Base64; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
+    },
+    {
+      "id": "C6-N-015",
+      "kind": "negative",
+      "area": "strict-json-shape",
+      "mutation": "Required field missing, null, wrong nested type, float/bool/negative octet_length, or malformed JSON",
+      "expected": "Reject at receipt parsing boundary with stable error category",
+      "ri_py": "Strict parser validates receipt JSON shape/types; shared corpus run pending",
+      "ri_rs": "Strict parser validates receipt JSON shape/types; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
+    },
+    {
+      "id": "C6-N-016",
+      "kind": "negative",
+      "area": "duplicate-json-keys",
+      "mutation": "Duplicate schema_id, handoff.status, or received.recomputed_sha256 keys",
+      "expected": "Reject duplicate-key JSON before receipt interpretation; do not rely on last-key-wins parsing",
+      "ri_py": "Strict parser rejects duplicate keys; shared corpus run pending",
+      "ri_rs": "Strict parser rejects duplicate keys; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
+    },
+    {
+      "id": "C6-N-017",
+      "kind": "negative",
+      "area": "utf8-boundary",
+      "mutation": "Malformed UTF-8 in a receipt JSON envelope",
+      "expected": "Reject malformed receipt transport; this does not imply rejecting arbitrary raw artifact octets",
+      "ri_py": "Strict parser validates envelope UTF-8; shared corpus run pending",
+      "ri_rs": "Strict parser validates envelope UTF-8; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
+    },
+    {
+      "id": "C6-P-002",
+      "kind": "positive-guard",
+      "area": "raw-octet-boundary",
+      "mutation": "Use raw synthetic artifact bytes that are not valid UTF-8",
+      "expected": "Receiver records exact raw bytes; only a separate receipt-JSON boundary validates UTF-8",
+      "ri_py": "Native receiver API",
+      "ri_rs": "Native receiver API",
+      "disposition": "READY_FOR_NATIVE_TESTS"
+    }
+  ],
+  "gate_rule": "Preparation CI success is not C6 PASS. C6 remains BLOCKED until a common BC-02.1 receipt JSON consumer exists or is explicitly defined for both implementations, known strict-schema gaps are resolved, and the same fixture-derived mutation corpus runs against both pinned native paths.",
+  "normative_effect": "NONE"
+}

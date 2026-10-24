@@ -1,0 +1,178 @@
+name: Stage C C6 protocol-negative preflight (draft only)
+
+on:
+  push:
+    branches:
+      - "experiment/stage-c-c6-contract-negative-20261024"
+    paths:
+      - "scripts/stage_c/c6_*.py"
+      - "scripts/stage_c/test_c6_*.py"
+      - "fixtures/corpus/STAGE-C-C6-CONTRACT-NEGATIVES-v0.1-DRAFT.json"
+      - "fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json"
+      - "scripts/stage_c/materialize_c6_wire_corpus.py"
+      - "scripts/stage_c/test_c6_shared_wire_corpus.py"
+      - "scripts/stage_c/verify_c6_wire_parity.py"
+      - "docs/conformance/STAGE-C-C6-STRICT-RECEIPT-CONSUMER-INTERFACE-DRAFT.md"
+      - "conformance/boundary/ri_rs_receiver.rs"
+      - "docs/conformance/STAGE-C-C6-PROTOCOL-NEGATIVE-TEST-DRAFT.md"
+      - "conformance/boundary/ri-rs/tests/c6_contract_negative.rs"
+      - ".github/workflows/stage-c-c6-preflight.yml"
+  pull_request:
+    branches:
+      - "experiment/stage-c-merkle-c5-20261023"
+    paths:
+      - "scripts/stage_c/c6_*.py"
+      - "scripts/stage_c/test_c6_*.py"
+      - "fixtures/corpus/STAGE-C-C6-CONTRACT-NEGATIVES-v0.1-DRAFT.json"
+      - "fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json"
+      - "scripts/stage_c/materialize_c6_wire_corpus.py"
+      - "scripts/stage_c/test_c6_shared_wire_corpus.py"
+      - "scripts/stage_c/verify_c6_wire_parity.py"
+      - "docs/conformance/STAGE-C-C6-STRICT-RECEIPT-CONSUMER-INTERFACE-DRAFT.md"
+      - "conformance/boundary/ri_rs_receiver.rs"
+      - "docs/conformance/STAGE-C-C6-PROTOCOL-NEGATIVE-TEST-DRAFT.md"
+      - "conformance/boundary/ri-rs/tests/c6_contract_negative.rs"
+      - ".github/workflows/stage-c-c6-preflight.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  c6-preflight:
+    name: C6 contract inventory and native API probes (not C6 gate execution)
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout C6 specification experiment
+        uses: actions/checkout@v4
+
+      - name: Record specification source identity
+        id: spec-source
+        run: |
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          echo "spec_checkout_sha=$(git rev-parse HEAD)"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check out the pinned RI-PY implementation
+        uses: actions/checkout@v4
+        with:
+          repository: vaidt/aura-poc-a-core-v3.3
+          ref: 9896d577e50263b39eefc894c09130c1030df739
+          path: aura-core
+
+      - name: Enforce immutable RI-PY source pins
+        shell: bash
+        run: |
+          test "$(git -C aura-core rev-parse HEAD)" = "9896d577e50263b39eefc894c09130c1030df739"
+          test "$(git -C aura-core rev-parse HEAD:conformance/boundary/ri_py_receiver.py)" = "c850afcd450fc3fdbd79230bd23c98a9c34a0ba3"
+          test "$(git -C aura-core rev-parse HEAD:conformance/boundary/test_ri_py_receiver.py)" = "4194a29f7aff3c7c286ae5d1244cbda2e1a73e6e"
+          test "$(git -C aura-core rev-parse HEAD:conformance/boundary/test_ri_py_receipt_json_consumer.py)" = "bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42"
+          echo "RI-PY source commit and three source/test blobs match pinned inventory"
+
+      - name: Materialize the byte-identical C6 wire corpus once
+        run: |
+          python scripts/stage_c/materialize_c6_wire_corpus.py \
+            --manifest fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json \
+            --output-dir artifacts/stage-c/c6-wire-corpus
+
+      - name: Validate the C6 negative-case inventory
+        run: |
+          python scripts/stage_c/c6_contract_inventory.py \
+            --manifest fixtures/corpus/STAGE-C-C6-CONTRACT-NEGATIVES-v0.1-DRAFT.json \
+            --output artifacts/stage-c/c6-preparation/inventory-report.json
+          python -m unittest discover -s scripts/stage_c -p 'test_c6_contract_inventory.py' -v
+
+      - name: Install the pinned RI-PY test dependency
+        run: python -m pip install --disable-pip-version-check rfc8785==0.1.4
+
+      - name: Execute C6 probes against the pinned RI-PY typed API
+        env:
+          AURA_RI_PY_ROOT: ${{ github.workspace }}/aura-core
+        run: python -m unittest discover -s scripts/stage_c -p 'test_c6_ri_py_contract.py' -v
+
+      - name: Execute the shared byte-identical wire corpus against RI-PY
+        env:
+          AURA_RI_PY_ROOT: ${{ github.workspace }}/aura-core
+          AURA_C6_WIRE_CORPUS_DIR: ${{ github.workspace }}/artifacts/stage-c/c6-wire-corpus
+          AURA_C6_WIRE_RESULTS_DIR: ${{ github.workspace }}/artifacts/stage-c/c6-wire-corpus/results
+          AURA_RI_PY_COMMIT: 9896d577e50263b39eefc894c09130c1030df739
+          AURA_RI_PY_RECEIVER_BLOB: c850afcd450fc3fdbd79230bd23c98a9c34a0ba3
+          AURA_RI_PY_TEST_BLOB: bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42
+        run: python -m unittest discover -s scripts/stage_c -p 'test_c6_shared_wire_corpus.py' -v
+
+      - name: Run the pinned RI-PY receiver regression suite
+        run: python -m unittest conformance.boundary.test_ri_py_receiver -v
+        working-directory: aura-core
+
+      - name: Run RI-PY strict consumer unit tests
+        run: python -m unittest conformance.boundary.test_ri_py_receipt_json_consumer -v
+        working-directory: aura-core
+
+      - name: Set up Rust toolchain
+        uses: dtolnay/rust-toolchain@1.86.0
+
+      - name: Enforce immutable RI-RS source pins
+        shell: bash
+        run: |
+          test "$(git rev-parse HEAD:conformance/boundary/ri_rs_receiver.rs)" = "c6a1dbe1c937e562618e252ce783f5cbd6b54596"
+          test "$(git rev-parse HEAD:conformance/boundary/ri-rs/tests/c6_contract_negative.rs)" = "dc0bb4d1eeebe4174da13c0449ece06d5672d7d9"
+          echo "RI-RS receiver and test blobs match pinned inventory"
+
+      - name: Execute strict RI-RS consumer and shared byte-identical wire corpus
+        env:
+          AURA_C6_WIRE_CORPUS_DIR: ${{ github.workspace }}/artifacts/stage-c/c6-wire-corpus
+          AURA_C6_WIRE_RESULTS_DIR: ${{ github.workspace }}/artifacts/stage-c/c6-wire-corpus/results
+          AURA_RI_RS_SOURCE_BLOB: c6a1dbe1c937e562618e252ce783f5cbd6b54596
+          AURA_RI_RS_TEST_BLOB: dc0bb4d1eeebe4174da13c0449ece06d5672d7d9
+        run: |
+          cargo test --manifest-path conformance/boundary/ri-rs/Cargo.toml --test c6_contract_negative -- --nocapture
+
+      - name: Compare exact RI-PY and RI-RS results (bounded evidence only)
+        run: |
+          python scripts/stage_c/verify_c6_wire_parity.py \
+            --manifest fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json \
+            --source-pins fixtures/corpus/STAGE-C-C6-CONTRACT-NEGATIVES-v0.1-DRAFT.json \
+            --corpus-dir artifacts/stage-c/c6-wire-corpus \
+            --results-dir artifacts/stage-c/c6-wire-corpus/results
+
+      - name: Preserve preparation status and source pins
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p artifacts/stage-c/c6-preparation
+          {
+            echo "run_id=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            echo "spec_source_sha=${{ steps.spec-source.outputs.sha }}"
+            echo "ri_py_source_sha=9896d577e50263b39eefc894c09130c1030df739"
+            echo "ri_py_receiver_blob=c850afcd450fc3fdbd79230bd23c98a9c34a0ba3"
+            echo "ri_py_strict_consumer_test_blob=bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42"
+            echo "ri_rs_receiver_blob=c6a1dbe1c937e562618e252ce783f5cbd6b54596"
+            echo "ri_rs_preflight_test_blob=dc0bb4d1eeebe4174da13c0449ece06d5672d7d9"
+            echo "c6_gate_status=BLOCKED_NOT_EXECUTED"
+            if [[ -f artifacts/stage-c/c6-wire-corpus/results/parity-report.json ]]; then
+              parity_status="$(python -c 'import json; print(json.load(open("artifacts/stage-c/c6-wire-corpus/results/parity-report.json"))["status"])')"
+              echo "wire_consumer_parity=$parity_status"
+            else
+              echo "wire_consumer_parity=NOT_ESTABLISHED"
+            fi
+            echo "authority=NONE"
+            echo "governance_effect=NONE"
+            echo "authorization_effect=NONE"
+            echo "release_effect=NONE"
+          } > artifacts/stage-c/c6-preparation/provenance.txt
+
+      - name: Upload C6 preparation evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage-c-c6-preparation-evidence
+          path: |
+            artifacts/stage-c/c6-preparation/
+            artifacts/stage-c/c6-wire-corpus/
+          if-no-files-found: warn
+          retention-days: 14
