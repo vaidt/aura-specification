@@ -14,14 +14,15 @@ C6 must test protocol-boundary rejection semantics, not merely object constructi
 
 The inspected contract defines a strict wire schema: all required fields are explicit, null is prohibited, extra fields are prohibited, raw octets are Base64 in JSON transport, and the receiver-derived digest must equal SHA-256 of the decoded raw octets.
 
-The inspected implementations do not yet expose equivalent receipt-JSON consumer entry points:
+The experimental branches now contain separate receipt-envelope entry points:
 
-- **RI-PY** has a typed receipt constructor, deterministic serializer, Base64 decoder helper, and R-VAL-001..012 model validator. A full inverse parser for an arbitrary BC-02.1 JSON receipt was not found.
-- **RI-RS** builds typed receipt values and validates them, while the handoff binary emits a separate Base64 transport mapping. The native Rust DTO has `raw_octets: Vec<u8>`, whose generic serde JSON form is a number array, not the contract's Base64 string. No reciprocal BC-02.1 wire receipt parser was found.
-- The Rust structs use derived Serde deserialization without `deny_unknown_fields`; the derived boundary type can therefore ignore unrecognized keys. That behavior is not sufficient evidence of strict BC-02.1 consumer conformance.
-- Existing unit tests mainly exercise construction and typed-object validation. They do not amount to one shared negative receipt-envelope corpus executed through equivalent Python and Rust wire consumers.
+- **RI-PY** adds `parse_receipt_json(raw_json: bytes)` and `ReceiptParseError(code, detail)` in Draft PR [#8](https://github.com/vaidt/aura-poc-a-core-v3.3/pull/8).
+- **RI-RS** adds `parse_receipt_json(raw_json: &[u8])` and a typed `ReceiptParseError` to the spec-side receiver on this C6 Draft branch.
+- Both entry points accept original envelope bytes, detect duplicate keys before interpretation, enforce exact field sets and Base64 transport, and verify decoded length and SHA-256.
+- Direct derived DTO deserialization remains a lower-level surface and must not be confused with the strict wire API. Consumers and tests must call `parse_receipt_json`, not `serde_json::from_value::<BoundaryReceipt>`.
+- A shared mutation manifest, one-time materializer, and language-specific runners have been added. The shared corpus has **not yet been verified by a completed CI run**, so these implementations are experimental and the parity claim remains NOT ESTABLISHED.
 
-These are C6 blockers to preserve, not reasons to relabel test-plan checks as passing.
+The current C6 gate remains blocked until the exact same materialized receipt JSON byte files are run against both immutable implementation pins and every declared error category agrees.
 
 ## 3. Negative-test categories
 
@@ -65,7 +66,7 @@ The native tests distinguish:
 - reproducible known wire-consumer gaps;
 - cases that cannot honestly be executed until the wire-consumer interface is defined.
 
-A green **preparation** workflow only means that the case inventory and the tests that can be run on the currently available surfaces are reproducible. It is not a C6 PASS.
+A green **preparation** workflow only means the candidate strict consumers and byte-identical corpus test harness completed against the recorded experimental pins. It is not a C6 PASS until the resulting per-case hashes, outcomes, error categories, and source pins are independently reviewed.
 
 ## 6. Acceptance criteria for eventual C6
 
