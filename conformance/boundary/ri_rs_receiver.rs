@@ -378,7 +378,7 @@ pub fn parse_receipt_json(raw_json: &[u8]) -> Result<BoundaryReceipt, ReceiptPar
         }
     })?;
 
-    if matches!(document, StrictJsonValue::Null) {
+    if matches!(&document, StrictJsonValue::Null) {
         return Err(ReceiptParseError::new("NULL_NOT_ALLOWED", "receipt must not be null"));
     }
     let document_for_value_check = document.clone();
