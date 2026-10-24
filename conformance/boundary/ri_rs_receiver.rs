@@ -304,6 +304,14 @@ fn bc021_string(value: StrictJsonValue, where_: &str) -> Result<String, ReceiptP
     }
 }
 
+fn bc021_string_allow_empty(value: StrictJsonValue, where_: &str) -> Result<String, ReceiptParseError> {
+    match value {
+        StrictJsonValue::Null => Err(ReceiptParseError::new("NULL_NOT_ALLOWED", format!("{where_} must not be null"))),
+        StrictJsonValue::String(value) => Ok(value),
+        _ => Err(ReceiptParseError::new("TYPE_MISMATCH", format!("{where_} must be a string"))),
+    }
+}
+
 fn bc021_usize(value: StrictJsonValue, where_: &str) -> Result<usize, ReceiptParseError> {
     match value {
         StrictJsonValue::Null => Err(ReceiptParseError::new("NULL_NOT_ALLOWED", format!("{where_} must not be null"))),
@@ -379,7 +387,7 @@ pub fn parse_receipt_json(raw_json: &[u8]) -> Result<BoundaryReceipt, ReceiptPar
     let mut received = bc021_take_object(bc021_take(&mut top, "received"),
         &["octet_length", "raw_octets", "recomputed_sha256"], "received")?;
     let octet_length = bc021_usize(bc021_take(&mut received, "octet_length"), "received.octet_length")?;
-    let encoded_octets = bc021_string(bc021_take(&mut received, "raw_octets"), "received.raw_octets")?;
+    let encoded_octets = bc021_string_allow_empty(bc021_take(&mut received, "raw_octets"), "received.raw_octets")?;
     let raw_octets = BC021_B64.decode(encoded_octets.as_bytes())
         .map_err(|_| ReceiptParseError::new("INVALID_BASE64", "received.raw_octets is not strict Base64"))?;
     if BC021_B64.encode(&raw_octets) != encoded_octets {
