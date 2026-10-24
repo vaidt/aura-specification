@@ -274,13 +274,37 @@ impl<'de> Deserialize<'de> for StrictJsonValue {
     }
 }
 
+fn bc021_reject_forbidden_values(value: &StrictJsonValue, where_: &str) -> Result<(), ReceiptParseError> {
+    match value {
+        StrictJsonValue::String(text) if ["PASS", "FAIL", "CONFORMANT", "NON_CONFORMANT"]
+            .iter().any(|forbidden| text.to_uppercase() == *forbidden) => {
+                Err(ReceiptParseError::new("INVALID_VALUE", format!("{where_} contains a prohibited result-authority value")))
+            }
+        StrictJsonValue::Object(map) => {
+            for (key, child) in map {
+                bc021_reject_forbidden_values(child, &format!("{where_}.{key}"))?;
+            }
+            Ok(())
+        }
+        StrictJsonValue::Array(values) => {
+            for (index, child) in values.iter().enumerate() {
+                bc021_reject_forbidden_values(child, &format!("{where_}[{index}]"))?;
+            }
+            Ok(())
+        }
+        _ => Ok(()),
+    }
+}
+
 fn bc021_take_object(
     value: StrictJsonValue,
     required: &[&str],
     where_: &str,
 ) -> Result<BTreeMap<String, StrictJsonValue>, ReceiptParseError> {
-    let StrictJsonValue::Object(mut map) = value else {
-        return Err(ReceiptParseError::new("INVALID_SHAPE", format!("{where_} must be an object")));
+    let mut map = match value {
+        StrictJsonValue::Object(map) => map,
+        StrictJsonValue::Null => return Err(ReceiptParseError::new("NULL_NOT_ALLOWED", format!("{where_} must not be null")),
+        _ => return Err(ReceiptParseError::new("INVALID_SHAPE", format!("{where_} must be an object")),
     };
     if let Some(key) = map.keys().find(|key| !required.contains(&key.as_str())) {
         return Err(ReceiptParseError::new("UNKNOWN_FIELD", format!("{where_} has unknown field {key:?}")));
@@ -353,6 +377,11 @@ pub fn parse_receipt_json(raw_json: &[u8]) -> Result<BoundaryReceipt, ReceiptPar
             ReceiptParseError::new("INVALID_JSON", "receipt envelope is not valid JSON")
         }
     })?;
+
+    if matches!(document, StrictJsonValue::Null) {
+        return Err(ReceiptParseError::new("NULL_NOT_ALLOWED", "receipt must not be null"));
+    }
+    bc021_reject_forbidden_values(&document, "receipt")?;
 
     let mut top = bc021_take_object(document,
         &["schema_id", "schema_version", "fixture", "handoff", "received", "receiver", "adapter", "environment"],
@@ -431,6 +460,13 @@ pub fn parse_receipt_json(raw_json: &[u8]) -> Result<BoundaryReceipt, ReceiptPar
     };
 
     let receipt = BoundaryReceipt { schema_id: SCHEMA_ID.to_owned(), schema_version, fixture, handoff, received, receiver, adapter, environment };
+    if receipt.receiver.implementation_id == receipt.receiver.receiver_id {
+        return Err(ReceiptParseError::new("INVALID_VALUE", "implementation identity must differ from receiver identity"));
+    }
+    if receipt.adapter.adapter_id == receipt.receiver.receiver_id
+        || receipt.adapter.adapter_id == receipt.receiver.implementation_id {
+        return Err(ReceiptParseError::new("INVALID_VALUE", "adapter identity must differ from receiver and implementation identities"));
+    }
     validate_schema(&receipt).map_err(|error| {
         let code = error.split(':').next().unwrap_or("INVALID_VALUE");
         ReceiptParseError::new("INVALID_VALUE", format!("schema validation failed ({code})"))
