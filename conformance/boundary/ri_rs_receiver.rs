@@ -303,8 +303,8 @@ fn bc021_take_object(
 ) -> Result<BTreeMap<String, StrictJsonValue>, ReceiptParseError> {
     let mut map = match value {
         StrictJsonValue::Object(map) => map,
-        StrictJsonValue::Null => return Err(ReceiptParseError::new("NULL_NOT_ALLOWED", format!("{where_} must not be null")),
-        _ => return Err(ReceiptParseError::new("INVALID_SHAPE", format!("{where_} must be an object")),
+        StrictJsonValue::Null => return Err(ReceiptParseError::new("NULL_NOT_ALLOWED", format!("{where_} must not be null"))),
+        _ => return Err(ReceiptParseError::new("INVALID_SHAPE", format!("{where_} must be an object"))),
     };
     if let Some(key) = map.keys().find(|key| !required.contains(&key.as_str())) {
         return Err(ReceiptParseError::new("UNKNOWN_FIELD", format!("{where_} has unknown field {key:?}")));
