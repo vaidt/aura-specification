@@ -1,89 +1,130 @@
 # AURA Stabilization — Execution Ledger (2026-10-24)
 
 **Classification:** Operational, non-constitutive.  
-**Baseline:** Supplied AURA Watch reports dated 2026-10-24; live GitHub reads are recorded below where available.  
+**Baseline:** Supplied AURA Watch reports dated 2026-10-24 plus live GitHub reads on 2026-10-24.  
 **Invariant:** No direct main changes, merges, bypass modifications, bootstrap dispatch, or governance promotion were performed in this work session.
 
-## 1. Delivered artifacts
+## 1. Delivered artifacts and PRs
 
 | Artifact | Location | State |
 |---|---|---|
-| Stabilization plan and priority queue | [PR #43](https://github.com/vaidt/aura-specification/pull/43) | Draft/open |
-| Gate/evidence matrix | Included in [PR #43](https://github.com/vaidt/aura-specification/pull/43) | Draft/open |
+| Stabilization plan, gate matrix, execution ledger | [PR #43](https://github.com/vaidt/aura-specification/pull/43) | Draft/open |
 | Guard PR #13 review checklist | [PR #19](https://github.com/vaidt/aura-guard-v1.3/pull/19) | Draft/open |
 | Core PR #6 review checklist | [PR #9](https://github.com/vaidt/aura-poc-a-core-v3.3/pull/9) | Draft/open |
-| RI-RS evidence serialization analysis | [PR #20](https://github.com/vaidt/aura-guard-v1.3/pull/20) | Draft/open |
-| C6 JCS workflow/test-boundary repair candidate | [PR #44](https://github.com/vaidt/aura-specification/pull/44) | Draft/open |
+| RI-RS serialization diagnosis | [PR #20](https://github.com/vaidt/aura-guard-v1.3/pull/20) | Draft/open |
+| JCS test trigger/ownership candidate | [PR #44](https://github.com/vaidt/aura-specification/pull/44) | Draft/open; bounded JCS result independently verified |
+| RI-RS exact-byte preservation candidate | [PR #21](https://github.com/vaidt/aura-guard-v1.3/pull/21) | Draft/open; CI incomplete/blocked |
 
 These are not releases, ratifications, or approvals to merge.
 
-## 2. Operational plan PR #43
+## 2. JCS — exact-head run and artifact independently verified
 
-Contains:
-- P0 repository and branch-control inventory;
-- ASIG bypass review with separate interpretation of AURA-ADM rules;
-- exact-head review requirements for Guard #13 and Core #6;
-- isolated repairs for C6 reference paths, environment setup and evidence serialization;
-- exact source/corpus pins and independently validated C6 evidence contract;
-- source-of-truth repository map;
-- upstream CodeQL diagnostic;
-- Bootstrap pause criteria;
-- governance evidence requirements for M1/G0/G1/P-008 and DQ-006/CONF-003;
-- evidence ledger fields, definitions and exit criteria.
+Manual workflow run: [#40106692164](https://github.com/vaidt/aura-specification/actions/runs/40106692164)  
+Workflow: `Stage C JCS multi-vector adapter comparison`  
+Event: `workflow_dispatch`  
+Specification source SHA: `a0804a1968315aae2e8d2d73c4b34f8fcc0fcf78`  
+Pinned Rust adapter SHA: `31a7eeab861094fbecc82e8a61351fac49dffe43`  
+Job: `120909746178` — all nine workflow steps PASS.  
+Artifact: `stage-c-jcs-multivector`, ID `12564597727`, size 37,230 bytes, SHA-256 `d46589e9f617799861642eb47e73a729fb126ea90b987f175c5fb431ba003742`.
 
-## 3. Live technical actions on the C6 experimental path
+The artifact was downloaded and verified independently:
+- `comparison.json` reports schema `AURA-STAGE-C-JCS-MULTIVECTOR-EXECUTION-REPORT/0.1`, run ID `40106692164-1`, 6 vectors, `all_engineering_assertions_passed=true`, zero failing vectors;
+- on every vector, Python and Rust `canonical.bin` files are byte-identical;
+- all six SHA-256 values and output lengths match the committed expected bytes;
+- each response carries the same run ID, correct fixture ID/input hash, and expected source commit for its implementation;
+- Python engine is `rfc8785 0.1.4`; Rust engine is `serde_json_canonicalizer 0.3.2`.
 
-On the existing experimental head branch used by PR #41, commits were made to correct three malformed relative paths and make the JCS test step's test ownership explicit. The relative paths were then found to be interpreted differently by the repository reference checker; the follow-up candidate PR #44 uses explicit GitHub links and has a passing Draft Conformance/reference-hygiene run.
+**Disposition:** PASS for this bounded six-vector isolated JCS adapter comparison. The report explicitly says it is not full RFC 8785 or production RI-PY coverage; normative, governance and release effects are NONE. C6 is still blocked pending production receiver paths, Merkle domain/proof tests, protocol-specific negative cases and governance prerequisites.
 
-On PR #44's candidate head, the workflow was narrowed to:
-- `test_python_jcs_probe.py`;
-- `test_jcs_multivector_corpus.py`;
-- an explicit six-vector adapter comparison command;
-- an allowed pull-request base branch so the workflow can trigger on the C6 integration branch.
+## 3. Guard #13 — exact-head dependency security review
 
-Draft Conformance run [40105955951](https://github.com/vaidt/aura-specification/actions/runs/40105955951) and run [40105952634](https://github.com/vaidt/aura-specification/actions/runs/40105952634) passed on head `9dcabf3b324c17e4eabbc2013784b7a235214a79`; these are **Draft Conformance**, not JCS adapter results. At time of ledger authoring, a JCS multi-vector run on the final PR #44 head had not been confirmed. Therefore the workflow/test repair remains unvalidated by its intended workflow.
+PR [#13](https://github.com/vaidt/aura-guard-v1.3/pull/13) remains Draft/open on head `dd08cf46677153295511b2691e3da0aea5d13c25`, with zero independent reviews. It is a one-file `Cargo.lock` patch (no `Cargo.toml` or Rust source changes):
+- `rustls-webpki 0.103.15 -> 0.103.16`;
+- `webpki-roots 1.0.7 -> 1.0.10`;
+- `tokio 1.52.3 -> 1.54.1`.
 
-## 4. RI-RS artifact discrepancy analysis
+These updates address the known current log findings for RUSTSEC-2026-0382, RUSTSEC-2026-0381 and the Tokio unsound warning RUSTSEC-2026-0386. Historical PR #13 checks on its own head were green, including `cargo-audit` and `cargo-deny`; those results do not transfer to the different RI-RS experiment branch.
 
-For Guard run [40048516275](https://github.com/vaidt/aura-guard-v1.3/actions/runs/40048516275), the preservation log reports `Extra data: line 18 column 2 (char 809)`. The downloaded uploaded artifact contains a strictly parseable `ri-rs-results.json` with 27 unique cases, all `matched=true`, no mismatches, and a report hash equal to `d89dc3c80727460d763cbda7686fd5ec3c6b91cb24110f3c6e3bee718a4c25ec`. Its `index_sha256` equals the SHA-256 of the exact included index artifact, `445d5808cb76a24b916a91e91636d4ce10ac3b0239f9eb2f474264783bc41181`.
+I compared `Cargo.lock` at PR #21's base `ad86f02eb4bb2f3479b3b2e3f6b78f26257c44ff` and PR #13 head. `crypto-bigint 0.5.5` and its checksum are identical in both. The current exact-head audit on PR #21 reports RUSTSEC-2026-0387 for that crate in addition to the Web PKI/Tokio findings. **PR #13 alone does not clear the crypto-bigint blocker.** A separate compatible remediation and audit/deny reruns are required; do not suppress the advisory.
 
-This is a real inconsistency between logged preservation and uploaded report contents. Root cause is **not proven**. PR #20 records an exact diagnostic sequence; no workflow/code change was made to guess around it.
+## 4. Core #6 — exact-head CI and review
 
-## 5. Branch-control read
+PR [#6](https://github.com/vaidt/aura-poc-a-core-v3.3/pull/6) is open, not Draft, not merged, head `0e10964703c1e0273094b274d0969d422deab9f2`, with zero reviews.
 
-For `vaidt/Projekt-Aura-BETA-`, the full ruleset reads confirm:
-- ASIG ruleset #25504515 is active for all branches and has a DeployKey bypass actor with mode `always`;
-- AURA-ADM ruleset #25505024 is active on `refs/heads/main`, requires three named checks and has no bypass actors.
+All seven registered checks on that exact head are PASS:
+- Cross-platform deterministic comparison;
+- CodeFactor;
+- mandatory execution checks x86_64;
+- mandatory execution checks ARM64;
+- production Core serializer CANONICAL-003;
+- full pytest with Docker;
+- WASM compatibility.
 
-The two rulesets are distinct; ASIG bypass must not be inferred to bypass AURA-ADM. Ruleset listing in spec/Guard/Core returned no repository rulesets, but classic branch-protection endpoints were forbidden to the connected integration. Therefore classic protection state is **not independently proven by these reads** and must be verified by an actor with the necessary permissions. Private Bootstrap ruleset endpoint also returned an access/plan limitation. No ruleset was changed.
+The diff changes only the workflow's dependency installation step to install the project in editable mode plus pytest. **Technical PASS does not equal independent review.** Obtain an independent review before any merge, then verify the resulting `main` SHA and rerun the required suite against that new SHA.
 
-## 6. Current gate disposition
+## 5. RI-RS evidence-preservation candidate #21 — root-cause status and current blockers
 
-The latest conformance report retained:
-- CONF-003: OPEN;
-- CONF-007: BLOCKED;
-- CONF-009: OPEN.
+Prior run [#40048516275](https://github.com/vaidt/aura-guard-v1.3/actions/runs/40048516275) logged `Extra data: line 18 column 2 (char 809)` during evidence preservation. The uploaded report later downloaded from that run is a valid single JSON document with 27 unique cases, each `matched=true`; report SHA-256 `d89dc3c80727460d763cbda7686fd5ec3c6b91cb24110f3c6e3bee718a4c25ec`. Its `index_sha256` matches the included index bytes SHA-256 `445d5808cb76a24b916a91e91636d4ce10ac3b0239f9eb2f474264783bc41181`.
 
-The independent source reports remain:
-- DQ-006: OPEN;
-- CONF-003: PARTIAL;
-- C6: BLOCKED_NOT_EXECUTED / BLOCKED_PENDING_EVIDENCE_REVIEW;
-- M1: BLOCKED / NOT PROVEN;
-- G0: NOT PROVEN;
-- G1: BLOCKED;
-- P-008: CONFLICTED / NOT ESTABLISHED;
-- Bootstrap Control PR #1: paused, no dispatch.
+This proves a discrepancy between the old run's preservation error and the subsequently uploaded report contents, **but it does not prove the exact root cause** (the runtime file may have differed from the later uploaded artifact). Candidate PR [#21](https://github.com/vaidt/aura-guard-v1.3/pull/21) logs path, byte count, SHA-256 and parses the same raw byte buffers, then checks schema, index digest, cases and report status without rewriting the report.
 
-Nothing in these engineering/documentation changes changes those states.
+Exact head `d34f561261aa987144ea6d285355180fdfd1b9c7`; run [#40106587300](https://github.com/vaidt/aura-guard-v1.3/actions/runs/40106587300) remains in progress at last read:
+- PASS: `cargo build --locked --release --all-targets`;
+- PASS: `CANONICAL-003` evidence step;
+- PASS: `clippy`, Gate 3 Core integration, Gate 4 external E2E and D-3 chain evidence export;
+- FAIL: `cargo-audit` due to `crypto-bigint 0.5.5` (RUSTSEC-2026-0387), `rustls-webpki 0.103.15` (RUSTSEC-2026-0382), `webpki-roots 1.0.7` (RUSTSEC-2026-0381), and Tokio 1.52.3 warning RUSTSEC-2026-0386;
+- FAIL: `cargo-deny` advisory policy; bans, licenses and sources pass;
+- FAIL: `rustfmt` due to existing formatting differences in `conformance/strict_wire_c6.rs`, not the new YAML-only preservation step;
+- `cargo test --locked --all-targets` was still running when last checked;
+- no `preservation-diagnostics.json` artifact is available yet; only D-3 and Gate 4 artifacts are listed.
 
-## 7. Next executable steps
+**Disposition:** the new exact-byte preservation path is not yet validated by a complete run, and the old failure's exact root cause remains unproven. Keep PR #21 Draft and do not promote C6. No audit/deny policy was relaxed.
 
-1. Confirm the JCS multi-vector workflow runs on the latest PR #44 head; inspect all steps and artifact before interpreting its result.
-2. If the workflow does not run or fails, repair only the demonstrated trigger/job/test defect and retain Draft status.
-3. Continue the controlled review of Guard #13 and Core #6; obtain independent review and prove effective branch controls before any authorized merge.
-4. Update dependent experimental PR bases only after the corresponding maintenance change is accepted; rerun each affected workflow on its exact head.
-5. Implement the RI-RS evidence-path fix only after instrumenting the actual path, byte count and hash parsed within the same job.
-6. Obtain a permission-capable branch protection read for the remaining repositories, and independently verify trusted required-check provenance in Issue #8.
-7. Keep Bootstrap paused and governance gates unchanged until primary constitutive evidence supports a state transition.
+## 6. Effective branch protection and Issue #8 provenance
 
-**Exit rule:** No state is moved by inference. A scoped workflow pass is recorded as scoped technical evidence; only complete, repeatable, independently reviewed evidence can support a technical gate decision, and only the proper governance process can establish normative effect.
+Classic `required_status_checks` endpoints returned `Branch not protected` for `main` in:
+- `vaidt/aura-specification`;
+- `vaidt/aura-guard-v1.3`;
+- `vaidt/aura-poc-a-core-v3.3`.
+
+The queried branch-target ruleset endpoints returned empty rules arrays for those repos. Therefore effective source-bound merge protection is not established for those `main` branches. Do not merge the maintenance PRs until an authorized protection configuration is installed and read back.
+
+In [BETA ruleset AURA-ADM-MAIN-001](https://github.com/vaidt/Projekt-Aura-BETA-/rules/25505024), the ruleset is active on `refs/heads/main`, requires one approval, latest-push approval and resolved review threads, plus three checks:
+- `Validate evidence schemas and records`;
+- `Observe pinned authority-source signatures (non-constitutive)`;
+- `M1 exact-byte signature gate (strict)`.
+
+All three are bound only to integration/App ID `15368` (GitHub Actions); the ruleset has no bypass actors. A separate active ASIG ruleset [#25504515](https://github.com/vaidt/Projekt-Aura-BETA-/rules/25504515) has a DeployKey bypass in `always` mode. Do not assume ASIG necessarily bypasses AURA-ADM; investigate its exact scope.
+
+Open [Issue #8](https://github.com/vaidt/Projekt-Aura-BETA-/issues/8) records the controlled spoofing test: a PR-controlled workflow emitted the same three check names using the same GitHub Actions App ID. Two synthetic checks passed while the strict M1 signature gate failed and blocked merge. Thus check name + App ID alone does not bind a result to an approved workflow revision or verifier source. The issue remains open; trusted publisher/provenance and a controlled negative test are still required.
+
+The private Bootstrap-Control repo's branch-ruleset enforcement was previously blocked by GitHub's plan-level 403. Bootstrap remains paused pending an independently controlled trust path. No rulesets were changed in this session.
+
+## 7. Current gate disposition and next actions
+
+| Gate | Current disposition |
+|---|---|
+| JCS six-vector isolated adapter comparison | PASS — exact source pins and artifact verified |
+| Full RFC 8785 / production RI-PY | Not established |
+| C6 / BC-02.1 | BLOCKED |
+| RI-RS exact-byte preservation | Candidate added; full run incomplete; prior root cause not proven |
+| Guard #13 | Draft, no independent review; resolves three advisories, not crypto-bigint |
+| Core #6 | Seven checks pass on exact head; no independent review |
+| Main protection in Spec/Guard/Core | Not established; endpoint reports branch unprotected |
+| Issue #8 source-bound required checks | OPEN; spoofing risk demonstrated, not remediated |
+| DQ-006 | OPEN |
+| CONF-003 | PARTIAL / OPEN in the respective governance and Draft Conformance records |
+| M1 | BLOCKED / NOT PROVEN |
+| G0 / G1 | NOT PROVEN / BLOCKED |
+| P-008 | CONFLICTED / NOT ESTABLISHED |
+| Bootstrap | Paused; no dispatch |
+
+Next executable sequence:
+1. Obtain a complete run for PR #21; inspect `preservation-diagnostics.json` and strict parser result. If job hangs or artifact remains absent, investigate the CANONICAL-003/test step before changing the preservation parser.
+2. Resolve dependency audit findings including `crypto-bigint 0.5.5` with a separate pinned, reviewed dependency change; do not relax audit/deny.
+3. Resolve existing rustfmt debt in a separate, narrow change; rerun all gates on exact candidate SHA.
+4. Obtain independent reviews for PR #13 and PR #6, verify effective main protection, then make separately authorized merge decisions and rerun checks on the resulting main SHAs.
+5. Close Issue #8 only after the verifier source is genuinely bound and the controlled spoof test cannot satisfy trusted checks.
+6. Resume full C6 only after exact-byte preservation completes and all receiver, corpus, source-pin, Merkle, negative-test and review gates are satisfied.
+
+**Exit rule:** A scoped workflow pass is scoped technical evidence. No state moves by inference; only complete and independently reviewed technical evidence supports a technical gate, and only the proper governance process can establish normative, authority, authorization or release effect.
