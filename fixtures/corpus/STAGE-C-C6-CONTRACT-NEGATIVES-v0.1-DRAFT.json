@@ -138,10 +138,10 @@
       "kind": "negative",
       "area": "forbidden-authority-field",
       "mutation": "Add conformance_result, verdict, acceptance_state, or digest_output_state to wire receipt",
-      "expected": "Strict BC-02.1 consumer must reject unknown/authority-bearing fields",
-      "ri_py": "No receipt-JSON consumer API located",
-      "ri_rs": "Serde-derived BoundaryReceipt deserialization ignores unknown fields by default",
-      "disposition": "KNOWN_WIRE_CONSUMER_GAP"
+      "expected": "Experimental strict BC-02.1 consumer must reject unknown/authority-bearing fields",
+      "ri_py": "Strict parser rejects extra/authority keys; shared corpus run pending",
+      "ri_rs": "Strict parser rejects extra/authority keys; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
     },
     {
       "id": "C6-N-012",
@@ -149,9 +149,9 @@
       "area": "unknown-field",
       "mutation": "Add an unrecognized field at top-level or nested object",
       "expected": "Strict schema consumer rejects the extra field; no silent ignore",
-      "ri_py": "No receipt-JSON consumer API located",
-      "ri_rs": "Serde-derived structs ignore unknown fields by default",
-      "disposition": "KNOWN_WIRE_CONSUMER_GAP"
+      "ri_py": "Strict parser enforces exact nested field sets; shared corpus run pending",
+      "ri_rs": "Strict parser enforces exact nested field sets; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
     },
     {
       "id": "C6-N-013",
@@ -159,9 +159,9 @@
       "area": "base64-transport",
       "mutation": "Supply valid Base64 string for received.raw_octets in BC-02.1 transport receipt",
       "expected": "Consumer decodes Base64 to exact raw octets, checks decoded length and computes digest over decoded bytes",
-      "ri_py": "Serializer/decoder helper exists, but no full receipt deserializer located",
-      "ri_rs": "Wire emitter uses Base64; logical DTO Vec<u8> serializes as an array, with no reciprocal parser located",
-      "disposition": "KNOWN_WIRE_CONSUMER_GAP"
+      "ri_py": "Strict parser decodes Base64 and validates digest; shared corpus run pending",
+      "ri_rs": "Strict parser decodes Base64 and validates digest; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
     },
     {
       "id": "C6-N-014",
@@ -169,9 +169,9 @@
       "area": "malformed-base64",
       "mutation": "Invalid Base64 alphabet, padding, or impossible decoded length",
       "expected": "Reject receipt; do not substitute empty bytes or continue with a recomputed digest",
-      "ri_py": "decode helper rejects malformed Base64; no full receipt parser located",
-      "ri_rs": "No reciprocal BC-02.1 receipt parser located",
-      "disposition": "KNOWN_WIRE_CONSUMER_GAP"
+      "ri_py": "Strict parser rejects malformed/non-canonical Base64; shared corpus run pending",
+      "ri_rs": "Strict parser rejects malformed/non-canonical Base64; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
     },
     {
       "id": "C6-N-015",
@@ -179,9 +179,9 @@
       "area": "strict-json-shape",
       "mutation": "Required field missing, null, wrong nested type, float/bool/negative octet_length, or malformed JSON",
       "expected": "Reject at receipt parsing boundary with stable error category",
-      "ri_py": "No receipt-JSON consumer API located",
-      "ri_rs": "Serde type parsing partially rejects malformed shape but is not a complete BC-02.1 wire consumer",
-      "disposition": "KNOWN_WIRE_CONSUMER_GAP"
+      "ri_py": "Strict parser validates receipt JSON shape/types; shared corpus run pending",
+      "ri_rs": "Strict parser validates receipt JSON shape/types; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
     },
     {
       "id": "C6-N-016",
@@ -189,9 +189,9 @@
       "area": "duplicate-json-keys",
       "mutation": "Duplicate schema_id, handoff.status, or received.recomputed_sha256 keys",
       "expected": "Reject duplicate-key JSON before receipt interpretation; do not rely on last-key-wins parsing",
-      "ri_py": "No receipt-JSON consumer API located",
-      "ri_rs": "No explicit duplicate-key policy for a BC-02.1 wire consumer",
-      "disposition": "NOT_WIRED"
+      "ri_py": "Strict parser rejects duplicate keys; shared corpus run pending",
+      "ri_rs": "Strict parser rejects duplicate keys; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
     },
     {
       "id": "C6-N-017",
@@ -199,9 +199,9 @@
       "area": "utf8-boundary",
       "mutation": "Malformed UTF-8 in a receipt JSON envelope",
       "expected": "Reject malformed receipt transport; this does not imply rejecting arbitrary raw artifact octets",
-      "ri_py": "Receipt parser absent",
-      "ri_rs": "Receipt parser absent",
-      "disposition": "NOT_WIRED"
+      "ri_py": "Strict parser validates envelope UTF-8; shared corpus run pending",
+      "ri_rs": "Strict parser validates envelope UTF-8; shared corpus run pending",
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
     },
     {
       "id": "C6-P-002",
