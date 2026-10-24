@@ -11,6 +11,7 @@ on:
       - "fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json"
       - "scripts/stage_c/materialize_c6_wire_corpus.py"
       - "scripts/stage_c/test_c6_shared_wire_corpus.py"
+      - "scripts/stage_c/verify_c6_wire_parity.py"
       - "docs/conformance/STAGE-C-C6-STRICT-RECEIPT-CONSUMER-INTERFACE-DRAFT.md"
       - "conformance/boundary/ri_rs_receiver.rs"
       - "docs/conformance/STAGE-C-C6-PROTOCOL-NEGATIVE-TEST-DRAFT.md"
@@ -26,6 +27,7 @@ on:
       - "fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json"
       - "scripts/stage_c/materialize_c6_wire_corpus.py"
       - "scripts/stage_c/test_c6_shared_wire_corpus.py"
+      - "scripts/stage_c/verify_c6_wire_parity.py"
       - "docs/conformance/STAGE-C-C6-STRICT-RECEIPT-CONSUMER-INTERFACE-DRAFT.md"
       - "conformance/boundary/ri_rs_receiver.rs"
       - "docs/conformance/STAGE-C-C6-PROTOCOL-NEGATIVE-TEST-DRAFT.md"
@@ -88,6 +90,10 @@ jobs:
         env:
           AURA_RI_PY_ROOT: ${{ github.workspace }}/aura-core
           AURA_C6_WIRE_CORPUS_DIR: ${{ github.workspace }}/artifacts/stage-c/c6-wire-corpus
+          AURA_C6_WIRE_RESULTS_DIR: ${{ github.workspace }}/artifacts/stage-c/c6-wire-corpus/results
+          AURA_RI_PY_COMMIT: 9896d577e50263b39eefc894c09130c1030df739
+          AURA_RI_PY_RECEIVER_BLOB: c850afcd450fc3fdbd79230bd23c98a9c34a0ba3
+          AURA_RI_PY_TEST_BLOB: bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42
         run: python -m unittest discover -s scripts/stage_c -p 'test_c6_shared_wire_corpus.py' -v
 
       - name: Run the pinned RI-PY receiver regression suite
@@ -104,8 +110,19 @@ jobs:
       - name: Execute strict RI-RS consumer and shared byte-identical wire corpus
         env:
           AURA_C6_WIRE_CORPUS_DIR: ${{ github.workspace }}/artifacts/stage-c/c6-wire-corpus
+          AURA_C6_WIRE_RESULTS_DIR: ${{ github.workspace }}/artifacts/stage-c/c6-wire-corpus/results
+          AURA_RI_RS_SOURCE_BLOB: c6a1dbe1c937e562618e252ce783f5cbd6b54596
+          AURA_RI_RS_TEST_BLOB: dc0bb4d1eeebe4174da13c0449ece06d5672d7d9
         run: |
           cargo test --manifest-path conformance/boundary/ri-rs/Cargo.toml --test c6_contract_negative -- --nocapture
+
+      - name: Compare exact RI-PY and RI-RS results (bounded evidence only)
+        run: |
+          python scripts/stage_c/verify_c6_wire_parity.py \
+            --manifest fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json \
+            --source-pins fixtures/corpus/STAGE-C-C6-CONTRACT-NEGATIVES-v0.1-DRAFT.json \
+            --corpus-dir artifacts/stage-c/c6-wire-corpus \
+            --results-dir artifacts/stage-c/c6-wire-corpus/results
 
       - name: Preserve preparation status and source pins
         if: always()
@@ -116,12 +133,17 @@ jobs:
             echo "run_id=${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
             echo "spec_source_sha=${{ steps.spec-source.outputs.sha }}"
             echo "ri_py_source_sha=9896d577e50263b39eefc894c09130c1030df739"
-              echo "ri_py_receiver_blob=c850afcd450fc3fdbd79230bd23c98a9c34a0ba3"
+            echo "ri_py_receiver_blob=c850afcd450fc3fdbd79230bd23c98a9c34a0ba3"
             echo "ri_py_strict_consumer_test_blob=bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42"
             echo "ri_rs_receiver_blob=c6a1dbe1c937e562618e252ce783f5cbd6b54596"
-            echo "ri_rs_preflight_test_blob=2d90fd3106f2289dfee6d476189cd146303f7d84"
+            echo "ri_rs_preflight_test_blob=dc0bb4d1eeebe4174da13c0449ece06d5672d7d9"
             echo "c6_gate_status=BLOCKED_NOT_EXECUTED"
-            echo "wire_consumer_parity=NOT_ESTABLISHED"
+            if [[ -f artifacts/stage-c/c6-wire-corpus/results/parity-report.json ]]; then
+              parity_status="$(python -c 'import json; print(json.load(open("artifacts/stage-c/c6-wire-corpus/results/parity-report.json"))["status"])')"
+              echo "wire_consumer_parity=$parity_status"
+            else
+              echo "wire_consumer_parity=NOT_ESTABLISHED"
+            fi
             echo "authority=NONE"
             echo "governance_effect=NONE"
             echo "authorization_effect=NONE"
