@@ -30,6 +30,8 @@ jobs:
   strict-wire-experiment:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      AURA_SOURCE_COMMIT: ${{ github.sha }}
     steps:
       - name: Checkout specification experiment
         uses: actions/checkout@v4
@@ -41,12 +43,19 @@ jobs:
         run: python -m unittest discover -s scripts/stage_c -p 'test_c6_strict_wire.py' -v
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@1.86.0
-      - name: Run strict RI-RS wire parser mutation tests
+      - name: Run strict RI-RS native receipt and wire mutation tests
+        id: strict-rs-tests
         run: cargo test --manifest-path conformance/boundary/ri-rs/Cargo.toml --test strict_wire_c6 -- --nocapture
-      - name: Emit fail-closed status
+      - name: Emit fail-closed status and RI-RS source-pin evidence
         if: always()
+        env:
+          RS_TEST_OUTCOME: ${{ steps.strict-rs-tests.outcome }}
         run: |
           mkdir -p artifacts/c6-strict-wire
+          receiver_blob=$(git rev-parse "${GITHUB_SHA}:conformance/boundary/ri_rs_receiver.rs")
+          parser_blob=$(git rev-parse "${GITHUB_SHA}:conformance/boundary/ri-rs/strict_wire.rs")
+          test_blob=$(git rev-parse "${GITHUB_SHA}:conformance/boundary/ri-rs/tests/strict_wire_c6.rs")
+          corpus_sha=$(sha256sum fixtures/corpus/STAGE-C-C6-BC02.1-WIRE-MUTATIONS-v0.1.json | cut -d' ' -f1)
           cat > artifacts/c6-strict-wire/status.txt <<'EOF'
           stage=C6_STRICT_WIRE_EXPERIMENT
           c6_gate_status=BLOCKED_NOT_EXECUTED
@@ -55,11 +64,31 @@ jobs:
           authorization_effect=NONE
           release_effect=NONE
           EOF
+          cat > artifacts/c6-strict-wire/ri-rs-evidence.json <<EOF
+          {
+            "schema": "AURA-C6-IMPLEMENTATION-EVIDENCE/0.1",
+            "component": "RI-RS",
+            "repository": "vaidt/aura-specification",
+            "base_source_commit": "5308fb278d8bd32101f116dd942c3be33bd8c702",
+            "tested_head_sha": "${GITHUB_SHA}",
+            "source_commit_in_receipt": "${AURA_SOURCE_COMMIT}",
+            "receiver_blob_sha": "${receiver_blob}",
+            "consumer_parser_blob_sha": "${parser_blob}",
+            "test_blob_sha": "${test_blob}",
+            "shared_corpus_sha256": "${corpus_sha}",
+            "tests_outcome": "${RS_TEST_OUTCOME}",
+            "c6_gate_status": "BLOCKED_NOT_EXECUTED",
+            "authority": "NONE",
+            "governance_effect": "NONE",
+            "release_effect": "NONE"
+          }
+          EOF
+          python -m json.tool artifacts/c6-strict-wire/ri-rs-evidence.json >/dev/null
       - name: Upload experimental evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: c6-strict-wire-experiment
-          path: artifacts/c6-strict-wire/status.txt
+          path: artifacts/c6-strict-wire/
           if-no-files-found: error
           retention-days: 14

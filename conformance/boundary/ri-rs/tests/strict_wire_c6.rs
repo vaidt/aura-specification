@@ -1,7 +1,9 @@
-use ri_rs_receiver::strict_wire::parse_receipt_json;
+use ri_rs_receiver::{
+    receive, serialize_receipt_json, strict_wire::parse_receipt_json, validate_schema,
+};
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
-use std::{fs, path::PathBuf};
+use std::{env, fs, path::PathBuf};
 
 #[derive(Debug, Deserialize)]
 struct Corpus {
@@ -42,7 +44,6 @@ fn decode_hex(s: &str) -> Vec<u8> {
 fn encode_hex(bytes: &[u8]) -> String {
     bytes.iter().map(|b| format!("{b:02x}")).collect()
 }
-
 fn apply_mutation(base: &str, case: &Mutation) -> Vec<u8> {
     match case.kind.as_str() {
         "replace" => {
@@ -56,12 +57,56 @@ fn apply_mutation(base: &str, case: &Mutation) -> Vec<u8> {
         other => panic!("{}: unsupported mutation kind {other}", case.id),
     }
 }
+
+#[test]
+fn accepts_receipt_generated_by_native_receiver_flow_with_pinned_provenance() {
+    let source_commit = env::var("AURA_SOURCE_COMMIT")
+        .expect("workflow must provide the tested source commit as AURA_SOURCE_COMMIT");
+    assert_eq!(source_commit.len(), 40, "source_commit must be a full Git SHA");
+    assert!(source_commit.bytes().all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b)),
+        "source_commit must be lowercase hexadecimal");
+    println!("C6_RI_RS_SOURCE_COMMIT={source_commit}");
+
+    let corpus = corpus();
+    let raw_octets = decode_hex(&corpus.raw_octets_hex);
+    let receipt = receive(
+        "FIX-C6-RECEIVER-FLOW".into(),
+        "issued-fixture:FIX-C6-RECEIVER-FLOW".into(),
+        "local-octet-transfer".into(),
+        raw_octets.clone(),
+        "RI-RS-C6".into(),
+        "AURA-RI-RS".into(),
+        "1.0.0".into(),
+        source_commit.clone(),
+        "BC02.3-RS-ADAPTER".into(),
+        "1.0.0".into(),
+        "C6-CI-LINUX".into(),
+        "ubuntu-latest".into(),
+        "rustc-1.86".into(),
+    );
+    validate_schema(&receipt).expect("native receiver must produce a valid schema receipt");
+    let wire = serialize_receipt_json(&receipt).expect("native receipt must serialize to BC-02.1 JSON");
+    let parsed = parse_receipt_json(&wire).expect("strict consumer must accept native receiver output");
+
+    assert_eq!(parsed.raw_octets, raw_octets);
+    assert_eq!(parsed.value["receiver"]["source_commit"].as_str(), Some(source_commit.as_str()));
+    assert_eq!(parsed.value["receiver"]["receiver_id"].as_str(), Some("RI-RS-C6"));
+    assert_eq!(parsed.value["receiver"]["implementation_id"].as_str(), Some("AURA-RI-RS"));
+    assert_ne!(parsed.value["receiver"]["receiver_id"], parsed.value["receiver"]["implementation_id"]);
+    assert_eq!(parsed.value["adapter"]["adapter_id"].as_str(), Some("BC02.3-RS-ADAPTER"));
+    assert_eq!(parsed.value["environment"]["environment_id"].as_str(), Some("C6-CI-LINUX"));
+    assert_eq!(parsed.value["received"]["raw_octets"].as_str(), Some("QzYA/v8="));
+    assert_eq!(parsed.value["received"]["recomputed_sha256"].as_str(),
+        Some(encode_hex(&Sha256::digest(&raw_octets)).as_str()));
+}
+
 #[test]
 fn accepts_shared_valid_receipt_and_preserves_raw_octets() {
     let corpus = corpus();
     let parsed = parse_receipt_json(corpus.valid_receipt_json.as_bytes()).expect("shared valid receipt");
     assert_eq!(encode_hex(&parsed.raw_octets), corpus.raw_octets_hex);
 }
+
 #[test]
 fn rejects_every_mutation_in_the_shared_corpus() {
     let corpus = corpus();
