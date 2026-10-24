@@ -5,14 +5,14 @@
   "protocol_contract": "BC-02.1-COMMON-RECEIPT v1",
   "source_pins": {
     "ri_py_repository": "vaidt/aura-poc-a-core-v3.3",
-    "ri_py_commit": "1710d0972ef12a0325f68c0fb29b3d3290f3ec79",
-    "ri_py_receiver_blob": "97a97927bc6857838253f568e7904f644962ea1f",
+    "ri_py_commit": "7c273514957de039cdad6c7a4fc921684a93c9f5",
+    "ri_py_receiver_blob": "66863387fb238427c7e8f4031742c31d1094acfe",
     "ri_py_existing_tests_blob": "4194a29f7aff3c7c286ae5d1244cbda2e1a73e6e",
-    "ri_rs_specification_receiver_blob": "db06483bfb4ffa6ed427a39a84b58f70e09930fa",
+    "ri_rs_specification_receiver_blob": "5054bb81ddf7a1f62be4e9d82fc1d2be1f947d3e",
     "bc021_schema_blob": "f40f7a2ea246f382d12490a6489159f9e226fd17",
     "source_note": "These immutable pins identify the proposed experimental consumer implementations and inspected schema/test baselines; they are not normative authority. The C6 run must use these exact source identities and will remain blocked on any mismatch.",
-    "ri_py_strict_consumer_test_blob": "025a91312b624e4563d9cb31dbec7cfe2d7e6e98",
-    "ri_rs_preflight_test_blob": "9cfed9baaa50afbf6caffc4421b88df42daa4328"
+    "ri_py_strict_consumer_test_blob": "bafe7430ed0d4bcf90bd65dcd8dacdfd555d9f42",
+    "ri_rs_preflight_test_blob": "3158e0788fcc2e34190be379a0a492b671bb47ec"
   },
   "execution_boundary": {
     "raw_artifact_octets": "Receiver input is an opaque byte sequence; invalid UTF-8 in the artifact itself is not automatically an input rejection.",
