@@ -22,10 +22,11 @@ Both functions consume **receipt JSON transport**, not the original artifact. Th
 5. Require `schema_id = BC-02.1-COMMON-RECEIPT` and integer `schema_version = 1`. A JSON boolean is not an integer.
 6. Require `handoff.status` in the closed domain `TRANSFERRED | NOT_TRANSFERRED | ERROR`.
 7. Require a Base64 **string** for `received.raw_octets`. Strictly decode it, require canonical padded Base64, and permit the empty string only for the empty octet sequence.
-8. Require a non-negative integer `received.octet_length) equal to the decoded octet count.
+8. Require a non-negative integer `received.octet_length` equal to the decoded octet count.
 9. Require `received.recomputed_sha256` to be 64 lowercase hexadecimal characters equal to SHA-256 of the decoded raw octets. Never hash the Base64 characters.
-10. Require all provenance and identity strings to be non-empty.
-11. Return the typed receipt only after all checks succeed. The returned type has no conformance-result field.
+10. Require all provenance and identity strings to be non-empty. Preserve identity separation: implementation identity differs from receiver identity, and adapter identity differs from both.
+11. Reject prohibited result-authority scalar values (`PASS`, `FAIL`, `CONFORMANT`, `NON_CONFORMANT`, case-insensitively) anywhere in logical receipt JSON values, consistent with BC-02.1 R-INV-04.
+12. Return the typed receipt only after all checks succeed. The returned type has no conformance-result field.
 
 The parser may accept JSON member order/insignificant input whitespace. Deterministic serialization rules in BC-02.1 §12 apply to emitters; they do not authorize lenient field interpretation by the consumer.
 
