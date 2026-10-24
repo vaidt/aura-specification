@@ -80,7 +80,7 @@ class SharedC6WireCorpusTests(unittest.TestCase):
         }
         RESULTS_DIR.mkdir(parents=True, exist_ok=True)
         (RESULTS_DIR / "ri-py-results.json").write_text(
-            json.dumps(report, indent=2, sort_keys=True) + "\\n", encoding="utf-8"
+            json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
         )
         self.assertEqual(report["status"], "PASS")
 
