@@ -171,3 +171,104 @@ fn raw_artifact_octets_are_not_required_to_be_utf8() {
     assert_eq!(r.received.raw_octets, vec![0x43, 0x36, 0x00, 0xfe, 0xff]);
     assert!(validate_schema(&r).is_ok());
 }
+
+
+fn wire_receipt() -> Vec<u8> {
+    let mut value = serde_json::to_value(receipt()).expect("typed receipt value");
+    let bytes = [0x43, 0x36, 0x00, 0xfe, 0xff];
+    value["received"]["raw_octets"] = Value::String(B64.encode(bytes));
+    serde_json::to_vec(&value).expect("BC-02.1 wire JSON")
+}
+
+fn assert_parse_code(raw: &[u8], code: &str) {
+    let error = ri_rs_receiver::parse_receipt_json(raw).expect_err("invalid envelope must be rejected");
+    assert_eq!(error.code, code, "unexpected error: {error}");
+}
+
+#[test]
+fn strict_wire_consumer_accepts_base64_and_preserves_raw_octets() {
+    let parsed = ri_rs_receiver::parse_receipt_json(&wire_receipt()).expect("valid BC-02.1 envelope");
+    assert_eq!(parsed.received.raw_octets, vec![0x43, 0x36, 0x00, 0xfe, 0xff]);
+    assert_eq!(parsed.received.octet_length, 5);
+    assert_eq!(parsed.handoff.status, HandoffStatus::TRANSFERRED);
+    assert!(validate_schema(&parsed).is_ok());
+}
+
+#[test]
+fn strict_wire_consumer_rejects_invalid_utf8_and_json() {
+    assert_parse_code(&[b'{', 0xff, b'}'], "INVALID_UTF8");
+    assert_parse_code(b"{\"schema_id\":", "INVALID_JSON");
+}
+
+#[test]
+fn strict_wire_consumer_rejects_duplicate_keys_before_interpretation() {
+    let raw = String::from_utf8(wire_receipt()).expect("valid generated JSON");
+    let duplicated = raw.replacen(
+        "\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"",
+        "\"schema_id\":\"BC-02.1-COMMON-RECEIPT\",\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"",
+        1,
+    );
+    assert_parse_code(duplicated.as_bytes(), "DUPLICATE_KEY");
+
+    let duplicated_nested = raw.replacen(
+        "\"status\":\"TRANSFERRED\"",
+        "\"status\":\"TRANSFERRED\",\"status\":\"TRANSFERRED\"",
+        1,
+    );
+    assert_parse_code(duplicated_nested.as_bytes(), "DUPLICATE_KEY");
+}
+
+#[test]
+fn strict_wire_consumer_rejects_unknown_authority_and_nested_fields() {
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value.as_object_mut().unwrap().insert("conformance_result".into(), json!("PASS"));
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "UNKNOWN_FIELD");
+
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["received"]["unexpected"] = json!("extra");
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "UNKNOWN_FIELD");
+}
+
+#[test]
+fn strict_wire_consumer_rejects_missing_null_and_bad_field_types() {
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value.as_object_mut().unwrap().remove("receiver");
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "MISSING_FIELD");
+
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["adapter"]["adapter_id"] = Value::Null;
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "NULL_NOT_ALLOWED");
+
+    for bad in [json!(true), json!(1.5), json!(-1)] {
+        let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+        value["received"]["octet_length"] = bad;
+        let expected = if value["received"]["octet_length"] == json!(-1) { "TYPE_MISMATCH" } else { "TYPE_MISMATCH" };
+        assert_parse_code(&serde_json::to_vec(&value).unwrap(), expected);
+    }
+
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["handoff"]["status"] = json!("PASS");
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_VALUE");
+}
+
+#[test]
+fn strict_wire_consumer_rejects_bad_base64_length_and_digest() {
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["received"]["raw_octets"] = json!("a@@=");
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_BASE64");
+
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["received"]["octet_length"] = json!(6);
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "LENGTH_MISMATCH");
+
+    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
+    value["received"]["recomputed_sha256"] = json!("0".repeat(64));
+    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "DIGEST_MISMATCH");
+}
+
+#[test]
+fn strict_wire_parser_does_not_confuse_artifact_octets_with_json_utf8() {
+    // The JSON envelope itself is UTF-8, while raw_octets contains non-UTF-8.
+    let parsed = ri_rs_receiver::parse_receipt_json(&wire_receipt()).unwrap();
+    assert_eq!(parsed.received.raw_octets, vec![0x43, 0x36, 0x00, 0xfe, 0xff]);
+}
