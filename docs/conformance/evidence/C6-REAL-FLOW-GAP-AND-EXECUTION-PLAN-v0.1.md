@@ -19,8 +19,8 @@ Issued artifact:
 - SHA-256: `ecf9e98ec0641e23113ff3ce8bdc78d0ddd249886517fd4a7f68cc83d4e65667`
 
 Evidence artifacts, pinned at the reviewed specification head:
-- [Controlled P-01 handoff record](/conformance/boundary/CONTROLLED-P01-HANDOFF-RECORD.md) — blob `fe3de6b4af0a872892cdb07b94bf0c2620c74c8f`
-- [Cross-receiver comparison](/conformance/boundary/evidence/controlled-p01-handoff/CROSS-RECEIVER-COMPARISON.txt) — blob `3bc63e8fc7c135112b66fd83db327d1733730f2a`
+- [Controlled P-01 handoff record](https://github.com/vaidt/aura-specification/blob/experiment/stage-c-c6-strict-wire-consumer-20261024/conformance/boundary/CONTROLLED-P01-HANDOFF-RECORD.md) — blob `fe3de6b4af0a872892cdb07b94bf0c2620c74c8f`
+- [Cross-receiver comparison](https://github.com/vaidt/aura-specification/blob/experiment/stage-c-c6-strict-wire-consumer-20261024/conformance/boundary/evidence/controlled-p01-handoff/CROSS-RECEIVER-COMPARISON.txt) — blob `3bc63e8fc7c135112b66fd83db327d1733730f2a`
 - RI-PY log — blob `14b1396964dcb0515c04254d13a5936d709cc4e5`; receipt — blob `7bd81f082011b8578eef5f28c1d6357c1bfa1ac1`; manifest — blob `aae58d69e97201e000514b237be6d2ee06b657d1`
 - RI-RS log — blob `48ff1437b8ee1f21482285606bb00e8cb6e1d454`; receipt — blob `836cbf2170b07d5b075374b9d6a3ab6850952d53`; manifest — blob `93dfb76f0f5bd02ac072c29aa3ecdfe56193d4fe`
 
@@ -34,7 +34,7 @@ The record reports:
 
 ## 2. Controlling definition for B-VAL-014
 
-The [B-VAL-014 definition reconciliation record](/conformance/boundary/B-VAL-014-DEFINITION-RECONCILIATION-RECORD.md), blob `281b29ca77dded2bbeb16ecc2fe916774ac57bb6`, identifies the controlling engineering definition as BC-02 §14:
+The [B-VAL-014 definition reconciliation record](https://github.com/vaidt/aura-specification/blob/experiment/stage-c-c6-strict-wire-consumer-20261024/conformance/boundary/B-VAL-014-DEFINITION-RECONCILIATION-RECORD.md), blob `281b29ca77dded2bbeb16ecc2fe916774ac57bb6`, identifies the controlling engineering definition as BC-02 §14:
 
 ```text
 receipt.receipt_digest == input_segment_sha256      on BOTH sides
