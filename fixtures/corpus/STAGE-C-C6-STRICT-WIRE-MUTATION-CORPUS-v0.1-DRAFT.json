@@ -1,0 +1,299 @@
+{
+  "schema": "AURA-BC021-STRICT-WIRE-MUTATION-CORPUS/0.1",
+  "status": "DRAFT_NON_NORMATIVE",
+  "stage": "C6_PREPARATION",
+  "protocol_contract": "BC-02.1-COMMON-RECEIPT v1",
+  "source_seed": {
+    "raw_octets_hex": "433600feff",
+    "receipt": {
+      "schema_id": "BC-02.1-COMMON-RECEIPT",
+      "schema_version": 1,
+      "fixture": {
+        "fixture_id": "FIX-C6-SYNTHETIC",
+        "fixture_artifact_identity": "FIX-C6-SYNTHETIC.bin"
+      },
+      "handoff": {
+        "status": "TRANSFERRED",
+        "method": "synthetic-in-memory-octet-transfer"
+      },
+      "received": {
+        "octet_length": 5,
+        "raw_octets": "PLACEHOLDER",
+        "recomputed_sha256": "PLACEHOLDER"
+      },
+      "receiver": {
+        "receiver_id": "RI-RS",
+        "implementation_id": "aura-ri-rs",
+        "language": "Rust",
+        "implementation_version": "1.0.0",
+        "source_commit": "1111111111111111111111111111111111111111"
+      },
+      "adapter": {
+        "adapter_id": "BC-02.3-RS-P01-HANDOFF-ADAPTER",
+        "adapter_version": "1.0.0"
+      },
+      "environment": {
+        "environment_id": "c6-preflight",
+        "platform": "linux-x86_64",
+        "runtime": "rust-test-runtime"
+      }
+    }
+  },
+  "mutations": [
+    {
+      "id": "C6-W-000",
+      "source_case": "C6-P-001",
+      "operation": "accept",
+      "expected_code": null,
+      "description": "Valid UTF-8 receipt envelope carrying NUL and non-UTF-8 raw artifact octets encoded as Base64."
+    },
+    {
+      "id": "C6-W-001",
+      "source_case": "C6-P-002",
+      "operation": "empty_raw_octets",
+      "expected_code": null,
+      "description": "Empty raw artifact octet sequence is valid; empty Base64 string is required."
+    },
+    {
+      "id": "C6-N-011A",
+      "source_case": "C6-N-011",
+      "operation": "insert",
+      "path": [],
+      "key": "conformance_result",
+      "value": "PASS",
+      "expected_code": "UNKNOWN_FIELD",
+      "description": "Reject authority-bearing extra top-level field."
+    },
+    {
+      "id": "C6-N-012A",
+      "source_case": "C6-N-012",
+      "operation": "insert",
+      "path": [
+        "received"
+      ],
+      "key": "unrecognized_contract_extension",
+      "value": "unexpected",
+      "expected_code": "UNKNOWN_FIELD",
+      "description": "Reject unknown nested field."
+    },
+    {
+      "id": "C6-N-015A",
+      "source_case": "C6-N-015",
+      "operation": "delete",
+      "path": [
+        "receiver"
+      ],
+      "expected_code": "MISSING_FIELD",
+      "description": "Reject missing required top-level field."
+    },
+    {
+      "id": "C6-N-015B",
+      "source_case": "C6-N-015",
+      "operation": "set",
+      "path": [
+        "adapter",
+        "adapter_id"
+      ],
+      "value": null,
+      "expected_code": "NULL_NOT_ALLOWED",
+      "description": "Reject null in a required string field."
+    },
+    {
+      "id": "C6-N-001A",
+      "source_case": "C6-N-001",
+      "operation": "set",
+      "path": [
+        "handoff",
+        "status"
+      ],
+      "value": "PASS",
+      "expected_code": "INVALID_VALUE",
+      "description": "Reject conformance status in handoff.status."
+    },
+    {
+      "id": "C6-N-007A",
+      "source_case": "C6-N-007",
+      "operation": "set",
+      "path": [
+        "schema_id"
+      ],
+      "value": "BC-02.1-OTHER",
+      "expected_code": "SCHEMA_ID_MISMATCH",
+      "description": "Reject wrong schema identity."
+    },
+    {
+      "id": "C6-N-007B",
+      "source_case": "C6-N-007",
+      "operation": "set",
+      "path": [
+        "schema_version"
+      ],
+      "value": 2,
+      "expected_code": "SCHEMA_VERSION_MISMATCH",
+      "description": "Reject unsupported integer schema version."
+    },
+    {
+      "id": "C6-N-015C",
+      "source_case": "C6-N-015",
+      "operation": "set",
+      "path": [
+        "schema_version"
+      ],
+      "value": true,
+      "expected_code": "TYPE_MISMATCH",
+      "description": "Reject boolean masquerading as an integer."
+    },
+    {
+      "id": "C6-N-015D",
+      "source_case": "C6-N-015",
+      "operation": "set",
+      "path": [
+        "schema_version"
+      ],
+      "value": null,
+      "expected_code": "NULL_NOT_ALLOWED",
+      "description": "Reject null schema version."
+    },
+    {
+      "id": "C6-N-015E",
+      "source_case": "C6-N-015",
+      "operation": "set",
+      "path": [
+        "received",
+        "octet_length"
+      ],
+      "value": 1.5,
+      "expected_code": "TYPE_MISMATCH",
+      "description": "Reject fractional octet length."
+    },
+    {
+      "id": "C6-N-015F",
+      "source_case": "C6-N-015",
+      "operation": "set",
+      "path": [
+        "received",
+        "octet_length"
+      ],
+      "value": true,
+      "expected_code": "TYPE_MISMATCH",
+      "description": "Reject boolean octet length."
+    },
+    {
+      "id": "C6-N-015G",
+      "source_case": "C6-N-015",
+      "operation": "set",
+      "path": [
+        "received",
+        "octet_length"
+      ],
+      "value": -1,
+      "expected_code": "INVALID_VALUE",
+      "description": "Reject negative octet length."
+    },
+    {
+      "id": "C6-N-013A",
+      "source_case": "C6-N-013",
+      "operation": "set",
+      "path": [
+        "received",
+        "raw_octets"
+      ],
+      "value": [
+        67,
+        54,
+        0,
+        254,
+        255
+      ],
+      "expected_code": "TYPE_MISMATCH",
+      "description": "Reject JSON numeric array in place of Base64 transport string."
+    },
+    {
+      "id": "C6-N-014A",
+      "source_case": "C6-N-014",
+      "operation": "set",
+      "path": [
+        "received",
+        "raw_octets"
+      ],
+      "value": "a@@=",
+      "expected_code": "INVALID_BASE64",
+      "description": "Reject invalid Base64 alphabet."
+    },
+    {
+      "id": "C6-N-014B",
+      "source_case": "C6-N-014",
+      "operation": "set",
+      "path": [
+        "received",
+        "raw_octets"
+      ],
+      "value": "QzYA/v8",
+      "expected_code": "INVALID_BASE64",
+      "description": "Reject missing Base64 padding/non-canonical encoding."
+    },
+    {
+      "id": "C6-N-005A",
+      "source_case": "C6-N-005",
+      "operation": "set",
+      "path": [
+        "received",
+        "octet_length"
+      ],
+      "value": 6,
+      "expected_code": "LENGTH_MISMATCH",
+      "description": "Reject length different from decoded octet count."
+    },
+    {
+      "id": "C6-N-006A",
+      "source_case": "C6-N-006",
+      "operation": "set",
+      "path": [
+        "received",
+        "recomputed_sha256"
+      ],
+      "value": "0000000000000000000000000000000000000000000000000000000000000000",
+      "expected_code": "DIGEST_MISMATCH",
+      "description": "Reject receiver digest not matching decoded octets."
+    },
+    {
+      "id": "C6-N-016A",
+      "source_case": "C6-N-016",
+      "operation": "duplicate_key",
+      "needle": "\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"",
+      "replacement": "\"schema_id\":\"BC-02.1-COMMON-RECEIPT\",\"schema_id\":\"BC-02.1-COMMON-RECEIPT\"",
+      "expected_code": "DUPLICATE_KEY",
+      "description": "Reject duplicate top-level key before object interpretation."
+    },
+    {
+      "id": "C6-N-016B",
+      "source_case": "C6-N-016",
+      "operation": "duplicate_key",
+      "needle": "\"status\":\"TRANSFERRED\"",
+      "replacement": "\"status\":\"TRANSFERRED\",\"status\":\"TRANSFERRED\"",
+      "expected_code": "DUPLICATE_KEY",
+      "description": "Reject duplicate nested key before object interpretation."
+    },
+    {
+      "id": "C6-N-015H",
+      "source_case": "C6-N-015",
+      "operation": "raw_text",
+      "text": "{\"schema_id\":",
+      "expected_code": "INVALID_JSON",
+      "description": "Reject malformed UTF-8-valid JSON text."
+    },
+    {
+      "id": "C6-N-017A",
+      "source_case": "C6-N-017",
+      "operation": "raw_hex",
+      "hex": "7b22ff227d",
+      "expected_code": "INVALID_UTF8",
+      "description": "Reject malformed UTF-8 at receipt-envelope boundary."
+    }
+  ],
+  "authority": "NONE",
+  "governance_effect": "NONE",
+  "authorization_effect": "NONE",
+  "release_effect": "NONE",
+  "gate_rule": "The generator materializes one byte corpus once. Python and Rust must read the same input files and verify every declared input SHA-256. A passing preparation/preflight job does not itself declare C6 PASS."
+}
