@@ -20,7 +20,12 @@
     "authority": "NONE",
     "governance_effect": "NONE",
     "authorization_effect": "NONE",
-    "release_effect": "NONE"
+    "release_effect": "NONE",
+    "native_cross_language_wire_consumer_parity": "BOUNDED_PARITY_PASS_PENDING_EVIDENCE_REVIEW",
+    "latest_bounded_parity_run": "https://github.com/vaidt/aura-specification/actions/runs/40047572790",
+    "latest_bounded_parity_commit": "029225adcaef0c660098dc11210305204be0ab59",
+    "latest_parity_report_sha256": "d4b78d9fcccb714b3f7371846152700e53f8af8412e9ae0e76ea27b4d085d49e",
+    "c6_gate_status": "BLOCKED_PENDING_EVIDENCE_REVIEW"
   },
   "cases": [
     {
@@ -141,7 +146,7 @@
       "expected": "Experimental strict BC-02.1 consumer must reject unknown/authority-bearing fields",
       "ri_py": "Strict parser rejects extra/authority keys; shared corpus run pending",
       "ri_rs": "Strict parser rejects extra/authority keys; shared corpus run pending",
-      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
     },
     {
       "id": "C6-N-012",
@@ -151,7 +156,7 @@
       "expected": "Strict schema consumer rejects the extra field; no silent ignore",
       "ri_py": "Strict parser enforces exact nested field sets; shared corpus run pending",
       "ri_rs": "Strict parser enforces exact nested field sets; shared corpus run pending",
-      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
     },
     {
       "id": "C6-N-013",
@@ -161,7 +166,7 @@
       "expected": "Consumer decodes Base64 to exact raw octets, checks decoded length and computes digest over decoded bytes",
       "ri_py": "Strict parser decodes Base64 and validates digest; shared corpus run pending",
       "ri_rs": "Strict parser decodes Base64 and validates digest; shared corpus run pending",
-      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
     },
     {
       "id": "C6-N-014",
@@ -171,7 +176,7 @@
       "expected": "Reject receipt; do not substitute empty bytes or continue with a recomputed digest",
       "ri_py": "Strict parser rejects malformed/non-canonical Base64; shared corpus run pending",
       "ri_rs": "Strict parser rejects malformed/non-canonical Base64; shared corpus run pending",
-      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
     },
     {
       "id": "C6-N-015",
@@ -181,7 +186,7 @@
       "expected": "Reject at receipt parsing boundary with stable error category",
       "ri_py": "Strict parser validates receipt JSON shape/types; shared corpus run pending",
       "ri_rs": "Strict parser validates receipt JSON shape/types; shared corpus run pending",
-      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
     },
     {
       "id": "C6-N-016",
@@ -191,7 +196,7 @@
       "expected": "Reject duplicate-key JSON before receipt interpretation; do not rely on last-key-wins parsing",
       "ri_py": "Strict parser rejects duplicate keys; shared corpus run pending",
       "ri_rs": "Strict parser rejects duplicate keys; shared corpus run pending",
-      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
     },
     {
       "id": "C6-N-017",
@@ -201,7 +206,7 @@
       "expected": "Reject malformed receipt transport; this does not imply rejecting arbitrary raw artifact octets",
       "ri_py": "Strict parser validates envelope UTF-8; shared corpus run pending",
       "ri_rs": "Strict parser validates envelope UTF-8; shared corpus run pending",
-      "disposition": "IMPLEMENTED_EXPERIMENTAL_PENDING_SHARED_CORPUS"
+      "disposition": "IMPLEMENTED_EXPERIMENTAL_TESTED_PENDING_REVIEW"
     },
     {
       "id": "C6-P-002",
