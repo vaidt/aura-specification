@@ -1,0 +1,145 @@
+{
+  "schema": "AURA-C6-BC02.1-SOURCE-PIN-MANIFEST/0.2",
+  "created_utc": "2026-10-24T00:49:00Z",
+  "scope": "Experimental BC-02.1 receipt wire-consumer and native receiver-flow test evidence only",
+  "shared_corpus": {
+    "schema": "AURA-STAGE-C6-BC02.1-WIRE-MUTATION-CORPUS/0.1",
+    "contract": "BC-02.1-COMMON-RECEIPT",
+    "git_blob_sha": "b845eea9261daeb2d0bbc22431cbd77d6cb800c8",
+    "sha256": "486a7dc9309c7a6031c06a27df917ae357ad236dbac57c4242862e3bc0cb683a",
+    "negative_mutations": 18,
+    "same_blob_verified_in": [
+      "vaidt/aura-specification",
+      "vaidt/aura-poc-a-core-v3.3",
+      "vaidt/aura-guard-v1.3"
+    ]
+  },
+  "implementations": [
+    {
+      "id": "RI-PY",
+      "repository": "vaidt/aura-poc-a-core-v3.3",
+      "branch": "experiment/stage-c-c6-wire-consumer-20261024",
+      "base_source_commit": "0a8a48cc4917c5d43ecad52de6b09abb53874684",
+      "tested_head_sha": "c225015412fa8bdbfa4292b20851474002371ccd",
+      "receiver_path": "conformance/boundary/ri_py_receiver.py",
+      "receiver_blob_sha": "da8506ffd1a5a23dc671e602d77021812bb29692",
+      "consumer_parser_path": "conformance/boundary/strict_wire.py",
+      "consumer_parser_blob_sha": "592fc1d2e141edd6f6793e77d980363af860ce99",
+      "test_path": "conformance/boundary/test_strict_wire_c6.py",
+      "test_blob_sha": "1c7510376675e1d2d762c9ff5298eb0c81030de8",
+      "workflow_path": ".github/workflows/stage-c-c6-wire-consumer.yml",
+      "workflow_blob_sha": "0d31be06cbbd9eb735710b61137be4b6e651cc81",
+      "workflow_run_id": 40046649858,
+      "workflow_run_url": "https://github.com/vaidt/aura-poc-a-core-v3.3/actions/runs/40046649858",
+      "workflow_conclusion": "success",
+      "native_receipt_flow_test": "PASS",
+      "shared_corpus_result": "PASS: 18/18 negative mutations rejected; valid receipt accepted",
+      "source_commit_binding": "AURA_SOURCE_COMMIT=$GITHUB_SHA",
+      "evidence_artifact": "c6-ri-py-evidence",
+      "commit_url": "https://github.com/vaidt/aura-poc-a-core-v3.3/commit/c225015412fa8bdbfa4292b20851474002371ccd",
+      "tests_summary": "4 unittest methods passed; includes native BoundaryReceiver round-trip plus valid receipt and 18 negative mutations"
+    },
+    {
+      "id": "RI-RS",
+      "repository": "vaidt/aura-specification",
+      "branch": "experiment/stage-c-c6-strict-wire-consumer-20261024",
+      "base_source_commit": "5308fb278d8bd32101f116dd942c3be33bd8c702",
+      "tested_head_sha": "6b7505d6de5136df742efa8f65244f3f23a63f47",
+      "receiver_path": "conformance/boundary/ri_rs_receiver.rs",
+      "receiver_blob_sha": "c4e5425509cd46a4dafd8cd8d1d379af176edea8",
+      "consumer_parser_path": "conformance/boundary/ri-rs/strict_wire.rs",
+      "consumer_parser_blob_sha": "4dfc49c066b9b71c9f539c1b1eb217767f81681d",
+      "test_path": "conformance/boundary/ri-rs/tests/strict_wire_c6.rs",
+      "test_blob_sha": "0698441b6904047c5fb5e91041a1dd83e021d642",
+      "workflow_path": ".github/workflows/stage-c-c6-strict-wire.yml",
+      "workflow_blob_sha": "d3d34bc46ead998bf183b8b0f02cdd88c5a97b8e",
+      "workflow_run_id": 40046645492,
+      "workflow_run_url": "https://github.com/vaidt/aura-specification/actions/runs/40046645492",
+      "workflow_conclusion": "success",
+      "native_receipt_flow_test": "PASS",
+      "shared_corpus_result": "PASS: 18/18 negative mutations rejected; valid receipt accepted",
+      "source_commit_binding": "AURA_SOURCE_COMMIT=$GITHUB_SHA",
+      "evidence_artifact": "c6-strict-wire-experiment",
+      "commit_url": "https://github.com/vaidt/aura-specification/commit/6b7505d6de5136df742efa8f65244f3f23a63f47",
+      "workflow_log_confirmed_source_commit": "C6_RI_RS_SOURCE_COMMIT=6b7505d6de5136df742efa8f65244f3f23a63f47",
+      "tests_summary": "3 passed; 0 failed; includes native receiver-flow round-trip plus valid receipt and 18 negative mutations"
+    },
+    {
+      "id": "RI-RS-STRICT-CONSUMER-MIRROR",
+      "repository": "vaidt/aura-guard-v1.3",
+      "branch": "experiment/stage-c-c6-wire-consumer-20261024",
+      "base_source_commit": "fd5f6e90940225e9f8ffe23707382669bdfaba82",
+      "tested_head_sha": "d4aa06c732a09a3ca9a41416e63ae5e51e2588e1",
+      "receiver_path": null,
+      "consumer_parser_path": "conformance/strict_wire.rs",
+      "consumer_parser_blob_sha": "594f87fc20520b96c1eb5bcd0ec24216a2e23343",
+      "test_path": "conformance/strict_wire_c6.rs",
+      "test_blob_sha": "627fdb33d7b7986acda26657a616240f639feada",
+      "workflow_path": ".github/workflows/stage-c-c6-wire-consumer.yml",
+      "workflow_blob_sha": "dfe75b3065b01e3e35601e3b4af4ce6ca4c2f6d8",
+      "workflow_run_id": 40046698818,
+      "workflow_run_url": "https://github.com/vaidt/aura-guard-v1.3/actions/runs/40046698818",
+      "workflow_conclusion": "success",
+      "native_receipt_flow_test": "NOT_EXECUTED_IN_THIS_REPOSITORY; producer flow tested in aura-specification RI-RS",
+      "shared_corpus_result": "PASS: 18/18 negative mutations rejected; valid receipt accepted",
+      "source_commit_binding": "AURA_SOURCE_COMMIT=$GITHUB_SHA",
+      "evidence_artifact": "c6-ri-rs-consumer-evidence",
+      "commit_url": "https://github.com/vaidt/aura-guard-v1.3/commit/d4aa06c732a09a3ca9a41416e63ae5e51e2588e1",
+      "tests_summary": "2 passed; 0 failed; valid receipt and 18 negative mutations; producer flow explicitly not executed in this repo"
+    }
+  ],
+  "evidence_review": {
+    "receipt_generation_from_native_receiver": "PASS for RI-PY and RI-RS in specification harness",
+    "strict_consumer_round_trip": "PASS for RI-PY and RI-RS in specification harness",
+    "source_commit_matches_tested_head": "ASSERTED_BY_TEST_AND_WORKFLOW_ENV on RI-PY and RI-RS tests",
+    "cross_implementation_identical_corpus": "PASS: same Git blob SHA and SHA-256 on all three repositories",
+    "protocol_conformance_b_val_014_or_section_4_5": "NOT_EXECUTED",
+    "complete_C6_gate": "BLOCKED_NOT_EXECUTED",
+    "normative_authority": "NONE",
+    "governance_effect": "NONE",
+    "release_effect": "NONE",
+    "limitations": [
+      "The shared 18-case wire corpus is a transport-envelope negative corpus, not the full C6 protocol corpus.",
+      "The receipt producer-flow test uses a deterministic local octet fixture in CI; it is not evidence of production infrastructure handoff.",
+      "RI-RS producer-flow runs in the specification harness; the separate Aura-Guard repo tests its strict consumer mirror only.",
+      "PRs remain open drafts and the M1 governance state is unaffected."
+    ],
+    "independent_log_check": {
+      "spec_ri_rs": "3 passed; source_commit in receipt equals tested head SHA; shared corpus SHA printed unchanged",
+      "ri_py": "4 unittest methods OK; source_commit in receipt equals tested head SHA; shared corpus SHA printed unchanged",
+      "aura_guard_consumer_mirror": "2 passed; shared corpus SHA printed unchanged; consumer-only scope confirmed",
+      "artifacts_verified_present": true
+    }
+  },
+  "gate_state": "BLOCKED_NOT_EXECUTED",
+  "authority": "NONE",
+  "governance_effect": "NONE",
+  "authorization_effect": "NONE",
+  "release_effect": "NONE",
+  "ci_evidence_artifacts": [
+    {
+      "repository": "vaidt/aura-specification",
+      "run_id": 40046645492,
+      "name": "c6-strict-wire-experiment",
+      "artifact_id": 12541034860,
+      "archive_sha256": "925b6d542c0e8e032bddf268d3d00db9d67f6cef3afacd70d01c1daa13fc6188",
+      "expires_at": "2026-11-07T00:47:01Z"
+    },
+    {
+      "repository": "vaidt/aura-poc-a-core-v3.3",
+      "run_id": 40046649858,
+      "name": "c6-ri-py-evidence",
+      "artifact_id": 12541492824,
+      "archive_sha256": "34309143b8107b66f7626c870c0f258f9e05d82860009a929df7bf350faba233",
+      "expires_at": "2026-11-07T00:46:53Z"
+    },
+    {
+      "repository": "vaidt/aura-guard-v1.3",
+      "run_id": 40046698818,
+      "name": "c6-ri-rs-consumer-evidence",
+      "artifact_id": 12541711332,
+      "archive_sha256": "f077463ae64137bcdfc6839856b12a28fd19c3e42fdf701ada280be55bf038b3",
+      "expires_at": "2026-11-07T00:48:22Z"
+    }
+  ]
+}
