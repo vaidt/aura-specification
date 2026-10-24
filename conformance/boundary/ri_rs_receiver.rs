@@ -307,9 +307,14 @@ fn bc021_string(value: StrictJsonValue, where_: &str) -> Result<String, ReceiptP
 fn bc021_usize(value: StrictJsonValue, where_: &str) -> Result<usize, ReceiptParseError> {
     match value {
         StrictJsonValue::Null => Err(ReceiptParseError::new("NULL_NOT_ALLOWED", format!("{where_} must not be null"))),
-        StrictJsonValue::Number(number) => number.as_u64()
-            .and_then(|number| usize::try_from(number).ok())
-            .ok_or_else(|| ReceiptParseError::new("TYPE_MISMATCH", format!("{where_} must be a non-negative JSON integer fitting usize"))),
+        StrictJsonValue::Number(number) => {
+            if number.as_i64().is_some_and(|n| n < 0) {
+                return Err(ReceiptParseError::new("INVALID_VALUE", format!("{where_} must be non-negative")));
+            }
+            number.as_u64()
+                .and_then(|number| usize::try_from(number).ok())
+                .ok_or_else(|| ReceiptParseError::new("TYPE_MISMATCH", format!("{where_} must be a non-negative JSON integer fitting usize")))
+        },
         _ => Err(ReceiptParseError::new("TYPE_MISMATCH", format!("{where_} must be a non-negative JSON integer"))),
     }
 }
@@ -318,7 +323,7 @@ fn bc021_version(value: StrictJsonValue) -> Result<u32, ReceiptParseError> {
     match value {
         StrictJsonValue::Null => Err(ReceiptParseError::new("NULL_NOT_ALLOWED", "schema_version must not be null")),
         StrictJsonValue::Number(number) if number.as_u64() == Some(SCHEMA_VERSION as u64) => Ok(SCHEMA_VERSION),
-        StrictJsonValue::Number(number) if number.as_u64().is_some() => Err(ReceiptParseError::new("SCHEMA_VERSION_MISMATCH", "unsupported schema_version")),
+        StrictJsonValue::Number(number) if number.as_u64().is_some() || number.as_i64().is_some() => Err(ReceiptParseError::new("SCHEMA_VERSION_MISMATCH", "unsupported schema_version")),
         _ => Err(ReceiptParseError::new("TYPE_MISMATCH", "schema_version must be a JSON integer")),
     }
 }
