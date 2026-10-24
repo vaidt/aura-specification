@@ -284,3 +284,47 @@ fn strict_wire_consumer_accepts_empty_raw_octets() {
     assert!(parsed.received.raw_octets.is_empty());
     assert_eq!(parsed.received.octet_length, 0);
 }
+
+
+#[test]
+fn executes_the_same_materialized_c6_wire_corpus_as_ri_py() {
+    let Some(corpus_dir) = std::env::var_os("AURA_C6_WIRE_CORPUS_DIR") else {
+        // Other non-C6 workflows may run this integration test without the
+        // materialized corpus. The dedicated C6 workflow sets this variable.
+        eprintln!("C6_SHARED_WIRE_CORPUS_NOT_MATERIALIZED; this run is not a C6 execution");
+        return;
+    };
+    let corpus_dir = std::path::PathBuf::from(corpus_dir);
+    let index_raw = std::fs::read(corpus_dir.join("index.json")).expect("shared corpus index");
+    let index: Value = serde_json::from_slice(&index_raw).expect("valid materialized corpus index");
+    assert_eq!(index["schema"], "AURA-BC021-MATERIALIZED-WIRE-CORPUS/0.1");
+    assert_eq!(index["status"], "MATERIALIZED_FOR_TESTING_ONLY");
+    assert_eq!(index["authority"], "NONE");
+    assert_eq!(index["governance_effect"], "NONE");
+    let cases = index["cases"].as_array().expect("cases array");
+    assert_eq!(cases.len(), index["case_count"].as_u64().unwrap() as usize);
+    assert!(!cases.is_empty());
+
+    use sha2::{Digest, Sha256};
+    for case in cases {
+        let id = case["id"].as_str().expect("case id");
+        let file = case["input_file"].as_str().expect("input file");
+        let raw = std::fs::read(corpus_dir.join(file)).expect("materialized case bytes");
+        assert_eq!(raw.len(), case["input_bytes"].as_u64().unwrap() as usize, "{id}: byte length");
+        let digest = Sha256::digest(&raw);
+        let actual_sha: String = digest.iter().map(|b| format!("{b:02x}")).collect();
+        assert_eq!(actual_sha, case["input_sha256"].as_str().unwrap(), "{id}: input SHA-256");
+        let expected = case["expected_code"].as_str();
+        if case["expected_result"] == "ACCEPT" {
+            let parsed = ri_rs_receiver::parse_receipt_json(&raw)
+                .unwrap_or_else(|error| panic!("{id}: expected acceptance, got {error}"));
+            assert_eq!(parsed.schema_id, ri_rs_receiver::SCHEMA_ID);
+            println!("C6_SHARED_WIRE_CASE id={id} input_sha256={actual_sha} result=ACCEPT code=null");
+        } else {
+            let error = ri_rs_receiver::parse_receipt_json(&raw)
+                .expect_err("invalid shared corpus case must be rejected");
+            assert_eq!(Some(error.code), expected, "{id}: {error}");
+            println!("C6_SHARED_WIRE_CASE id={id} input_sha256={actual_sha} result=REJECT code={}", error.code);
+        }
+    }
+}
