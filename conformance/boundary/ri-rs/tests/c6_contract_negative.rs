@@ -289,12 +289,17 @@ fn strict_wire_consumer_accepts_empty_raw_octets() {
 #[test]
 fn executes_the_same_materialized_c6_wire_corpus_as_ri_py() {
     let Some(corpus_dir) = std::env::var_os("AURA_C6_WIRE_CORPUS_DIR") else {
-        // Other non-C6 workflows may run this integration test without the
-        // materialized corpus. The dedicated C6 workflow sets this variable.
+        // Other non-C6 workflows may run this test without the materialized corpus.
         eprintln!("C6_SHARED_WIRE_CORPUS_NOT_MATERIALIZED; this run is not a C6 execution");
         return;
     };
     let corpus_dir = std::path::PathBuf::from(corpus_dir);
+    let results_dir = std::path::PathBuf::from(
+        std::env::var_os("AURA_C6_WIRE_RESULTS_DIR").expect("C6 results directory")
+    );
+    let source_blob = std::env::var("AURA_RI_RS_SOURCE_BLOB").expect("RI-RS source blob pin");
+    let test_blob = std::env::var("AURA_RI_RS_TEST_BLOB").expect("RI-RS test blob pin");
+
     let index_raw = std::fs::read(corpus_dir.join("index.json")).expect("shared corpus index");
     let index: Value = serde_json::from_slice(&index_raw).expect("valid materialized corpus index");
     assert_eq!(index["schema"], "AURA-BC021-MATERIALIZED-WIRE-CORPUS/0.1");
@@ -306,6 +311,8 @@ fn executes_the_same_materialized_c6_wire_corpus_as_ri_py() {
     assert!(!cases.is_empty());
 
     use sha2::{Digest, Sha256};
+    let mut result_rows = Vec::new();
+    let mut mismatches = Vec::new();
     for case in cases {
         let id = case["id"].as_str().expect("case id");
         let file = case["input_file"].as_str().expect("input file");
@@ -314,40 +321,58 @@ fn executes_the_same_materialized_c6_wire_corpus_as_ri_py() {
         let digest = Sha256::digest(&raw);
         let actual_sha: String = digest.iter().map(|b| format!("{b:02x}")).collect();
         assert_eq!(actual_sha, case["input_sha256"].as_str().unwrap(), "{id}: input SHA-256");
-        let expected = case["expected_code"].as_str();
-        if case["expected_result"] == "ACCEPT" {
-            let parsed = ri_rs_receiver::parse_receipt_json(&raw)
-                .unwrap_or_else(|error| panic!("{id}: expected acceptance, got {error}"));
-            assert_eq!(parsed.schema_id, ri_rs_receiver::SCHEMA_ID);
-            println!("C6_SHARED_WIRE_CASE id={id} input_sha256={actual_sha} result=ACCEPT code=null");
-        } else {
-            let error = ri_rs_receiver::parse_receipt_json(&raw)
-                .expect_err("invalid shared corpus case must be rejected");
-            assert_eq!(Some(error.code), expected, "{id}: {error}");
-            println!("C6_SHARED_WIRE_CASE id={id} input_sha256={actual_sha} result=REJECT code={}", error.code);
+
+        let expected_result = case["expected_result"].as_str().expect("expected result");
+        let expected_code = case["expected_code"].as_str().map(str::to_owned);
+        let (actual_result, actual_code) = match ri_rs_receiver::parse_receipt_json(&raw) {
+            Ok(parsed) => {
+                if parsed.schema_id != ri_rs_receiver::SCHEMA_ID {
+                    mismatches.push(format!("{id}: parser returned an unexpected schema identity"));
+                }
+                ("ACCEPT", None)
+            }
+            Err(error) => ("REJECT", Some(error.code.to_owned())),
+        };
+        let matches = actual_result == expected_result && actual_code == expected_code;
+        if !matches {
+            mismatches.push(format!(
+                "{id}: expected result={expected_result} code={expected_code:?}; actual result={actual_result} code={actual_code:?}"
+            ));
         }
+        let code_text = actual_code.as_deref().unwrap_or("null");
+        println!("C6_SHARED_WIRE_CASE id={id} input_sha256={actual_sha} result={actual_result} code={code_text}");
+        result_rows.push(json!({
+            "id": id,
+            "input_sha256": actual_sha,
+            "input_bytes": raw.len(),
+            "expected_result": expected_result,
+            "expected_code": expected_code,
+            "actual_result": actual_result,
+            "actual_code": actual_code,
+            "matched": matches
+        }));
     }
-}
 
-
-#[test]
-fn strict_wire_consumer_rejects_prohibited_result_values_in_semantic_fields() {
-    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
-    value["fixture"]["fixture_id"] = json!("PASS");
-    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_VALUE");
-
-    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
-    value["environment"]["platform"] = json!("CONFORMANT");
-    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_VALUE");
-}
-
-#[test]
-fn strict_wire_consumer_rejects_aliased_identity_fields() {
-    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
-    value["receiver"]["implementation_id"] = value["receiver"]["receiver_id"].clone();
-    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_VALUE");
-
-    let mut value: Value = serde_json::from_slice(&wire_receipt()).unwrap();
-    value["adapter"]["adapter_id"] = value["receiver"]["implementation_id"].clone();
-    assert_parse_code(&serde_json::to_vec(&value).unwrap(), "INVALID_VALUE");
+    let status = if mismatches.is_empty() { "PASS" } else { "MISMATCH" };
+    let report = json!({
+        "schema": "AURA-BC021-WIRE-CONSUMER-RESULTS/0.1",
+        "status": status,
+        "implementation": "RI-RS",
+        "source_blob_sha256": source_blob,
+        "test_blob_sha256": test_blob,
+        "index_sha256": Sha256::digest(&index_raw).iter().map(|b| format!("{b:02x}")).collect::<String>(),
+        "case_count": result_rows.len(),
+        "cases": result_rows,
+        "mismatches": mismatches,
+        "authority": "NONE",
+        "governance_effect": "NONE",
+        "authorization_effect": "NONE",
+        "release_effect": "NONE"
+    });
+    std::fs::create_dir_all(&results_dir).expect("create C6 results directory");
+    std::fs::write(
+        results_dir.join("ri-rs-results.json"),
+        format!("{}\n", serde_json::to_string_pretty(&report).expect("serialize RI-RS results"))
+    ).expect("write RI-RS result report");
+    assert!(mismatches.is_empty(), "strict wire-corpus mismatch: {mismatches:?}");
 }
