@@ -13,7 +13,7 @@ on:
       - "fixtures/corpus/JCS-VECTOR-*.expected.jcs"
       - ".github/workflows/stage-c-jcs-multivector.yml"
   pull_request:
-    branches: [main, "experiment/stage-c-adapter-contract-20261023"]
+    branches: [main, "experiment/stage-c-adapter-contract-20261023", "experiment/stage-c-merkle-c5-20261023"]
     paths:
       - "scripts/stage_c/**"
       - "fixtures/corpus/CANONICAL-003_jcs_full_discriminator.json"
