@@ -60,6 +60,18 @@ jobs:
           python -m unittest discover -s scripts/stage_c -p 'test_python_jcs_probe.py' -v
           python -m unittest discover -s scripts/stage_c -p 'test_jcs_multivector_corpus.py' -v
 
+      - name: Run six-vector JCS adapter comparison
+        env:
+          AURA_SPECIFICATION_ROOT: ${{ github.workspace }}
+        run: |
+          mkdir -p artifacts/stage-c/multivector
+          python scripts/stage_c/run_jcs_multivector.py \
+            --manifest fixtures/corpus/JCS-MULTIVECTOR-MANIFEST-v0.1-DRAFT.json \
+            --rust-manifest "$GITHUB_WORKSPACE/aura-guard/Cargo.toml" \
+            --python-source-commit "$(git rev-parse HEAD)" \
+            --rust-source-commit "31a7eeab861094fbecc82e8a61351fac49dffe43" \
+            --run-id "${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+
       - name: Run isolated Python/Rust JCS adapters on every committed vector
         env:
           AURA_SPECIFICATION_ROOT: ${{ github.workspace }}
