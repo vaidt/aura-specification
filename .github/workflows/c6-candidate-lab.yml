@@ -209,7 +209,7 @@ jobs:
           AURA_RI_RS_COMMIT: "feab2d9c369cd5f8cbabe10d713d278b0b09da8b"
         run: |
           set -euo pipefail
-          ../scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
+          bash ../scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
             set -euo pipefail
             export AURA_RI_RS_SOURCE_BLOB="$(git rev-parse HEAD:conformance/strict_wire.rs)"
             export AURA_RI_RS_LIB_BLOB="$(git rev-parse HEAD:src/lib.rs)"
@@ -226,7 +226,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p artifacts/c6-ri-rs-consumer
-          ../scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
+          bash ../scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
             set -euo pipefail
             python scripts/stage_c/validate_ri_rs_preservation.py 2>&1 | tee artifacts/c6-ri-rs-consumer/validator.log
             grep -Fxq "PRESERVATION_NEGATIVE_FIXTURES_PASS=9" artifacts/c6-ri-rs-consumer/validator.log
@@ -240,7 +240,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
+          bash scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
             set -euo pipefail
             python c6-harness/scripts/stage_c/run_ri_py_c6_consumer.py \
               --core-root "$GITHUB_WORKSPACE/aura-core" \
@@ -256,7 +256,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
+          bash scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
             set -euo pipefail
             python c6-harness/scripts/stage_c/verify_integrated_c6.py per-arch \
               --core-root "$GITHUB_WORKSPACE/aura-core" \
@@ -277,7 +277,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
+          bash scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
             set -euo pipefail
             python scripts/stage_c/verify_c6_historical_regression.py \
               --corpus-dir "$CORPUS_DIR" \
@@ -378,7 +378,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
+          bash scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
             set -euo pipefail
             python scripts/stage_c/observe_c6_json_candidates.py \
               --core-root "$GITHUB_WORKSPACE/aura-core" \
@@ -393,7 +393,7 @@ jobs:
           set -euo pipefail
           mkdir -p aura-guard/examples
           cp scripts/stage_c/c6_candidate_observer.rs aura-guard/examples/c6_candidate_observer.rs
-          scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
+          bash scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
             set -euo pipefail
             cargo run --locked --offline --manifest-path aura-guard/Cargo.toml \
               --example c6_candidate_observer -- \
@@ -407,7 +407,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
+          bash scripts/stage_c/run_c6_offline.sh bash -euo pipefail -c '
             set -euo pipefail
             python scripts/stage_c/compare_c6_json_observations.py \
               --index "$C6_LAB_DIR/materialization-index.json" \
