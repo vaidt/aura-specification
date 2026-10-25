@@ -56,6 +56,10 @@ def verify(root: Path) -> dict[str, Any]:
         raise ValueError("Source Lock inventory blob OID mismatch")
     if sha256(inventory_raw) != lock.get("candidate_inventory", {}).get("content_sha256"):
         raise ValueError("inventory snapshot digest mismatch")
+    if index.get("source_inventory", {}).get("content_sha256") != sha256(inventory_raw):
+        raise ValueError("materialization index inventory digest mismatch")
+    if index.get("source_inventory", {}).get("git_blob_oid") != INVENTORY_BLOB_OID:
+        raise ValueError("materialization index inventory blob OID mismatch")
     if index.get("schema") != "AURA-BC021-C6-CANDIDATE-MATERIALIZATION/0.1":
         raise ValueError("unexpected materialization index schema")
     if index.get("status") != "EXPLORATORY_NON_NORMATIVE":
