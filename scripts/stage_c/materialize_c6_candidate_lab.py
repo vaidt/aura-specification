@@ -138,7 +138,7 @@ def duplicate_key_variant(base_raw: bytes, target: str) -> bytes:
     raise ValueError(f"unsupported duplicate-key target: {target}")
 
 
-def materialize_candidate(case: dict[str, Any], seed: dict[str, Any], base_raw: bytes, octets: bytes) -> tuple[str, bytes, dict[str, Any], list[dict[str, Any]]]:
+def materialize_candidate(case: dict[str, Any], seed: dict[str, Any], base_raw: bytes, octets: bytes, output_root: Path) -> tuple[str, bytes, dict[str, Any], list[dict[str, Any]]]:
     case_id = case["id"]
     name = case.get("candidate")
     value = copy.deepcopy(seed)
@@ -177,7 +177,7 @@ def materialize_candidate(case: dict[str, Any], seed: dict[str, Any], base_raw: 
     if case_id == "C6-X-014":
         return "BYTES", b"[]", {"raw_input": "top-level empty JSON array; observation only"}, supplemental
     if case_id == "C6-X-015":
-        return "BYTES", b"\\xef\\xbb\\xbf" + base_raw, {"raw_prefix_hex": "efbbbf", "raw_input": "UTF-8 BOM prepended to baseline receipt bytes"}, supplemental
+        return "BYTES", b"\xef\xbb\xbf" + base_raw, {"raw_prefix_hex": "efbbbf", "raw_input": "UTF-8 BOM prepended to baseline receipt bytes"}, supplemental
     if case_id == "C6-X-016":
         return "BYTES", base_raw + b"x", {"raw_suffix_hex": "78", "raw_input": "baseline receipt bytes followed by ASCII x"}, supplemental
     if case_id == "C6-X-017":
@@ -335,7 +335,7 @@ def del_path(value: dict[str, Any], path: list[str]) -> None:
 
 
 def build_fuzz_seeds(seed: dict[str, Any], base_raw: bytes, octets: bytes) -> list[tuple[str, bytes, str]]:
-    invalid_utf8 = base_raw + b"\\xff"
+    invalid_utf8 = base_raw + b"\xff"
     truncated = base_raw[:-1]
     changed = bytearray(octets)
     changed[0] ^= 0x01
@@ -345,7 +345,7 @@ def build_fuzz_seeds(seed: dict[str, Any], base_raw: bytes, octets: bytes) -> li
     depth = nested_depth_candidate(seed, 256)
     return [
         ("C6-X-050-S001", base_raw + b"x", "trailing ASCII byte"),
-        ("C6-X-050-S002", b"\\xef\\xbb\\xbf" + base_raw, "UTF-8 BOM prefix"),
+        ("C6-X-050-S002", b"\xef\xbb\xbf" + base_raw, "UTF-8 BOM prefix"),
         ("C6-X-050-S003", truncated, "single-byte truncation"),
         ("C6-X-050-S004", invalid_utf8, "invalid UTF-8 trailing octet"),
         ("C6-X-050-S005", raw_replace_once(base_raw, b'"schema_id":"BC-02.1-COMMON-RECEIPT"', b'"schema_id":"BC-02.1-COMMON-RECEIPT","schema_id":"BC-02.1-COMMON-RECEIPT"', "fuzz S005"), "duplicate top-level key"),
@@ -357,9 +357,9 @@ def build_fuzz_seeds(seed: dict[str, Any], base_raw: bytes, octets: bytes) -> li
 
 def materialize(args: argparse.Namespace) -> dict[str, Any]:
     out = args.output_dir.resolve()
-    if out.exists() and any(out.iterdir()):
-        raise ValueError(f"refusing to overwrite a non-empty run directory: {out}")
     out.mkdir(parents=True, exist_ok=True)
+    if any((out / name).exists() for name in ("inputs", "candidate-configs", "materialization-index.json", "fuzz-seeds.json")):
+        raise ValueError(f"refusing to overwrite existing candidate outputs: {out}")
 
     baseline_raw = args.baseline_manifest.read_bytes()
     if sha256(baseline_raw) != BASELINE_SHA256:
@@ -396,7 +396,7 @@ def materialize(args: argparse.Namespace) -> dict[str, Any]:
     config_root.mkdir()
     index_cases: list[dict[str, Any]] = []
     for case in active:
-        kind, raw, profile, supplemental = materialize_candidate(case, seed, base_raw, octets)
+        kind, raw, profile, supplemental = materialize_candidate(case, seed, base_raw, octets, out)
         candidate_id = case["id"]
         relative = f"inputs/{candidate_id}.bin" if kind == "BYTES" else f"candidate-configs/{candidate_id}.json"
         if kind == "BYTES":
