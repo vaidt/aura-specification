@@ -201,6 +201,7 @@ jobs:
           mkdir -p artifacts/c6-ri-rs-consumer
           python scripts/stage_c/validate_ri_rs_preservation.py 2>&1 | tee artifacts/c6-ri-rs-consumer/validator.log
           grep -Fxq "PRESERVATION_NEGATIVE_FIXTURES_PASS=9" artifacts/c6-ri-rs-consumer/validator.log
+          printf '9\n' > artifacts/c6-ri-rs-consumer/negative-fixtures-pass.txt
           python -m json.tool artifacts/c6-ri-rs-consumer/implementation-evidence.json >/dev/null
           python -m json.tool artifacts/c6-ri-rs-consumer/preservation-diagnostics.json >/dev/null
 
