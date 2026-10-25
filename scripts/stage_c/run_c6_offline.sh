@@ -79,6 +79,6 @@ printf 'C6_OFFLINE_IMAGE=%s\n' "$PINNED_IMAGE"
 printf 'C6_OFFLINE_WORKDIR=%s\n' "$container_cwd"
 printf 'C6_OFFLINE_POLICY=network-none,read-only-rootfs,drop-all-capabilities,no-new-privileges\n'
 exec docker "${docker_opts[@]}" "$PINNED_IMAGE" /bin/bash -euo pipefail -c '
-  "$AURA_C6_PYTHON" /workspace/scripts/stage_c/verify_c6_network_isolation.py
+  "$AURA_C6_PYTHON" "$GITHUB_WORKSPACE/scripts/stage_c/verify_c6_network_isolation.py"
   exec "$@"
 ' c6-offline-command "$@"
