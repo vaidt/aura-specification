@@ -139,7 +139,7 @@ The C6 receipt-parser result does not discharge CONF-003. The controlling requir
 | Item | Current state in controlling records | Required next act |
 |---|---|---|
 | JCS profile, canonical SHA-256 and RFC 6962 leaf domain | Contract described in APS-200 §8 and APS-300 §5; draft status remains | Do not infer normative approval from implementation tests |
-| CANONICAL-003 discriminator | Technical PASS for the tested vector in vaid t/* working repositories | Preserve as finite evidence; not exhaustive RFC 8785 proof |
+| CANONICAL-003 discriminator | Technical PASS for the tested vector in vaidt/* working repositories | Preserve as finite evidence; not exhaustive RFC 8785 proof |
 | CONF-003 C1–C8 and N1–N3 | Reported PASS for existing cross-language evidence | Bind exact evidence files and gate version in review packet |
 | CONF-003 §4.5 prohibited-input controls | NOT EXECUTED in the current CONF-003 status table | Add and run controlled inputs for the four classes below |
 | DQ6-R2: authoritative RI-RS boundary | OPEN | Select one source-of-record path and dispose of competing implementations/dependency placement |
