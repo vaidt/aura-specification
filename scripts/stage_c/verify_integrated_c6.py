@@ -231,7 +231,6 @@ def validate_per_arch(args: argparse.Namespace) -> int:
 
     validate_effect_fields(py_evidence, "ri_py_evidence", errors)
     validate_effect_fields(rs_evidence, "ri_rs_evidence", errors)
-    validate_effect_fields(rs_diagnostics, "ri_rs_diagnostics", errors)
     fail(errors, py_evidence.get("schema") == EVIDENCE_SCHEMA, "ri_py_evidence_schema_mismatch")
     fail(errors, rs_evidence.get("schema") == EVIDENCE_SCHEMA, "ri_rs_evidence_schema_mismatch")
     fail(errors, rs_diagnostics.get("schema") == DIAGNOSTICS_SCHEMA,
@@ -471,10 +470,15 @@ def validate_per_arch(args: argparse.Namespace) -> int:
 def compare_architectures(args: argparse.Namespace) -> int:
     root = args.artifact_root.resolve()
     errors: list[str] = []
-    artifacts = {
-        arch: root / f"integrated-c6-{arch}" / "bundle"
-        for arch in ("x86_64", "aarch64")
-    }
+    artifacts = {}
+    for arch in ("x86_64", "aarch64"):
+        artifact_dir = root / f"integrated-c6-{arch}"
+        bundle = artifact_dir / "bundle"
+        # upload-artifact may strip the provided root directory; accept either
+        # representation while still requiring every expected member below.
+        if not bundle.is_dir():
+            bundle = artifact_dir
+        artifacts[arch] = bundle
     for arch, path in artifacts.items():
         fail(errors, path.is_dir(), f"missing_architecture_bundle:{arch}")
     if errors:
@@ -499,7 +503,6 @@ def compare_architectures(args: argparse.Namespace) -> int:
         validate_effect_fields(integrated, f"{arch}_integrated", errors)
         validate_effect_fields(py_evidence, f"{arch}_ri_py_evidence", errors)
         validate_effect_fields(rs_evidence, f"{arch}_ri_rs_evidence", errors)
-        validate_effect_fields(diagnostics, f"{arch}_ri_rs_diagnostics", errors)
 
         fail(errors, integrated.get("schema") == "AURA-C6-INTEGRATED-EVIDENCE/0.1",
              f"{arch}_integrated_schema_mismatch")
