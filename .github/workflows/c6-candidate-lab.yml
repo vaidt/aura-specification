@@ -94,7 +94,7 @@ jobs:
     env:
       ARCHITECTURE: "${{ matrix.arch }}"
       C6_BASELINE_DIR: "${{ github.workspace }}/.c6-baseline-${{ matrix.arch }}"
-      CORPUS_DIR: "${{ github.workspace }}/baseline-source/artifacts/stage-c/c6-wire-corpus"
+      CORPUS_DIR: "${{ github.workspace }}/aura-guard/aura-specification/artifacts/stage-c/c6-wire-corpus"
     steps:
       - name: Checkout Candidate Lab source (including L6 verifier)
         uses: actions/checkout@v4
@@ -122,12 +122,12 @@ jobs:
           ref: "feab2d9c369cd5f8cbabe10d713d278b0b09da8b"
           path: aura-guard
 
-      - name: Checkout exact historical C6 manifest and materializer
+      - name: Checkout exact historical C6 manifest and materializer under RI-RS preservation path
         uses: actions/checkout@v4
         with:
           repository: vaidt/aura-specification
           ref: "6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330"
-          path: baseline-source
+          path: aura-guard/aura-specification
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
@@ -144,18 +144,23 @@ jobs:
           mkdir -p "$C6_BASELINE_DIR"
           test "$(git -C aura-core rev-parse HEAD)" = "fe3be05794d3f254d98af1464e598e5b9be2e369"
           test "$(git -C aura-guard rev-parse HEAD)" = "feab2d9c369cd5f8cbabe10d713d278b0b09da8b"
-          test "$(git -C baseline-source rev-parse HEAD)" = "6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330"
+          test "$(git -C aura-guard/aura-specification rev-parse HEAD)" = "6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330"
           test "$(git -C c6-harness rev-parse HEAD)" = "38821305ddb93eca96d9eb86e53d5c2db5d91295"
-          test "$(git -C baseline-source rev-parse HEAD:fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json)" = "d9b4a1f488185a44f7edb233ef8ff180981f0e84"
+          test "$(git -C aura-guard/aura-specification rev-parse HEAD:fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json)" = "d9b4a1f488185a44f7edb233ef8ff180981f0e84"
+          echo "AURA_RI_RS_COMMIT=$(git -C aura-guard rev-parse HEAD)" >> "$GITHUB_ENV"
+          echo "AURA_RI_RS_SOURCE_BLOB=$(git -C aura-guard rev-parse HEAD:conformance/strict_wire.rs)" >> "$GITHUB_ENV"
+          echo "AURA_RI_RS_LIB_BLOB=$(git -C aura-guard rev-parse HEAD:src/lib.rs)" >> "$GITHUB_ENV"
+          echo "AURA_RI_RS_CARGO_BLOB=$(git -C aura-guard rev-parse HEAD:Cargo.toml)" >> "$GITHUB_ENV"
+          echo "AURA_RI_RS_TEST_BLOB=$(git -C aura-guard rev-parse HEAD:conformance/strict_wire_c6.rs)" >> "$GITHUB_ENV"
           {
             echo "architecture=$ARCHITECTURE"
             echo "core_commit=$(git -C aura-core rev-parse HEAD)"
             echo "core_receiver_blob=$(git -C aura-core rev-parse HEAD:conformance/boundary/ri_py_receiver.py)"
             echo "ri_rs_commit=$(git -C aura-guard rev-parse HEAD)"
             echo "ri_rs_parser_blob=$(git -C aura-guard rev-parse HEAD:conformance/strict_wire.rs)"
-            echo "baseline_commit=$(git -C baseline-source rev-parse HEAD)"
-            echo "baseline_manifest_blob=$(git -C baseline-source rev-parse HEAD:fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json)"
-            echo "baseline_materializer_blob=$(git -C baseline-source rev-parse HEAD:scripts/stage_c/materialize_c6_wire_corpus.py)"
+            echo "baseline_commit=$(git -C aura-guard/aura-specification rev-parse HEAD)"
+            echo "baseline_manifest_blob=$(git -C aura-guard/aura-specification rev-parse HEAD:fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json)"
+            echo "baseline_materializer_blob=$(git -C aura-guard/aura-specification rev-parse HEAD:scripts/stage_c/materialize_c6_wire_corpus.py)"
             echo "integrated_harness_commit=$(git -C c6-harness rev-parse HEAD)"
           } | tee "$C6_BASELINE_DIR/source-identities.txt"
 
@@ -163,7 +168,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check -e aura-core
 
       - name: Materialize pinned 27-case baseline
-        working-directory: baseline-source
+        working-directory: aura-guard/aura-specification
         shell: bash
         run: |
           set -euo pipefail
@@ -175,8 +180,8 @@ jobs:
         working-directory: aura-guard
         shell: bash
         env:
-          AURA_C6_WIRE_CORPUS_DIR: ${{ github.workspace }}/baseline-source/artifacts/stage-c/c6-wire-corpus
-          AURA_C6_WIRE_RESULTS_DIR: ${{ github.workspace }}/baseline-source/artifacts/stage-c/c6-wire-corpus/results
+          AURA_C6_WIRE_CORPUS_DIR: ${{ github.workspace }}/aura-guard/aura-specification/artifacts/stage-c/c6-wire-corpus
+          AURA_C6_WIRE_RESULTS_DIR: ${{ github.workspace }}/aura-guard/aura-specification/artifacts/stage-c/c6-wire-corpus/results
           AURA_RI_RS_COMMIT: "feab2d9c369cd5f8cbabe10d713d278b0b09da8b"
         run: |
           set -euo pipefail
@@ -206,7 +211,7 @@ jobs:
           set -euo pipefail
           python c6-harness/scripts/stage_c/run_ri_py_c6_consumer.py \
             --core-root "$GITHUB_WORKSPACE/aura-core" \
-            --corpus-source-root "$GITHUB_WORKSPACE/baseline-source" \
+            --corpus-source-root "$GITHUB_WORKSPACE/aura-guard/aura-specification" \
             --corpus-dir "$CORPUS_DIR" \
             --architecture "$ARCHITECTURE" \
             --expected-core-commit "fe3be05794d3f254d98af1464e598e5b9be2e369" \
@@ -220,7 +225,7 @@ jobs:
           python c6-harness/scripts/stage_c/verify_integrated_c6.py per-arch \
             --core-root "$GITHUB_WORKSPACE/aura-core" \
             --guard-root "$GITHUB_WORKSPACE/aura-guard" \
-            --corpus-source-root "$GITHUB_WORKSPACE/baseline-source" \
+            --corpus-source-root "$GITHUB_WORKSPACE/aura-guard/aura-specification" \
             --corpus-dir "$CORPUS_DIR" \
             --guard-evidence-dir "$GITHUB_WORKSPACE/aura-guard/artifacts/c6-ri-rs-consumer" \
             --harness-root "$GITHUB_WORKSPACE/c6-harness" \
@@ -239,7 +244,7 @@ jobs:
             --corpus-dir "$CORPUS_DIR" \
             --core-root "$GITHUB_WORKSPACE/aura-core" \
             --guard-root "$GITHUB_WORKSPACE/aura-guard" \
-            --source-root "$GITHUB_WORKSPACE/baseline-source" \
+            --source-root "$GITHUB_WORKSPACE/aura-guard/aura-specification" \
             --harness-root "$GITHUB_WORKSPACE/c6-harness" \
             --output "$C6_BASELINE_DIR/baseline-regression-report.json"
 
