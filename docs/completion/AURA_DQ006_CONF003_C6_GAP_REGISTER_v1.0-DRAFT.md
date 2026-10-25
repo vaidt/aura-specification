@@ -4,7 +4,7 @@
 **Assessment date:** 2026-10-25  
 **Classification:** Engineering evidence / gap analysis  
 **Status:** DRAFT — NON-CONSTITUTIVE — NOT A RATIFICATION RECORD  
-**Baseline:** vaid t/aura-specification/main @ 11e512365957cd1367062e379bcd655d24048d96
+**Baseline:** vaidt/aura-specification/main @ 11e512365957cd1367062e379bcd655d24048d96
 
 ## 1. Executive decision
 
@@ -121,8 +121,8 @@ This is a planning inventory, not an approved normative vector set. The 50 cases
 
 | Proposed ID range | Count | Candidate dimension |
 |---|---:|---|
-| C6-X-001…012 | 12 | Missing each nested object; unknown property in each nested object; root scalar/array shape variants in the test matrix |
-| C6-X-013…020 | 8 | JSON transport edge cases: BOM handling, trailing garbage, concatenated documents, escaped-equivalent duplicate keys at two depths, non-standard numeric constants and top-level scalar/array cases |
+| C6-X-001…012 | 12 | Missing each of the six nested objects; unknown property in each of the six nested objects |
+| C6-X-013…020 | 8 | JSON transport edge cases: top-level scalar, top-level array, BOM handling, trailing garbage, concatenated documents, escaped-equivalent duplicate keys at two depths, and parameterized non-standard numeric constants |
 | C6-X-021…028 | 8 | Base64: URL-safe alphabet, embedded whitespace, excess padding, invalid pad bits, non-ASCII input, line breaks, canonical re-encoding, full 0x00–0xFF octet round-trip |
 | C6-X-029…035 | 7 | Numeric boundaries: null octet length, string type, exponent-notation integer-looking token, zero/negative-zero lexical behavior, maximum accepted length, over-range integer and very large signed integer |
 | C6-X-036…041 | 6 | Digest controls: uppercase hex, non-hex character, 63/65-character digest, digest over encoded Base64 text instead of decoded bytes, one-octet source mutation |
