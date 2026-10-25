@@ -14,13 +14,14 @@
   "counts": {
     "candidate_count": 50,
     "confirmed_exact_duplicates": 2,
-    "remaining_candidates_for_triage": 48,
-    "runnable_cases": 0
+    "remaining_candidates_for_triage": 47,
+    "runnable_cases": 0,
+    "confirmed_redundant_candidates": 3
   },
   "rules": [
     "Do not populate expected_code or expected_result until a controlling contract invariant and error-taxonomy entry are referenced.",
     "Do not inject this inventory into the pinned 27-case C6 manifest or replace previous reports/artifacts.",
-    "The two confirmed duplicates remain as traceable tombstones and are excluded from the active candidate pool.",
+    "Three confirmed redundant candidates remain as traceable tombstones; exclude them from the active candidate pool.",
     "All observations and future exploratory CI outputs must be labeled EXPLORATORY_NON_NORMATIVE."
   ],
   "authority": "NONE",
@@ -91,7 +92,8 @@
       "contract_binding_status": "UNRESOLVED",
       "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
       "execution_status": "NOT_RUN",
-      "included_in_candidate_pool": false
+      "included_in_candidate_pool": false,
+      "dedupe_type": "EXACT_MUTATION"
     },
     {
       "id": "C6-X-005",
@@ -173,12 +175,13 @@
         "key": "candidate_extension",
         "value": "candidate"
       },
-      "deduplication": "CONFIRMED_EXACT_DUPLICATE",
+      "deduplication": "CONFIRMED_REDUNDANT",
       "dedupe_reference": "C6-N-012A",
       "contract_binding_status": "UNRESOLVED",
       "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
       "execution_status": "NOT_RUN",
-      "included_in_candidate_pool": false
+      "included_in_candidate_pool": false,
+      "dedupe_type": "SAME_COVERAGE_CLASS"
     },
     {
       "id": "C6-X-010",
@@ -654,11 +657,13 @@
         "target": "received.recomputed_sha256",
         "value": "all-zero digest with correct length"
       },
-      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "deduplication": "CONFIRMED_REDUNDANT",
       "contract_binding_status": "UNRESOLVED",
       "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
       "execution_status": "NOT_RUN",
-      "included_in_candidate_pool": true
+      "included_in_candidate_pool": false,
+      "dedupe_reference": "C6-N-006A",
+      "dedupe_type": "EXACT_MUTATION"
     },
     {
       "id": "C6-X-042",
