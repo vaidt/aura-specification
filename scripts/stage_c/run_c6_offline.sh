@@ -25,7 +25,7 @@ esac
 container_cwd="/workspace"
 [[ -n "$relative_cwd" ]] && container_cwd="/workspace/$relative_cwd"
 
-args=(
+docker_opts=(
   run --rm
   --network none
   --read-only
@@ -53,14 +53,9 @@ args=(
   --env "PYTHONDONTWRITEBYTECODE=1"
   --env "PYTHONNOUSERSITE=1"
   --env "AURA_C6_OFFLINE_EXECUTION=1"
-  "$PINNED_IMAGE"
-  /bin/bash -euo pipefail -c '
-    "$AURA_C6_PYTHON" /workspace/scripts/stage_c/verify_c6_network_isolation.py
-    exec "$@"
-  ' c6-offline-command
 )
 
-# Forward only the allowlisted variables needed by the pinned corpus/parser harness.
+# Forward only the allowlisted environment required by the pinned corpus/parsers.
 for name in \
   ARCHITECTURE \
   AURA_C6_WIRE_CORPUS_DIR AURA_C6_WIRE_RESULTS_DIR \
@@ -72,15 +67,18 @@ do
   case "$value" in
     "$workspace"*) value="/workspace${value#"$workspace"}" ;;
   esac
-  args=("${args[@]:0:${#args[@]}-2}" --env "$name=$value" "${args[@]: -2}")
+  docker_opts+=(--env "$name=$value")
 done
 
-# setup-python exports LD_LIBRARY_PATH to the selected interpreter's lib directory.
+# setup-python may require this variable for its shared libraries.
 if [[ -n "${LD_LIBRARY_PATH:-}" ]]; then
-  args=("${args[@]:0:${#args[@]}-2}" --env "LD_LIBRARY_PATH=$LD_LIBRARY_PATH" "${args[@]: -2}")
+  docker_opts+=(--env "LD_LIBRARY_PATH=$LD_LIBRARY_PATH")
 fi
 
 printf 'C6_OFFLINE_IMAGE=%s\n' "$PINNED_IMAGE"
 printf 'C6_OFFLINE_WORKDIR=%s\n' "$container_cwd"
 printf 'C6_OFFLINE_POLICY=network-none,read-only-rootfs,drop-all-capabilities,no-new-privileges\n'
-exec docker "${args[@]}" "$@"
+exec docker "${docker_opts[@]}" "$PINNED_IMAGE" /bin/bash -euo pipefail -c '
+  "$AURA_C6_PYTHON" /workspace/scripts/stage_c/verify_c6_network_isolation.py
+  exec "$@"
+' c6-offline-command "$@"
