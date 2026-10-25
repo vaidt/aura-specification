@@ -15,7 +15,9 @@ This branch holds an inventory of 50 candidate C6 expansions. It is separate fro
 | C6-X-004 — missing `receiver` object | Exact duplicate; exclude from active pool | C6-N-015A | Original manifest already deletes the top-level `receiver` field and expects MISSING_FIELD. |
 | C6-X-009 — unknown property under `received` | Exact duplicate; exclude from active pool | C6-N-012A | Original manifest already inserts an unknown nested property under `received` and expects UNKNOWN_FIELD. |
 
-Triage accounting: 50 candidates; 2 confirmed exact duplicates retained as traceable tombstones; 48 remaining candidates need byte-level deduplication and contract mapping; 0 are yet approved as runnable contract-bound vectors.
+| `C6-X-041` — zero-filled digest mismatch | **Exact duplicate; exclude from active pool** | `C6-N-006A` | Both set `received.recomputed_sha256` to 64 zeroes over the same source seed; the existing manifest already expects `DIGEST_MISMATCH`. |
+
+Triage accounting: 50 candidates; 2 exact mutation duplicates and 1 semantic coverage duplicate are retained as traceable tombstones; 47 remain in the active candidate pool for byte-level deduplication and contract mapping; 0 are yet approved as runnable contract-bound vectors.
 
 ## Candidate inventory groups
 
