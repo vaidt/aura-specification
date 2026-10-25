@@ -74,9 +74,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: c6-candidate-materialization
-          path: ${{ runner.temp }}/c6-candidate-lab-${{ github.run_id }}-${{ github.run_attempt }}/
+          path: ${{ github.workspace }}/.c6-candidate-lab-${{ github.run_id }}-${{ github.run_attempt }}/
           if-no-files-found: warn
           retention-days: 90
+          include-hidden-files: true
 
   baseline-regression:
     name: L6 exact 27-case historical regression
@@ -258,9 +259,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: c6-baseline-${{ matrix.arch }}
-          path: ${{ runner.temp }}/c6-baseline-${{ matrix.arch }}/
+          path: ${{ github.workspace }}/.c6-baseline-${{ matrix.arch }}/
           if-no-files-found: warn
           retention-days: 90
+          include-hidden-files: true
 
   json-pilot:
     name: L4-L5 RI-PY / RI-RS JSON observation pilot
@@ -302,7 +304,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: c6-candidate-materialization
-          path: ${{ runner.temp }}/c6-candidate-pilot-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ github.workspace }}/.c6-candidate-pilot-${{ github.run_id }}-${{ github.run_attempt }}
 
       - name: Recheck parser source pins
         shell: bash
@@ -351,9 +353,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: c6-json-pilot
-          path: ${{ runner.temp }}/c6-json-pilot-${{ github.run_id }}-${{ github.run_attempt }}/
+          path: ${{ github.workspace }}/.c6-json-pilot-${{ github.run_id }}-${{ github.run_attempt }}/
           if-no-files-found: warn
           retention-days: 90
+          include-hidden-files: true
 
   assemble-evidence:
     name: L7 assemble evidence package (non-constitutive)
@@ -385,7 +388,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: c6-candidate-materialization
-          path: ${{ runner.temp }}/c6-evidence-inputs-${{ github.run_id }}-${{ github.run_attempt }}/materialization
+          path: ${{ github.workspace }}/.c6-evidence-inputs-${{ github.run_id }}-${{ github.run_attempt }}/materialization
 
       - name: Download per-architecture baseline evidence (if available)
         if: always()
@@ -393,7 +396,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: c6-baseline-*
-          path: ${{ runner.temp }}/c6-evidence-inputs-${{ github.run_id }}-${{ github.run_attempt }}/baseline
+          path: ${{ github.workspace }}/.c6-evidence-inputs-${{ github.run_id }}-${{ github.run_attempt }}/baseline
           merge-multiple: false
 
       - name: Download JSON pilot reports (if available)
@@ -402,7 +405,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: c6-json-pilot
-          path: ${{ runner.temp }}/c6-evidence-inputs-${{ github.run_id }}-${{ github.run_attempt }}/pilot
+          path: ${{ github.workspace }}/.c6-evidence-inputs-${{ github.run_id }}-${{ github.run_attempt }}/pilot
 
       - name: Assemble nine logical evidence components
         if: always()
@@ -422,6 +425,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: c6-candidate-lab-evidence
-          path: ${{ runner.temp }}/c6-candidate-lab-evidence-${{ github.run_id }}-${{ github.run_attempt }}/
+          path: ${{ github.workspace }}/.c6-candidate-lab-evidence-${{ github.run_id }}-${{ github.run_attempt }}/
           if-no-files-found: warn
           retention-days: 90
+          include-hidden-files: true
