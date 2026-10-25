@@ -72,6 +72,12 @@ jobs:
           set -euo pipefail
           python scripts/stage_c/validate_c6_candidate_materialization.py --root "$C6_LAB_DIR"
 
+      - name: Validate L3 mapping of the 39 non-pilot candidates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/stage_c/validate_c6_l3_mapping.py
+
       - name: Upload L0-L2 candidate inputs and manifests
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
