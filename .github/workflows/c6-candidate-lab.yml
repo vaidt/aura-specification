@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
-      C6_LAB_DIR: "${{ runner.temp }}/c6-candidate-lab-${{ github.run_id }}-${{ github.run_attempt }}"
+      C6_LAB_DIR: "${{ github.workspace }}/.c6-candidate-lab-${{ github.run_id }}-${{ github.run_attempt }}"
     steps:
       - name: Checkout Candidate Lab commit
         uses: actions/checkout@v4
@@ -91,7 +91,7 @@ jobs:
             runner: ubuntu-24.04-arm
     env:
       ARCHITECTURE: "${{ matrix.arch }}"
-      C6_BASELINE_DIR: "${{ runner.temp }}/c6-baseline-${{ matrix.arch }}"
+      C6_BASELINE_DIR: "${{ github.workspace }}/.c6-baseline-${{ matrix.arch }}"
       CORPUS_DIR: "${{ github.workspace }}/baseline-source/artifacts/stage-c/c6-wire-corpus"
     steps:
       - name: Checkout Candidate Lab source (including L6 verifier)
@@ -267,8 +267,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
-      C6_LAB_DIR: ${{ runner.temp }}/c6-candidate-pilot-${{ github.run_id }}-${{ github.run_attempt }}
-      C6_PILOT_DIR: ${{ runner.temp }}/c6-json-pilot-${{ github.run_id }}-${{ github.run_attempt }}
+      C6_LAB_DIR: ${{ github.workspace }}/.c6-candidate-pilot-${{ github.run_id }}-${{ github.run_attempt }}
+      C6_PILOT_DIR: ${{ github.workspace }}/.c6-json-pilot-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - name: Checkout Candidate Lab source
         uses: actions/checkout@v4
@@ -361,8 +361,8 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     env:
-      C6_INCOMING: ${{ runner.temp }}/c6-evidence-inputs-${{ github.run_id }}-${{ github.run_attempt }}
-      C6_OUT: ${{ runner.temp }}/c6-candidate-lab-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+      C6_INCOMING: ${{ github.workspace }}/.c6-evidence-inputs-${{ github.run_id }}-${{ github.run_attempt }}
+      C6_OUT: ${{ github.workspace }}/.c6-candidate-lab-evidence-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - name: Checkout Candidate Lab package assembler
         uses: actions/checkout@v4
