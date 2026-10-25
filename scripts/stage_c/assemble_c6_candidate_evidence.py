@@ -92,7 +92,10 @@ def assemble(args: argparse.Namespace) -> dict[str, Any]:
     )
 
     baseline_files = find_all(baseline_dir, "baseline-regression-report.json")
-    baseline_reports = [(path.parent.name, load_json(path)) for path in baseline_files]
+    baseline_reports = [
+        (path.parent.name.removeprefix("c6-baseline-"), load_json(path))
+        for path in baseline_files
+    ]
     baseline_reports = [(name, report) for name, report in baseline_reports if report is not None]
     if len(baseline_reports) >= 2 and all(report.get("status") == "PASS" for _, report in baseline_reports):
         baseline_status = "PASS"
