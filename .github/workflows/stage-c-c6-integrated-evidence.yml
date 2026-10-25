@@ -1,0 +1,258 @@
+name: Stage C6 integrated RI-PY and RI-RS evidence
+
+on:
+  push:
+    branches:
+      - "experiment/stage-c-c6-integrated-proof-20261025"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/stage-c-c6-integrated-evidence.yml"
+      - "scripts/stage_c/run_ri_py_c6_consumer.py"
+      - "scripts/stage_c/verify_integrated_c6.py"
+  workflow_dispatch:
+    inputs:
+      core_ref:
+        description: "Exact Core commit SHA to test"
+        required: true
+        type: string
+        default: "fe3be05794d3f254d98af1464e598e5b9be2e369"
+      ri_rs_ref:
+        description: "Exact RI-RS commit SHA to test"
+        required: true
+        type: string
+        default: "feab2d9c369cd5f8cbabe10d713d278b0b09da8b"
+      corpus_ref:
+        description: "Exact specification commit containing the C6 manifest and materializer"
+        required: true
+        type: string
+        default: "6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330"
+
+permissions:
+  contents: read
+
+jobs:
+  integrated-c6:
+    name: Integrated RI-PY / RI-RS C6 ($${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-24.04
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+    env:
+      ARCHITECTURE: "${{ matrix.arch }}"
+      CORE_REF: "${{ inputs.core_ref || 'fe3be05794d3f254d98af1464e598e5b9be2e369' }}"
+      RI_RS_REF: "${{ inputs.ri_rs_ref || 'feab2d9c369cd5f8cbabe10d713d278b0b09da8b' }}"
+      CORPUS_REF: "${{ inputs.corpus_ref || '6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330' }}"
+      CARGO_TERM_COLOR: always
+      RUST_BACKTRACE: "1"
+    steps:
+      - name: Checkout integration harness
+        uses: actions/checkout@v4
+
+      - name: Checkout exact Core consumer source
+        uses: actions/checkout@v4
+        with:
+          repository: vaidt/aura-poc-a-core-v3.3
+          ref: "${{ inputs.core_ref || 'fe3be05794d3f254d98af1464e598e5b9be2e369' }}"
+          path: aura-core
+
+      - name: Checkout exact RI-RS consumer source
+        uses: actions/checkout@v4
+        with:
+          repository: vaidt/aura-guard-v1.3
+          ref: "${{ inputs.ri_rs_ref || 'feab2d9c369cd5f8cbabe10d713d278b0b09da8b' }}"
+          path: aura-guard
+
+      - name: Checkout pinned C6 corpus and materializer source
+        uses: actions/checkout@v4
+        with:
+          repository: vaidt/aura-specification
+          ref: "${{ inputs.corpus_ref || '6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330' }}"
+          path: aura-guard/aura-specification
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Rust 1.87
+        uses: dtolnay/rust-toolchain@1.87.0
+
+      - name: Enforce source commit identities and record immutable pins
+        shell: bash
+        run: |
+          set -euo pipefail
+          for ref in "$CORE_REF" "$RI_RS_REF" "$CORPUS_REF"; do
+            if [[ ! "$ref" =~ ^[0-9a-f]{40}$ ]]; then
+              echo "::error::All source refs must be exact 40-character commit SHAs: $ref"
+              exit 1
+            fi
+          done
+
+          core_sha="$(git -C aura-core rev-parse HEAD)"
+          rs_sha="$(git -C aura-guard rev-parse HEAD)"
+          corpus_sha="$(git -C aura-guard/aura-specification rev-parse HEAD)"
+          harness_sha="$(git rev-parse HEAD)"
+          test "$core_sha" = "$CORE_REF"
+          test "$rs_sha" = "$RI_RS_REF"
+          test "$corpus_sha" = "$CORPUS_REF"
+          test "$harness_sha" = "$GITHUB_SHA"
+
+          echo "AURA_RI_PY_EXPECTED_SOURCE_COMMIT=$core_sha" >> "$GITHUB_ENV"
+          echo "AURA_RI_RS_COMMIT=$rs_sha" >> "$GITHUB_ENV"
+          echo "AURA_RI_RS_SOURCE_BLOB=$(git -C aura-guard rev-parse HEAD:conformance/strict_wire.rs)" >> "$GITHUB_ENV"
+          echo "AURA_RI_RS_LIB_BLOB=$(git -C aura-guard rev-parse HEAD:src/lib.rs)" >> "$GITHUB_ENV"
+          echo "AURA_RI_RS_CARGO_BLOB=$(git -C aura-guard rev-parse HEAD:Cargo.toml)" >> "$GITHUB_ENV"
+          echo "AURA_RI_RS_TEST_BLOB=$(git -C aura-guard rev-parse HEAD:conformance/strict_wire_c6.rs)" >> "$GITHUB_ENV"
+          echo "AURA_C6_CORPUS_SOURCE_COMMIT=$corpus_sha" >> "$GITHUB_ENV"
+          echo "AURA_INTEGRATION_HARNESS_COMMIT=$harness_sha" >> "$GITHUB_ENV"
+
+          {
+            echo "core_commit=$core_sha"
+            echo "ri_rs_commit=$rs_sha"
+            echo "corpus_commit=$corpus_sha"
+            echo "harness_commit=$harness_sha"
+            echo "core_receiver_blob=$(git -C aura-core rev-parse HEAD:conformance/boundary/ri_py_receiver.py)"
+            echo "core_test_blob=$(git -C aura-core rev-parse HEAD:conformance/boundary/test_ri_py_receipt_json_consumer.py)"
+            echo "corpus_manifest_blob=$(git -C aura-guard/aura-specification rev-parse HEAD:fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json)"
+            echo "corpus_materializer_blob=$(git -C aura-guard/aura-specification rev-parse HEAD:scripts/stage_c/materialize_c6_wire_corpus.py)"
+          } | tee source-identities.txt
+
+      - name: Install Core package and declared dependencies
+        run: python -m pip install --disable-pip-version-check -e aura-core
+
+      - name: Materialize the pinned shared 27-case corpus once
+        working-directory: aura-guard/aura-specification
+        run: |
+          set -euo pipefail
+          python scripts/stage_c/materialize_c6_wire_corpus.py \
+            --manifest fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json \
+            --output-dir artifacts/stage-c/c6-wire-corpus
+          python -m json.tool artifacts/stage-c/c6-wire-corpus/index.json >/dev/null
+
+      - name: Run RI-RS unit tests and shared C6 corpus
+        working-directory: aura-guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          export AURA_C6_WIRE_CORPUS_DIR="$GITHUB_WORKSPACE/aura-guard/aura-specification/artifacts/stage-c/c6-wire-corpus"
+          export AURA_C6_WIRE_RESULTS_DIR="$AURA_C6_WIRE_CORPUS_DIR/results"
+          cargo test --locked --lib strict_wire::tests -- --nocapture
+          cargo test --locked --test strict_wire_c6 -- --include-ignored --nocapture
+
+      - name: Validate RI-RS source, report, inputs, and negative fixtures
+        if: always()
+        working-directory: aura-guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/c6-ri-rs-consumer
+          python scripts/stage_c/validate_ri_rs_preservation.py 2>&1 \
+            | tee artifacts/c6-ri-rs-consumer/validator.log
+          grep -Fxq "PRESERVATION_NEGATIVE_FIXTURES_PASS=9" \
+            artifacts/c6-ri-rs-consumer/validator.log
+          printf '9\n' > artifacts/c6-ri-rs-consumer/negative-fixtures-pass.txt
+          python -m json.tool artifacts/c6-ri-rs-consumer/implementation-evidence.json >/dev/null
+          python -m json.tool artifacts/c6-ri-rs-consumer/preservation-diagnostics.json >/dev/null
+
+      - name: Run RI-PY on the same byte-identical corpus
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/stage_c/run_ri_py_c6_consumer.py \
+            --core-root "$GITHUB_WORKSPACE/aura-core" \
+            --corpus-source-root "$GITHUB_WORKSPACE/aura-guard/aura-specification" \
+            --corpus-dir "$GITHUB_WORKSPACE/aura-guard/aura-specification/artifacts/stage-c/c6-wire-corpus" \
+            --architecture "$ARCHITECTURE" \
+            --expected-core-commit "$AURA_RI_PY_EXPECTED_SOURCE_COMMIT" \
+            --expected-corpus-commit "$AURA_C6_CORPUS_SOURCE_COMMIT"
+
+      - name: Verify integrated C6 outcomes and evidence binding
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/stage_c/verify_integrated_c6.py per-arch \
+            --core-root "$GITHUB_WORKSPACE/aura-core" \
+            --guard-root "$GITHUB_WORKSPACE/aura-guard" \
+            --corpus-source-root "$GITHUB_WORKSPACE/aura-guard/aura-specification" \
+            --corpus-dir "$GITHUB_WORKSPACE/aura-guard/aura-specification/artifacts/stage-c/c6-wire-corpus" \
+            --guard-evidence-dir "$GITHUB_WORKSPACE/aura-guard/artifacts/c6-ri-rs-consumer" \
+            --harness-root "$GITHUB_WORKSPACE" \
+            --architecture "$ARCHITECTURE" \
+            --expected-core-commit "$AURA_RI_PY_EXPECTED_SOURCE_COMMIT" \
+            --expected-ri-rs-commit "$AURA_RI_RS_COMMIT" \
+            --expected-corpus-commit "$AURA_C6_CORPUS_SOURCE_COMMIT" \
+            --expected-harness-commit "$AURA_INTEGRATION_HARNESS_COMMIT"
+
+      - name: Assemble self-contained evidence bundle
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p integrated-bundle/corpus integrated-bundle/ri-rs-evidence \
+            integrated-bundle/corpus-source integrated-bundle/harness
+          if [[ -d aura-guard/aura-specification/artifacts/stage-c/c6-wire-corpus ]]; then
+            cp -a aura-guard/aura-specification/artifacts/stage-c/c6-wire-corpus/. integrated-bundle/corpus/
+          fi
+          if [[ -d aura-guard/artifacts/c6-ri-rs-consumer ]]; then
+            cp -a aura-guard/artifacts/c6-ri-rs-consumer/. integrated-bundle/ri-rs-evidence/
+          fi
+          cp aura-guard/aura-specification/fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json \
+            integrated-bundle/corpus-source/ 2>/dev/null || true
+          cp aura-guard/aura-specification/scripts/stage_c/materialize_c6_wire_corpus.py \
+            integrated-bundle/corpus-source/ 2>/dev/null || true
+          cp scripts/stage_c/run_ri_py_c6_consumer.py integrated-bundle/harness/ 2>/dev/null || true
+          cp scripts/stage_c/verify_integrated_c6.py integrated-bundle/harness/ 2>/dev/null || true
+          cp .github/workflows/stage-c-c6-integrated-evidence.yml \
+            integrated-bundle/harness/ 2>/dev/null || true
+          cp source-identities.txt integrated-bundle/ 2>/dev/null || true
+          find integrated-bundle -type f -print | sort
+
+      - name: Upload integrated C6 evidence bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integrated-c6-${{ matrix.arch }}
+          path: integrated-bundle/
+          if-no-files-found: error
+          retention-days: 14
+
+  compare-integrated-c6:
+    name: Compare implementations and architectures
+    if: always()
+    needs: [integrated-c6]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout integration harness
+        uses: actions/checkout@v4
+
+      - name: Download x86_64 and aarch64 evidence bundles
+        uses: actions/download-artifact@v4
+        with:
+          pattern: integrated-c6-*
+          path: comparison-inputs
+          merge-multiple: false
+
+      - name: Verify cross-implementation agreement and byte completeness
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/stage_c/verify_integrated_c6.py compare-architectures \
+            --artifact-root comparison-inputs
+
+      - name: Upload integrated cross-implementation summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: integrated-c6-cross-implementation-summary
+          path: integrated-c6-cross-implementation-summary.json
+          if-no-files-found: warn
+          retention-days: 14
