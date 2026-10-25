@@ -47,7 +47,7 @@ toolchain_info="$(docker run --rm --network none "$PINNED_IMAGE" /bin/bash -euo 
   command -v cc >/dev/null
   printf "C6_OFFLINE_TOOLCHAIN_GIT=%s\n" "$(git --version)"
   printf "C6_OFFLINE_TOOLCHAIN_CC=%s\n" "$(cc --version | sed -n "1p")"
-  dpkg-query -W -f="${binary:Package}=${Version}\n" ca-certificates git build-essential
+  dpkg-query -W ca-certificates git build-essential
 ')"
 printf 'C6_OFFLINE_BASE_IMAGE=%s\n' "$PINNED_BASE_IMAGE"
 printf 'C6_OFFLINE_TOOLCHAIN_IMAGE_TAG=%s\n' "$TOOLCHAIN_IMAGE_TAG"
