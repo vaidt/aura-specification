@@ -1,0 +1,797 @@
+{
+  "schema": "AURA-BC021-C6-EXTENDED-CANDIDATE-INVENTORY/0.1",
+  "status": "DRAFT_NON_NORMATIVE",
+  "stage": "C6_PREPARATION",
+  "protocol_contract": "BC-02.1-COMMON-RECEIPT v1",
+  "purpose": "Candidate inventory for deduplication, contract mapping, and later exploratory execution. Not a runnable normative corpus.",
+  "source_baseline": {
+    "repository": "vaidt/aura-specification",
+    "commit": "6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330",
+    "manifest_path": "fixtures/corpus/STAGE-C-C6-STRICT-WIRE-MUTATION-CORPUS-v0.1-DRAFT.json",
+    "manifest_git_blob_oid": "d9b4a1f488185a44f7edb233ef8ff180981f0e84",
+    "existing_case_count": 27
+  },
+  "counts": {
+    "candidate_count": 50,
+    "confirmed_exact_duplicates": 2,
+    "remaining_candidates_for_triage": 48,
+    "runnable_cases": 0
+  },
+  "rules": [
+    "Do not populate expected_code or expected_result until a controlling contract invariant and error-taxonomy entry are referenced.",
+    "Do not inject this inventory into the pinned 27-case C6 manifest or replace previous reports/artifacts.",
+    "The two confirmed duplicates remain as traceable tombstones and are excluded from the active candidate pool.",
+    "All observations and future exploratory CI outputs must be labeled EXPLORATORY_NON_NORMATIVE."
+  ],
+  "authority": "NONE",
+  "governance_effect": "NONE",
+  "authorization_effect": "NONE",
+  "release_effect": "NONE",
+  "cases": [
+    {
+      "id": "C6-X-001",
+      "dimension": "shape",
+      "candidate": "missing_nested_fixture",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "fixture"
+        ]
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-002",
+      "dimension": "shape",
+      "candidate": "missing_nested_handoff",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "handoff"
+        ]
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-003",
+      "dimension": "shape",
+      "candidate": "missing_nested_received",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "received"
+        ]
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-004",
+      "dimension": "shape",
+      "candidate": "missing_nested_receiver",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "receiver"
+        ]
+      },
+      "deduplication": "CONFIRMED_EXACT_DUPLICATE",
+      "dedupe_reference": "C6-N-015A",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": false
+    },
+    {
+      "id": "C6-X-005",
+      "dimension": "shape",
+      "candidate": "missing_nested_adapter",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "adapter"
+        ]
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-006",
+      "dimension": "shape",
+      "candidate": "missing_nested_environment",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "environment"
+        ]
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-007",
+      "dimension": "shape",
+      "candidate": "unknown_nested_fixture",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "fixture"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-008",
+      "dimension": "shape",
+      "candidate": "unknown_nested_handoff",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "handoff"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-009",
+      "dimension": "shape",
+      "candidate": "unknown_nested_received",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "received"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "deduplication": "CONFIRMED_EXACT_DUPLICATE",
+      "dedupe_reference": "C6-N-012A",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": false
+    },
+    {
+      "id": "C6-X-010",
+      "dimension": "shape",
+      "candidate": "unknown_nested_receiver",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "receiver"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-011",
+      "dimension": "shape",
+      "candidate": "unknown_nested_adapter",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "adapter"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-012",
+      "dimension": "shape",
+      "candidate": "unknown_nested_environment",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "environment"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-013",
+      "dimension": "json_transport",
+      "candidate": "top_level_scalar",
+      "mutation_recipe": {
+        "op": "raw_text",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-014",
+      "dimension": "json_transport",
+      "candidate": "top_level_array",
+      "mutation_recipe": {
+        "op": "raw_text",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-015",
+      "dimension": "json_transport",
+      "candidate": "utf8_bom",
+      "mutation_recipe": {
+        "op": "raw_hex_or_parameterized_seed",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-016",
+      "dimension": "json_transport",
+      "candidate": "trailing_garbage",
+      "mutation_recipe": {
+        "op": "raw_text",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-017",
+      "dimension": "json_transport",
+      "candidate": "concatenated_documents",
+      "mutation_recipe": {
+        "op": "raw_text",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-018",
+      "dimension": "json_transport",
+      "candidate": "escaped_duplicate_top_key",
+      "mutation_recipe": {
+        "op": "escaped_equivalent_duplicate_key",
+        "target_key": "schema_id",
+        "escaped_key": "schema\\u005fid"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-019",
+      "dimension": "json_transport",
+      "candidate": "escaped_duplicate_nested_key",
+      "mutation_recipe": {
+        "op": "escaped_equivalent_duplicate_key",
+        "target_key": "status",
+        "escaped_key": "st\\u0061tus"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-020",
+      "dimension": "json_transport",
+      "candidate": "nonstandard_numeric_constant_set",
+      "mutation_recipe": {
+        "op": "raw_text",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-021",
+      "dimension": "base64",
+      "candidate": "urlsafe_alphabet",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "-_+/"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-022",
+      "dimension": "base64",
+      "candidate": "embedded_whitespace",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "QzYg/v8="
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-023",
+      "dimension": "base64",
+      "candidate": "excess_padding",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "QzYA/v8==="
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-024",
+      "dimension": "base64",
+      "candidate": "invalid_pad_bits",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "QzYA/v9="
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-025",
+      "dimension": "base64",
+      "candidate": "non_ascii_base64",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "éQ=="
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-026",
+      "dimension": "base64",
+      "candidate": "line_breaks",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "QzYA\n/v8="
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-027",
+      "dimension": "base64",
+      "candidate": "canonical_reencoding",
+      "mutation_recipe": {
+        "op": "positive_round_trip",
+        "target": "received.raw_octets"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-028",
+      "dimension": "base64",
+      "candidate": "all_octets_roundtrip",
+      "mutation_recipe": {
+        "op": "set_raw_octets",
+        "target": "received.raw_octets",
+        "value": "bytes 0x00..0xff encoded as Base64"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-029",
+      "dimension": "numeric",
+      "candidate": "null_octet_length",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.octet_length",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-030",
+      "dimension": "numeric",
+      "candidate": "string_octet_length",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.octet_length",
+        "value": "5"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-031",
+      "dimension": "numeric",
+      "candidate": "exponent_integer_token",
+      "mutation_recipe": {
+        "op": "raw_text",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-032",
+      "dimension": "numeric",
+      "candidate": "zero_negative_zero",
+      "mutation_recipe": {
+        "op": "raw_text",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-033",
+      "dimension": "numeric",
+      "candidate": "max_configured_length",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "received.raw_octets",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-034",
+      "dimension": "numeric",
+      "candidate": "overrange_integer",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "received.octet_length",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-035",
+      "dimension": "numeric",
+      "candidate": "very_large_signed_integer",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "received.octet_length",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-036",
+      "dimension": "digest",
+      "candidate": "uppercase_digest_hex",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.recomputed_sha256",
+        "value": "uppercase"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-037",
+      "dimension": "digest",
+      "candidate": "non_hex_digest",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.recomputed_sha256",
+        "value": "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-038",
+      "dimension": "digest",
+      "candidate": "digest_length_63_65",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.recomputed_sha256",
+        "value": "63 and 65 hex char variants"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-039",
+      "dimension": "digest",
+      "candidate": "digest_of_base64_text",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.recomputed_sha256",
+        "value": "sha256(base64_text)"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-040",
+      "dimension": "digest",
+      "candidate": "single_octet_source_mutation",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "flip one decoded octet and recompute base64, keep prior digest"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-041",
+      "dimension": "digest",
+      "candidate": "wrong_digest_same_format",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.recomputed_sha256",
+        "value": "all-zero digest with correct length"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-042",
+      "dimension": "provenance",
+      "candidate": "blank_fixture_identity",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "fixture.fixture_id",
+        "value": ""
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-043",
+      "dimension": "provenance",
+      "candidate": "blank_environment_identity",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "environment.environment_id",
+        "value": ""
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-044",
+      "dimension": "provenance",
+      "candidate": "receiver_adapter_alias",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "adapter.adapter_id",
+        "value": "receiver.receiver_id"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-045",
+      "dimension": "provenance",
+      "candidate": "malformed_source_commit",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "receiver.source_commit",
+        "value": "not-a-full-commit-sha"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-046",
+      "dimension": "provenance",
+      "candidate": "prohibited_value_additional_field",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "environment.runtime",
+        "value": "CONFORMANT"
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-047",
+      "dimension": "limits_and_precedence",
+      "candidate": "multi_defect_error_precedence",
+      "mutation_recipe": {
+        "op": "composite_mutation",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-048",
+      "dimension": "limits_and_precedence",
+      "candidate": "configured_size_limit",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "raw receipt envelope byte length",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-049",
+      "dimension": "limits_and_precedence",
+      "candidate": "configured_nesting_limit",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "nested JSON depth",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    },
+    {
+      "id": "C6-X-050",
+      "dimension": "limits_and_precedence",
+      "candidate": "bounded_fuzz_seeds",
+      "mutation_recipe": {
+        "op": "bounded_deterministic_mutation_set",
+        "value": null
+      },
+      "deduplication": "PENDING_BYTE_LEVEL_DEDUP",
+      "contract_binding_status": "UNRESOLVED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "execution_status": "NOT_RUN",
+      "included_in_candidate_pool": true
+    }
+  ]
+}
