@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
-# Run parser/test commands inside an immutable-image Docker container with no network.
+# Run parser/test commands inside an immutable toolchain image derived from a
+# digest-pinned Ubuntu base, with the actual parser/test execution network-isolated.
 set -euo pipefail
 
-readonly PINNED_IMAGE="ubuntu@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55"
+readonly PINNED_BASE_IMAGE="ubuntu@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55"
 
 : "${GITHUB_WORKSPACE:?GITHUB_WORKSPACE is required}"
 : "${pythonLocation:?setup-python must run before the offline runner}"
@@ -11,10 +12,47 @@ workspace="$(realpath "$GITHUB_WORKSPACE")"
 python_home="$(realpath "$pythonLocation")"
 [[ -x "$python_home/bin/python" ]] || { echo "C6_OFFLINE_RUNNER=FAIL: pinned Python path unavailable" >&2; exit 1; }
 [[ -d "$HOME/.cargo" && -d "$HOME/.rustup" ]] || { echo "C6_OFFLINE_RUNNER=FAIL: Cargo/Rustup cache missing" >&2; exit 1; }
-docker image inspect "$PINNED_IMAGE" >/dev/null 2>&1 || {
-  echo "C6_OFFLINE_RUNNER=FAIL: pinned container image has not been prefetched" >&2
+docker image inspect "$PINNED_BASE_IMAGE" >/dev/null 2>&1 || {
+  echo "C6_OFFLINE_RUNNER=FAIL: pinned base container image has not been prefetched" >&2
   exit 1
 }
+
+# The base image is digest-pinned. Build a local derived image before test
+# execution so the network-none container has the tools required by the
+# validators and Rust build scripts. Capture the derived image's content ID
+# and installed package versions in the workflow logs as execution evidence.
+readonly IMAGE_TAG_SUFFIX="${GITHUB_RUN_ID:-local}-${GITHUB_RUN_ATTEMPT:-1}-$(uname -m)"
+readonly TOOLCHAIN_IMAGE_TAG="aura-c6-offline-toolchain:$IMAGE_TAG_SUFFIX"
+
+if ! docker image inspect "$TOOLCHAIN_IMAGE_TAG" >/dev/null 2>&1; then
+  build_context="$(mktemp -d)"
+  cat > "$build_context/Dockerfile" <<EOF
+FROM $PINNED_BASE_IMAGE
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+      ca-certificates git build-essential \
+ && rm -rf /var/lib/apt/lists/*
+EOF
+  docker build --pull=false --file "$build_context/Dockerfile" --tag "$TOOLCHAIN_IMAGE_TAG" "$build_context"
+  rm -rf "$build_context"
+fi
+
+PINNED_IMAGE="$(docker image inspect --format '{{.Id}}' "$TOOLCHAIN_IMAGE_TAG")"
+[[ "$PINNED_IMAGE" =~ ^sha256:[a-f0-9]{64}$ ]] || {
+  echo "C6_OFFLINE_RUNNER=FAIL: derived toolchain image ID is missing or malformed" >&2
+  exit 1
+}
+toolchain_info="$(docker run --rm --network none "$PINNED_IMAGE" /bin/bash -euo pipefail -c '
+  command -v git >/dev/null
+  command -v cc >/dev/null
+  printf "C6_OFFLINE_TOOLCHAIN_GIT=%s\n" "$(git --version)"
+  printf "C6_OFFLINE_TOOLCHAIN_CC=%s\n" "$(cc --version | sed -n "1p")"
+  dpkg-query -W -f="${binary:Package}=${Version}\n" ca-certificates git build-essential
+')"
+printf 'C6_OFFLINE_BASE_IMAGE=%s\n' "$PINNED_BASE_IMAGE"
+printf 'C6_OFFLINE_TOOLCHAIN_IMAGE_TAG=%s\n' "$TOOLCHAIN_IMAGE_TAG"
+printf 'C6_OFFLINE_TOOLCHAIN_IMAGE_ID=%s\n' "$PINNED_IMAGE"
+printf '%s\n' "$toolchain_info"
 
 cwd="$(realpath "$PWD")"
 case "$cwd" in
@@ -75,7 +113,7 @@ if [[ -n "${LD_LIBRARY_PATH:-}" ]]; then
   docker_opts+=(--env "LD_LIBRARY_PATH=$LD_LIBRARY_PATH")
 fi
 
-printf 'C6_OFFLINE_IMAGE=%s\n' "$PINNED_IMAGE"
+printf 'C6_OFFLINE_IMAGE_ID=%s\n' "$PINNED_IMAGE"
 printf 'C6_OFFLINE_WORKDIR=%s\n' "$container_cwd"
 printf 'C6_OFFLINE_POLICY=network-none,read-only-rootfs,drop-all-capabilities,no-new-privileges\n'
 exec docker "${docker_opts[@]}" "$PINNED_IMAGE" /bin/bash -euo pipefail -c '
