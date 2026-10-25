@@ -1,0 +1,44 @@
+name: C6 extended candidate inventory structural validation
+
+on:
+  push:
+    branches:
+      - "analysis/c6-extended-candidate-corpus-20261025"
+    paths:
+      - "fixtures/corpus/STAGE-C-C6-EXTENDED-CANDIDATE-INVENTORY-v0.1-DRAFT.json"
+      - "scripts/stage_c/validate_c6_candidate_inventory.py"
+      - ".github/workflows/c6-candidate-corpus-triage.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "fixtures/corpus/STAGE-C-C6-EXTENDED-CANDIDATE-INVENTORY-v0.1-DRAFT.json"
+      - "scripts/stage_c/validate_c6_candidate_inventory.py"
+      - "docs/completion/AURA_C6_EXTENDED_CANDIDATE_TRIAGE_v0.1-DRAFT.md"
+      - ".github/workflows/c6-candidate-corpus-triage.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-candidate-inventory:
+    name: Candidate inventory integrity (non-normative)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout candidate inventory
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate candidate IDs, duplicates and governance-neutral metadata
+        run: python scripts/stage_c/validate_c6_candidate_inventory.py
+
+      - name: Record scope boundary
+        run: |
+          echo "This job validates inventory structure only."
+          echo "It does not execute RI-PY or RI-RS."
+          echo "It does not approve expected results or change C6/CONF-003/DQ-006 status."
