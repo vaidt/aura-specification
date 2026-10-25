@@ -27,10 +27,11 @@ jobs:
     env:
       C6_LAB_DIR: "${{ github.workspace }}/.c6-candidate-lab-${{ github.run_id }}-${{ github.run_attempt }}"
     steps:
-      - name: Checkout Candidate Lab commit
+      - name: Checkout Candidate Lab commit and full source history for L0 object verification
         uses: actions/checkout@v4
         with:
           ref: "${{ github.sha }}"
+          fetch-depth: 0
 
       - name: Checkout exact historical baseline commit
         uses: actions/checkout@v4
