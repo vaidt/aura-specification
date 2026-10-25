@@ -11,6 +11,7 @@ EXPECTED_SCHEMA = "AURA-BC021-C6-EXTENDED-CANDIDATE-INVENTORY/0.1"
 EXPECTED_DUPLICATES = {
     "C6-X-004": "C6-N-015A",
     "C6-X-009": "C6-N-012A",
+    "C6-X-041": "C6-N-006A",
 }
 
 
@@ -51,7 +52,7 @@ def main() -> int:
         if "expected_code" in case or "expected_result" in case:
             fail(f"{case_id}: do not store normative expected_code/expected_result yet")
         if case_id in EXPECTED_DUPLICATES:
-            if case.get("deduplication") != "CONFIRMED_EXACT_DUPLICATE":
+            if case.get("deduplication") not in {"CONFIRMED_EXACT_DUPLICATE", "CONFIRMED_REDUNDANT"}:
                 fail(f"{case_id}: duplicate disposition changed unexpectedly")
             if case.get("dedupe_reference") != EXPECTED_DUPLICATES[case_id]:
                 fail(f"{case_id}: expected duplicate reference missing or wrong")
@@ -73,15 +74,18 @@ def main() -> int:
         fail("candidate_count must be 50")
     if counts.get("confirmed_exact_duplicates") != 2:
         fail("confirmed_exact_duplicates must be 2")
-    if counts.get("remaining_candidates_for_triage") != 48:
-        fail("remaining_candidates_for_triage must be 48")
+    if counts.get("confirmed_redundant_candidates") != 3:
+        fail("confirmed_redundant_candidates must be 3")
+    if counts.get("remaining_candidates_for_triage") != 47:
+        fail("remaining_candidates_for_triage must be 47")
     if counts.get("runnable_cases") != 0:
         fail("runnable_cases must stay 0 until contract binding")
 
     print("C6_CANDIDATE_INVENTORY=PASS")
     print("CANDIDATE_COUNT=50")
     print("CONFIRMED_EXACT_DUPLICATES=2")
-    print("REMAINING_CANDIDATES_FOR_TRIAGE=48")
+    print("CONFIRMED_REDUNDANT_CANDIDATES=3")
+    print("REMAINING_CANDIDATES_FOR_TRIAGE=47")
     print("CONTRACT_BOUND_RUNNABLE_CASES=0")
     print("PARSER_EXECUTION=NOT_PERFORMED")
     print("AUTHORITY=NONE")
