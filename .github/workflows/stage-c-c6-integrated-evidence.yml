@@ -33,7 +33,7 @@ permissions:
 
 jobs:
   integrated-c6:
-    name: Integrated RI-PY / RI-RS C6 ($${{ matrix.arch }})
+    name: Integrated RI-PY / RI-RS C6 (${{ matrix.arch }})
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 35
     strategy:
