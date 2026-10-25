@@ -1,0 +1,991 @@
+{
+  "schema": "AURA-BC021-C6-L3-CONTRACT-MAPPING/0.1",
+  "status": "DRAFT_CONTRACT_REVIEW_REQUIRED",
+  "stage": "C6_L3_CONTRACT_TRIAGE",
+  "protocol_contract": "BC-02.1-COMMON-RECEIPT v1",
+  "purpose": "Map 39 active non-pilot candidates to the exact controlling draft/source provisions and expose underspecified invariants before any outcome or code is locked.",
+  "source_pins": [
+    {
+      "artifact": "C6 candidate inventory",
+      "repository": "vaidt/aura-specification",
+      "commit": "3a8e7ac3e26faa92fe383d090fe366b72ff438ff",
+      "path": "fixtures/corpus/STAGE-C-C6-EXTENDED-CANDIDATE-INVENTORY-v0.1-DRAFT.json",
+      "git_blob_oid": "06a4e8827fb589e3a549944c71718291d1345f16",
+      "status": "DRAFT_NON_NORMATIVE"
+    },
+    {
+      "artifact": "BC-02.1 common receipt schema",
+      "commit": "6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330",
+      "path": "conformance/boundary/BC-02.1-COMMON-RECEIPT-SCHEMA-v1.md",
+      "git_blob_oid": "f40f7a2ea246f382d12490a6489159f9e226fd17",
+      "status": "CONSTRUCTED; NORMATIVE_AUTHORITY_NONE; CONFORMANCE_BLOCKED"
+    },
+    {
+      "artifact": "Error taxonomy decision record",
+      "commit": "6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330",
+      "path": "AURA_ERROR_TAXONOMY_DECISION_RECORD_v1.0.md",
+      "git_blob_oid": "7573f83762b8d02f98f0665542a67722fcf0b616",
+      "status": "READY_FOR_EXECUTION; RATIFICATION_PENDING_EXECUTION; IMPLEMENTATION_AUTHORIZATION_NOT_GRANTED"
+    },
+    {
+      "artifact": "APS-200 Canonical Data Model",
+      "commit": "6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330",
+      "path": "aps/APS-200_CANONICAL_DATA_MODEL.md",
+      "git_blob_oid": "198eee23f12e1db7b3417d3b359c4f912142e984",
+      "status": "DRAFT"
+    },
+    {
+      "artifact": "C6 Contract Negatives",
+      "commit": "6b4f3dcc46841bb17fafa3e1b1cc8ea9c0397330",
+      "path": "fixtures/corpus/STAGE-C-C6-CONTRACT-NEGATIVES-v0.1-DRAFT.json",
+      "git_blob_oid": "a440742ebcd7f6b3b6cb396e30dfc8f95362d4f0",
+      "status": "DRAFT_NON_NORMATIVE; NORMATIVE_EFFECT_NONE"
+    }
+  ],
+  "summary": {
+    "active_candidate_count": 47,
+    "completed_observation_pilot_count": 8,
+    "mapped_remaining_count": 39,
+    "exact_expected_codes_locked": 0,
+    "unresolved_outcome_count": 39,
+    "excluded_tombstones": [
+      "C6-X-004",
+      "C6-X-009",
+      "C6-X-041"
+    ],
+    "contract_rule_mapped_or_gap_identified": 39
+  },
+  "governance_findings": [
+    "BC-02.1 schema source explicitly states Normative authority: NONE and says no normative protocol change is introduced.",
+    "The error taxonomy record shows Ratification_Status: PENDING_EXECUTION and Implementation_Authorization: NOT_GRANTED, despite separately claiming Normative_Effect: EFFECTIVE for P-012. This is a source-level status conflict that cannot be adjudicated by Candidate Lab.",
+    "The C6 contract-negative manifest explicitly declares DRAFT_NON_NORMATIVE and normative_effect NONE.",
+    "Therefore no expected_code or expected_result is set by this mapping. Observed parser codes are not substituted for contract-approved expected codes."
+  ],
+  "rules": [
+    "Every candidate stays CONTRACT_DECISION_REQUIRED until a controlling ratified invariant and an authorized error mapping are identified.",
+    "A contract reference plus a proposed diagnostic family does not constitute an approved expected code.",
+    "Positive controls C6-X-027/C6-X-028 must not be assigned a rejection code.",
+    "C6-X-044 must not be treated as an established violation without clarifying identity-alias rules.",
+    "Size/depth limits, digest textual representation, empty-string semantics, escaped duplicate-key behavior, BOM policy and error precedence require explicit contract decisions.",
+    "C6-X-050 is an aggregate of eight separately identified seeds; disposition each sub-seed individually."
+  ],
+  "candidates": [
+    {
+      "id": "C6-X-001",
+      "dimension": "shape",
+      "candidate": "missing_nested_fixture",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "fixture"
+        ]
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §3, §12",
+      "mapping_disposition": "MISSING_REQUIRED_OBJECT",
+      "rule_or_gap": "All declared fields are required; no implicit defaults; JSON receipt allows only schema fields.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-002",
+      "dimension": "shape",
+      "candidate": "missing_nested_handoff",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "handoff"
+        ]
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §3, §12",
+      "mapping_disposition": "MISSING_REQUIRED_OBJECT",
+      "rule_or_gap": "All declared fields are required; no implicit defaults; JSON receipt allows only schema fields.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-003",
+      "dimension": "shape",
+      "candidate": "missing_nested_received",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "received"
+        ]
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §3, §6, §12",
+      "mapping_disposition": "MISSING_REQUIRED_OBJECT",
+      "rule_or_gap": "All declared fields are required; no implicit defaults; raw-octet representation is specified as Base64 in JSON.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-005",
+      "dimension": "shape",
+      "candidate": "missing_nested_adapter",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "adapter"
+        ]
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §3, §8, §12",
+      "mapping_disposition": "MISSING_REQUIRED_OBJECT",
+      "rule_or_gap": "All declared fields are required; adapter identity fields are explicit.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-006",
+      "dimension": "shape",
+      "candidate": "missing_nested_environment",
+      "mutation_recipe": {
+        "op": "delete_object",
+        "path": [
+          "environment"
+        ]
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §3, §9, §12",
+      "mapping_disposition": "MISSING_REQUIRED_OBJECT",
+      "rule_or_gap": "All declared fields are required; environment identity fields are explicit.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-007",
+      "dimension": "shape",
+      "candidate": "unknown_nested_fixture",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "fixture"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §12",
+      "mapping_disposition": "UNKNOWN_FIELD",
+      "rule_or_gap": "Receipt serialization permits exactly schema field names and no additional fields.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-008",
+      "dimension": "shape",
+      "candidate": "unknown_nested_handoff",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "handoff"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §12",
+      "mapping_disposition": "UNKNOWN_FIELD",
+      "rule_or_gap": "Receipt serialization permits exactly schema field names and no additional fields.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-010",
+      "dimension": "shape",
+      "candidate": "unknown_nested_receiver",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "receiver"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §12",
+      "mapping_disposition": "UNKNOWN_FIELD",
+      "rule_or_gap": "Receipt serialization permits exactly schema field names and no additional fields.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-011",
+      "dimension": "shape",
+      "candidate": "unknown_nested_adapter",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "adapter"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §12",
+      "mapping_disposition": "UNKNOWN_FIELD",
+      "rule_or_gap": "Receipt serialization permits exactly schema field names and no additional fields.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-012",
+      "dimension": "shape",
+      "candidate": "unknown_nested_environment",
+      "mutation_recipe": {
+        "op": "insert_unknown_key",
+        "path": [
+          "environment"
+        ],
+        "key": "candidate_extension",
+        "value": "candidate"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §12",
+      "mapping_disposition": "UNKNOWN_FIELD",
+      "rule_or_gap": "Receipt serialization permits exactly schema field names and no additional fields.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-021",
+      "dimension": "base64",
+      "candidate": "urlsafe_alphabet",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "-_+/"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "BASE64_STRICTNESS_UNSPECIFIED",
+      "rule_or_gap": "Base64 must decode unambiguously to the exact raw octets; alphabet treatment is not specified further.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-022",
+      "dimension": "base64",
+      "candidate": "embedded_whitespace",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "QzYg/v8="
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "BASE64_WHITESPACE_UNSPECIFIED",
+      "rule_or_gap": "Base64 must decode unambiguously to the exact raw octets; acceptance of embedded whitespace is not stated.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-023",
+      "dimension": "base64",
+      "candidate": "excess_padding",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "QzYA/v8==="
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "BASE64_PADDING_UNSPECIFIED",
+      "rule_or_gap": "Base64 must decode unambiguously; exact padding/error precedence is not specified.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-024",
+      "dimension": "base64",
+      "candidate": "invalid_pad_bits",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "QzYA/v9="
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "BASE64_PAD_BITS_UNSPECIFIED",
+      "rule_or_gap": "The schema requires unambiguous decoding but does not state a pad-bit policy.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-025",
+      "dimension": "base64",
+      "candidate": "non_ascii_base64",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "éQ=="
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6, §12",
+      "mapping_disposition": "BASE64_CHARACTER_POLICY_UNSPECIFIED",
+      "rule_or_gap": "UTF-8 is required for the receipt envelope; exact Base64 character rejection category is not specified.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-026",
+      "dimension": "base64",
+      "candidate": "line_breaks",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "QzYA\n/v8="
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6, §12",
+      "mapping_disposition": "BASE64_LINE_BREAK_POLICY_UNSPECIFIED",
+      "rule_or_gap": "The exact handling of line breaks within Base64 text is not stated.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-027",
+      "dimension": "base64",
+      "candidate": "canonical_reencoding",
+      "mutation_recipe": {
+        "op": "positive_round_trip",
+        "target": "received.raw_octets"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "POSITIVE_CONTROL_EXPECTATION_NOT_LOCKED",
+      "rule_or_gap": "Control tests unambiguous Base64 decoding, exact raw-octet preservation and digest over decoded octets.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-028",
+      "dimension": "base64",
+      "candidate": "all_octets_roundtrip",
+      "mutation_recipe": {
+        "op": "set_raw_octets",
+        "target": "received.raw_octets",
+        "value": "bytes 0x00..0xff encoded as Base64"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "POSITIVE_CONTROL_EXPECTATION_NOT_LOCKED",
+      "rule_or_gap": "Control tests full octet range support and digest over decoded bytes; exact execution contract remains unratified.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-029",
+      "dimension": "numeric",
+      "candidate": "null_octet_length",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.octet_length",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §10, §12",
+      "mapping_disposition": "NULL_PROHIBITED",
+      "rule_or_gap": "Null is prohibited and cannot be an implicit alias for ABSENT.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-030",
+      "dimension": "numeric",
+      "candidate": "string_octet_length",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.octet_length",
+        "value": "5"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §12",
+      "mapping_disposition": "INTEGER_TYPE_REQUIRED",
+      "rule_or_gap": "Integer values must be encoded as JSON integers without alternate numeric forms.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-031",
+      "dimension": "numeric",
+      "candidate": "exponent_integer_token",
+      "mutation_recipe": {
+        "op": "raw_text",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §12",
+      "mapping_disposition": "ALTERNATE_INTEGER_FORM_PROHIBITED",
+      "rule_or_gap": "Integer fields are represented as JSON integers without alternate numeric forms; exact diagnostic code is not specified.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-032",
+      "dimension": "numeric",
+      "candidate": "zero_negative_zero",
+      "mutation_recipe": {
+        "op": "raw_text",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §12",
+      "mapping_disposition": "ALTERNATE_INTEGER_FORM_PROHIBITED",
+      "rule_or_gap": "Integer fields are represented as JSON integers without alternate numeric forms; exact diagnostic code is not specified.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-033",
+      "dimension": "numeric",
+      "candidate": "max_configured_length",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "received.raw_octets",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §3, §12",
+      "mapping_disposition": "SIZE_LIMIT_NOT_SPECIFIED",
+      "rule_or_gap": "No maximum receipt or decoded-octet size is defined in BC-02.1; do not assert rejection at this probe size.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-034",
+      "dimension": "numeric",
+      "candidate": "overrange_integer",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "received.octet_length",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6, §12",
+      "mapping_disposition": "INTEGER_RANGE_AND_LENGTH_MISMATCH",
+      "rule_or_gap": "Length must equal decoded raw-octet count; overflow handling and exact error category are unspecified.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-035",
+      "dimension": "numeric",
+      "candidate": "very_large_signed_integer",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "received.octet_length",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6, §12",
+      "mapping_disposition": "INTEGER_RANGE_AND_LENGTH_MISMATCH",
+      "rule_or_gap": "Length must equal decoded raw-octet count; signed boundary/overflow treatment is unspecified.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-036",
+      "dimension": "digest",
+      "candidate": "uppercase_digest_hex",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.recomputed_sha256",
+        "value": "uppercase"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "DIGEST_TEXT_CASE_UNSPECIFIED",
+      "rule_or_gap": "Digest must be computed from raw decoded octets, but the exact hexadecimal text case/encoding is not defined here.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-037",
+      "dimension": "digest",
+      "candidate": "non_hex_digest",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.recomputed_sha256",
+        "value": "gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "DIGEST_TEXT_ENCODING_UNSPECIFIED",
+      "rule_or_gap": "Digest value semantics are SHA-256, but the allowed wire alphabet/length validation is not fully specified.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-038",
+      "dimension": "digest",
+      "candidate": "digest_length_63_65",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.recomputed_sha256",
+        "value": "63 and 65 hex char variants"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "DIGEST_TEXT_LENGTH_ENCODING_UNSPECIFIED",
+      "rule_or_gap": "Expected digest representation and length validation are not made explicit by this schema artifact.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-039",
+      "dimension": "digest",
+      "candidate": "digest_of_base64_text",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.recomputed_sha256",
+        "value": "sha256(base64_text)"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6",
+      "mapping_disposition": "DIGEST_DOMAIN_MISMATCH",
+      "rule_or_gap": "The digest must cover decoded raw octets, never Base64 text characters.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-040",
+      "dimension": "digest",
+      "candidate": "single_octet_source_mutation",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "received.raw_octets",
+        "value": "flip one decoded octet and recompute base64, keep prior digest"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §6, R-INV-03",
+      "mapping_disposition": "DIGEST_MISMATCH",
+      "rule_or_gap": "SHA256(raw_octets) must equal recomputed_sha256; expected digest must not be used as input.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-042",
+      "dimension": "provenance",
+      "candidate": "blank_fixture_identity",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "fixture.fixture_id",
+        "value": ""
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §4",
+      "mapping_disposition": "NONEMPTY_FIXTURE_ID_UNSPECIFIED",
+      "rule_or_gap": "fixture_id and artifact identity must be present, but rejection of empty strings is not explicitly stated.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-043",
+      "dimension": "provenance",
+      "candidate": "blank_environment_identity",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "environment.environment_id",
+        "value": ""
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §9",
+      "mapping_disposition": "NONEMPTY_ENVIRONMENT_ID_UNSPECIFIED",
+      "rule_or_gap": "Environment fields are required; non-empty semantics are not explicitly specified.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-044",
+      "dimension": "provenance",
+      "candidate": "receiver_adapter_alias",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "adapter.adapter_id",
+        "value": "receiver.receiver_id"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §7–§8",
+      "mapping_disposition": "ALIAS_RULE_UNDERSPECIFIED",
+      "rule_or_gap": "Implementation ID may not be an implicit alias for receiver/adapter; adapter-vs-receiver equality itself is not explicitly prohibited.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-045",
+      "dimension": "provenance",
+      "candidate": "malformed_source_commit",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "receiver.source_commit",
+        "value": "not-a-full-commit-sha"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §7",
+      "mapping_disposition": "SOURCE_COMMIT_SYNTAX_UNSPECIFIED",
+      "rule_or_gap": "source_commit identity must be preserved, but syntax/length/full-SHA requirement is not defined here.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-046",
+      "dimension": "provenance",
+      "candidate": "prohibited_value_additional_field",
+      "mutation_recipe": {
+        "op": "set_or_construct_mutation",
+        "target": "environment.runtime",
+        "value": "CONFORMANT"
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §1, §5",
+      "mapping_disposition": "AUTHORITY_VALUE_SCOPE_UNSPECIFIED",
+      "rule_or_gap": "Schema forbids deriving/representing conformance results; named strings are expressly prohibited for handoff.status, but all-field scope requires clarification.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-047",
+      "dimension": "limits_and_precedence",
+      "candidate": "multi_defect_error_precedence",
+      "mutation_recipe": {
+        "op": "composite_mutation",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §3, §10, §12",
+      "mapping_disposition": "ERROR_PRECEDENCE_UNSPECIFIED",
+      "rule_or_gap": "Missing required fields and prohibited null both violate schema constraints, but no precedence rule specifies which diagnostic takes priority.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-048",
+      "dimension": "limits_and_precedence",
+      "candidate": "configured_size_limit",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "raw receipt envelope byte length",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §3, §12",
+      "mapping_disposition": "SIZE_LIMIT_NOT_SPECIFIED",
+      "rule_or_gap": "No maximum raw receipt envelope byte size is defined.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-049",
+      "dimension": "limits_and_precedence",
+      "candidate": "configured_nesting_limit",
+      "mutation_recipe": {
+        "op": "boundary_probe",
+        "target": "nested JSON depth",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §3, §12",
+      "mapping_disposition": "NESTING_LIMIT_NOT_SPECIFIED",
+      "rule_or_gap": "No maximum JSON nesting depth is defined.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    },
+    {
+      "id": "C6-X-050",
+      "dimension": "limits_and_precedence",
+      "candidate": "bounded_fuzz_seeds",
+      "mutation_recipe": {
+        "op": "bounded_deterministic_mutation_set",
+        "value": null
+      },
+      "contract_binding_status": "UNRESOLVED",
+      "contract_reference": "BC-02.1 §1, §3, §6, §7, §12; C6-N-014…017 draft-only",
+      "mapping_disposition": "MULTI_SEED_DISPOSITION_REQUIRED",
+      "rule_or_gap": "Eight seeds cover different concerns; classify each independently and do not assign a single expected diagnostic to the aggregate.",
+      "proposed_diagnostic_family": "NONE_LOCKED",
+      "expected_outcome_policy": "CONTRACT_DECISION_REQUIRED",
+      "expected_code": null,
+      "expected_result": null,
+      "execution_authorization": "NOT_GRANTED",
+      "authority": "NONE",
+      "governance_effect": "NONE",
+      "authorization_effect": "NONE",
+      "release_effect": "NONE"
+    }
+  ],
+  "authority": "NONE",
+  "normative_effect": "NONE",
+  "governance_effect": "NONE",
+  "authorization_effect": "NONE",
+  "release_effect": "NONE"
+}
