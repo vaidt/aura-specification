@@ -43,11 +43,11 @@ def canonical_json_bytes(value: Any) -> bytes:
 
 def write_new(root: Path, relative: str, raw: bytes) -> dict[str, Any]:
     path = root / relative
+    if len(raw) > MAX_SAMPLE_BYTES:
+        raise ValueError(f"materialized sample exceeds hard byte limit: {relative}")
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("xb") as stream:
         stream.write(raw)
-    if len(raw) > MAX_SAMPLE_BYTES:
-        raise ValueError(f"materialized sample exceeds hard byte limit: {relative}")
     return {
         "input_file": relative,
         "input_bytes": len(raw),
@@ -206,7 +206,7 @@ def materialize_candidate(case: dict[str, Any], seed: dict[str, Any], base_raw: 
         value["received"]["raw_octets"] = "éQ=="
         profile["parameterization"] = "non-ASCII character in Base64 transport text"
     elif case_id == "C6-X-026":
-        value["received"]["raw_octets"] = "QzYA\\n/v8="
+        value["received"]["raw_octets"] = "QzYA\n/v8="
         profile["parameterization"] = "line feed embedded in Base64 transport text"
     elif case_id == "C6-X-027":
         profile["parameterization"] = "positive canonical Base64 round-trip for the pinned source octets"
